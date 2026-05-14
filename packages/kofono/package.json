@@ -1,7 +1,7 @@
 {
     "name": "kofono",
     "version": "0.9.0",
-    "description": "Kofono Headless Form Engine Library",
+    "description": "Headless Form Engine Library",
     "keywords": [
         "form",
         "headless",
@@ -32,19 +32,17 @@
         "test:ui": "vitest --ui",
         "prepublish": "pnpm check:fix && pnpm build"
     },
-    "dependencies": {
-        "date-fns": "4.1.0"
-    },
+    "dependencies": {},
     "devDependencies": {
-        "@types/node": "^25.6.0",
-        "@vitest/coverage-v8": "^4.1.4",
-        "@vitest/ui": "^4.1.4",
+        "@types/node": "^25.7.0",
+        "@vitest/coverage-v8": "^4.1.6",
+        "@vitest/ui": "^4.1.6",
         "tslib": "^2.8.1",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.4"
+        "vitest": "^4.1.6"
     },
     "engines": {
-        "node": ">=20",
-        "pnpm": ">=10.0.0"
+        "node": ">=22",
+        "pnpm": ">=11.0.0"
     }
 }
