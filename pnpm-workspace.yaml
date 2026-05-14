@@ -1,11 +1,18 @@
 packages:
-    - packages/*
-    - doc
+  - packages/*
+  - doc
+
+allowBuilds:
+  esbuild: false
+
+minimumReleaseAge: 1440
+
 onlyBuiltDependencies:
-    - '@tailwindcss/oxide'
+  - '@tailwindcss/oxide'
+
 overrides:
-    "glob": "^13.0.0"
-    "minimatch": "^10.2.5"
-    "picomatch": "^4.0.4"
-    "postcss@8.5.9": "8.5.10"
-    "vite": "8.0.10"
+  "glob": "^13.0.0"
+  "minimatch": "^10.2.5"
+  "picomatch": "^4.0.4"
+  "postcss@8.5.9": "8.5.10"
+  "vite": "8.0.10"
