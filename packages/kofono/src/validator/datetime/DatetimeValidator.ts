@@ -1,4 +1,4 @@
-import { isAfter, isEqual, isValid, parse } from "../../common/datetime";
+import { isAfter, isEqual, parse } from "../../common/datetime";
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
 import { ValidatorErrors } from "../errors";
@@ -88,18 +88,22 @@ export class DatetimeValidator
             // Handle min if provided
             if (opts.min) {
                 // Parse the min string using the same format
-                const parsedMin = parse(opts.min, this.format, new Date());
-                if (isValid(parsedMin)) {
-                    this.min = parsedMin;
+                this.min = parse(opts.min, this.format, new Date());
+                if (this.min === undefined) {
+                    throw new Error(
+                        `Invalid min date: ${opts.min} for ${attachTo}`,
+                    );
                 }
             }
 
             // Handle max if provided
             if (opts.max) {
                 // Parse the max string using the same format
-                const parsedMax = parse(opts.max, this.format, new Date());
-                if (isValid(parsedMax)) {
-                    this.max = parsedMax;
+                this.max = parse(opts.max, this.format, new Date());
+                if (this.max === undefined) {
+                    throw new Error(
+                        `Invalid max date: ${opts.max} for ${attachTo}`,
+                    );
                 }
             }
         }
@@ -121,7 +125,7 @@ export class DatetimeValidator
             const parsedDate = parse(ctx.value, this.format, new Date());
 
             // Check if the date is valid
-            if (isValid(parsedDate)) {
+            if (parsedDate !== undefined) {
                 // If min is set, check if the parsed date is greater than or equal to the minimum date
                 if (
                     this.min &&
