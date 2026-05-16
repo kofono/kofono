@@ -1,6 +1,7 @@
 import { isEmptyString, optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
 import { ValidatorErrors } from "../errors";
+import { isInEnum } from "../isInEnum/isInEnum";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -45,6 +46,10 @@ export class RequiredValidator extends AbstractValidator implements Validator {
         } else if (valueType === "boolean" && ctx.value === false) {
             return this._error;
         } else if (Array.isArray(ctx.value) && ctx.value.length < 1) {
+            return this._error;
+        }
+
+        if (ctx.form.rawProp(this.attachTo).has("enum") && !isInEnum(ctx)) {
             return this._error;
         }
 

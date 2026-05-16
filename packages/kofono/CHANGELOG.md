@@ -7,6 +7,7 @@
 - add a schema normalization process at the build stage
 - switch to rolldown for building the library
 - modify ts compilation to only output declaration files
+- modify RequiredValidator validates against enum values if defined
 
 # 0.8.0 - 2026-03-29
 

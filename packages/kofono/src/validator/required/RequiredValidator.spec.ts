@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { K } from "../../builder/K";
 import type { ValidationContext } from "../types";
 import { RequiredValidator } from "./RequiredValidator";
 
@@ -74,10 +75,25 @@ describe("requiredValidator", () => {
     ];
 
     for (const t of tests) {
-        it(t.name, () => {
+        it(t.name, async () => {
+            ctx.form = await K.form({
+                test: K.string("required"),
+            });
             ctx.value = t.value;
             const [isValid, _] = validator.validate(ctx);
             expect(isValid).toBe(t.expected);
         });
     }
+
+    it("should respect enum values is set", async () => {
+        const form = await K.form({
+            prop: K.string("required").enum(["a", "b", "c"]),
+        });
+
+        expect(form.isValid("prop")).toBe(false);
+        await form.update("prop", "z");
+        expect(form.isValid("prop")).toBe(false);
+        await form.update("prop", "a");
+        expect(form.isValid("prop")).toBe(true);
+    });
 });
