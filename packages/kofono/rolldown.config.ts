@@ -1,8 +1,10 @@
 import { defineConfig } from "rolldown";
 
 export default defineConfig({
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-        file: "dist/bundle.js",
+        file: "dist/kofono.js",
+        format: "es",
+        minify: true,
     },
 });
