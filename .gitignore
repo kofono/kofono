@@ -11,3 +11,4 @@ packages/*/coverage
 packages/*/tmp
 packages/*/node_modules
 .npmrc
+.pnpm-store
