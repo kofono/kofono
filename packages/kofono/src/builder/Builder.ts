@@ -45,210 +45,153 @@ export class Builder {
     public buildProps(): Properties {
         const props: Properties = {};
         for (const builder of Object.values(this._builders)) {
-            const prop = builder.buildProperty();
+            const prop = builder.build();
             props[prop.selector] = prop;
         }
         return props;
     }
 
-    array(
-        uid: string,
-        def: Omit<SchemaArrayProperty, "type">,
-    ): LeafBuilder<SchemaArrayProperty> | null {
+    array(uid: string, def: Omit<SchemaArrayProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaArrayProperty = {
             ...(def as SchemaArrayProperty),
             type: PropertyType.Array,
         };
-        const builder = new LeafBuilder<SchemaArrayProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaArrayProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
     listBoolean(
         uid: string,
         def: Omit<SchemaListBooleanProperty, "type">,
-    ): LeafBuilder<SchemaListBooleanProperty> | null {
+    ): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaListBooleanProperty = {
             type: PropertyType.ListBoolean,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaListBooleanProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaListBooleanProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    listNumber(
-        uid: string,
-        def: Omit<SchemaListNumberProperty, "type">,
-    ): LeafBuilder<SchemaListNumberProperty> | null {
+    listNumber(uid: string, def: Omit<SchemaListNumberProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaListNumberProperty = {
             type: PropertyType.ListNumber,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaListNumberProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaListNumberProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    listMixed(
-        uid: string,
-        def: Omit<SchemaListMixedProperty, "type">,
-    ): LeafBuilder<SchemaListMixedProperty> | null {
+    listMixed(uid: string, def: Omit<SchemaListMixedProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaListMixedProperty = {
             type: PropertyType.ListMixed,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaListMixedProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaListMixedProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    listString(
-        uid: string,
-        def: Omit<SchemaListStringProperty, "type">,
-    ): LeafBuilder<SchemaListStringProperty> | null {
+    listString(uid: string, def: Omit<SchemaListStringProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaListStringProperty = {
             type: PropertyType.ListString,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaListStringProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaListStringProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    boolean(
-        uid: string,
-        def: Omit<SchemaBooleanProperty, "type">,
-    ): LeafBuilder<SchemaBooleanProperty> | null {
+    boolean(uid: string, def: Omit<SchemaBooleanProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaBooleanProperty = {
             type: PropertyType.Boolean,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaBooleanProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaBooleanProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    object(
-        uid: string,
-        def: Omit<SchemaObjectProperty, "type">,
-    ): NodeBuilder<SchemaObjectProperty> | null {
+    object(uid: string, def: Omit<SchemaObjectProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaObjectProperty = {
             ...(def as SchemaObjectProperty),
             type: PropertyType.Object,
         };
-        const builder = new NodeBuilder<SchemaObjectProperty>(
+        this._builders[uid] = new NodeBuilder<SchemaObjectProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    null(
-        uid: string,
-        def: Omit<SchemaNullProperty, "type">,
-    ): LeafBuilder<SchemaNullProperty> | null {
+    null(uid: string, def: Omit<SchemaNullProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaNullProperty = {
             type: PropertyType.Null,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaNullProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaNullProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    number(
-        uid: string,
-        def: Omit<SchemaNumberProperty, "type">,
-    ): LeafBuilder<SchemaNumberProperty> | null {
+    number(uid: string, def: Omit<SchemaNumberProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaNumberProperty = {
             type: PropertyType.Number,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaNumberProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaNumberProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
-    string(
-        uid: string,
-        def: Omit<SchemaStringProperty, "type">,
-    ): LeafBuilder<SchemaStringProperty> | null {
+    string(uid: string, def: Omit<SchemaStringProperty, "type">): void {
         if (!this.validateUid(uid)) {
-            return null;
+            return;
         }
         const typedDef: SchemaStringProperty = {
             type: PropertyType.String,
             ...def,
         };
-        const builder = new LeafBuilder<SchemaStringProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaStringProperty>(
             uid,
-            this,
             typedDef,
         );
-        this._builders[uid] = builder;
-        return builder;
     }
 
     public validateUid(uid: string): boolean {

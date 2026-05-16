@@ -11,6 +11,7 @@ export enum PropertyType {
     Null = "null",
     Number = "number",
     String = "string",
+    Unknown = "unknown",
 }
 
 export type PropertyValidator = {

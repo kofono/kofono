@@ -234,3 +234,20 @@ describe("SchemaBuilder testing duplicate extensions id and name", () => {
         );
     });
 });
+
+describe("SchemaBuilder testing normalization at build", () => {
+    it("should normalize enum", async () => {
+        const form = await new SchemaBuilder().build({
+            __: {
+                propA: {
+                    type: "string",
+                    enum: ["option1", "option2"],
+                },
+            },
+        });
+        expect(form.prop("propA").get("enum", [])).toEqual([
+            { value: "option1" },
+            { value: "option2" },
+        ]);
+    });
+});

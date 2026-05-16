@@ -21,6 +21,20 @@ describe("K builder", () => {
         });
     });
 
+    it("should enum normalize when creating schema", () => {
+        const schema = K.schema({
+            propA: K.string().enum(["option1", "option2"]),
+        });
+        expect(schema).toEqual({
+            __: {
+                propA: {
+                    type: T.String,
+                    enum: [{ value: "option1" }, { value: "option2" }],
+                },
+            },
+        });
+    });
+
     it("should create object schema", () => {
         const schema = K.object({
             propA: K.string().$v(v => v.notEmpty()),

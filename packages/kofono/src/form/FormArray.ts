@@ -1,4 +1,4 @@
-import { SchemaBuilder } from "../builder/SchemaBuilder";
+import { buildProps } from "../builder/propsBuilder";
 import type { Property } from "../property/Property";
 import { PropertyType } from "../property/types";
 import type { SchemaArrayProperty, SchemaProperty } from "../schema/Schema";
@@ -13,11 +13,7 @@ import type { FormProperty } from "./FormProperty";
  * This class is responsible for expanding and slicing arrays properties.
  */
 export class FormArray {
-    private schemaBuilder: SchemaBuilder;
-
-    constructor(private form: Form) {
-        this.schemaBuilder = new SchemaBuilder();
-    }
+    constructor(private form: Form) {}
 
     public async expand(arraySelector: string, n: number = 1): Promise<void> {
         for (let i = 0; i < n; i++) {
@@ -40,7 +36,7 @@ export class FormArray {
         const arrayIndex =
             (this.form.$d(arraySelector) as unknown[]).length || 0;
 
-        const newProps = this.schemaBuilder.buildProp(
+        const newProps = buildProps(
             String(arrayIndex),
             prop.get("items", {}),
             arraySelector,

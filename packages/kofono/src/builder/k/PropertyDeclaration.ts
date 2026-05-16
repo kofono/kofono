@@ -1,9 +1,9 @@
-import { isObjectLiteral } from "../../common/helpers";
+import { normalizeEnumDef } from "../../property/enum";
 import type { PropertyType } from "../../property/types";
 import type {
+    DirtySchemaPropertyEnum,
     SchemaComponent,
     SchemaProperty,
-    SchemaPropertyEnum,
 } from "../../schema/Schema";
 import type { SchemaPropertyValidator } from "../../validator/schema";
 import { PropertyValidations } from "./PropertyValidations";
@@ -20,18 +20,15 @@ export class PropertyDeclaration<T = any> {
         return prop;
     }
 
-    public type(type: PropertyType): PropertyDeclaration {
-        this.def.type = type;
+    public type(type: Omit<PropertyType, "unknown">): PropertyDeclaration {
+        this.def.type = type as SchemaProperty["type"];
         return this;
     }
 
     public enum(
-        options: SchemaPropertyEnum<any>[] | any[],
+        options: DirtySchemaPropertyEnum<unknown>[],
     ): PropertyDeclaration {
-        if (options.length > 0 && !isObjectLiteral(options[0])) {
-            options = options.map(opt => ({ value: opt }));
-        }
-        this.def.enum = options;
+        this.def.enum = normalizeEnumDef(options);
         return this;
     }
 
@@ -92,7 +89,7 @@ export class PropertyDeclaration<T = any> {
     }
 
     public props(props: Record<string, any>): PropertyDeclaration {
-        this.def = { ...this.def, ...props };
+        this.def = Object.assign({}, this.def, props);
         return this;
     }
 

@@ -1,18 +1,13 @@
-import { isEmptyString, isObjectLiteral } from "../common/helpers";
+import { isEmptyString } from "../common/helpers";
 import { defaultConfig } from "../form/defaults";
 import type { Form } from "../form/Form";
 import type { ExtensionDefinition } from "../form/FormExtensions";
-import type { FormConfig, Properties } from "../form/types";
-import { PropertyType } from "../property/types";
-import type {
-    Schema,
-    SchemaProperties,
-    SchemaProperty,
-} from "../schema/Schema";
+import type { FormConfig } from "../form/types";
+import type { Schema } from "../schema/Schema";
 import { Token } from "../schema/Tokens";
 import { DataSelector } from "../selector/DataSelector";
-import { joinSelectors } from "../selector/helpers";
 import { Builder } from "./Builder";
+import { processSchemaProps } from "./propsBuilder";
 
 export const SchemaBuilderError = {
     InvalidPropertyKeyName: `Property key {key} cannot contain "${DataSelector.separator}" (dot)`,
@@ -53,7 +48,7 @@ export class SchemaBuilder {
         if (!schema.__) {
             throw new Error(SchemaBuilderError.MissingRootProperties);
         }
-        this.processProps(builder, schema.__, "root");
+        processSchemaProps(builder, schema.__, "root");
 
         const finalConfig = this.processConfig(schema, config);
 
@@ -115,16 +110,6 @@ export class SchemaBuilder {
         return extensions;
     }
 
-    public buildProp(
-        id: string,
-        prop: SchemaProperty,
-        parentUid: string,
-    ): Properties {
-        const builder = new Builder();
-        this.processProp(id, builder, prop, parentUid);
-        return builder.buildProps();
-    }
-
     private processConfig(
         schema: Schema,
         config: Partial<FormConfig>,
@@ -137,84 +122,5 @@ export class SchemaBuilder {
         );
         finalConfig.id = finalConfig.id || schema[Token.SchemaId] || "";
         return finalConfig;
-    }
-
-    private processProps(
-        builder: Builder,
-        schema: SchemaProperties,
-        parentUid: string,
-    ) {
-        for (const [propId, prop] of Object.entries(schema)) {
-            if (typeof propId !== "string") {
-                continue;
-            }
-
-            if (!isObjectLiteral(prop)) {
-                throw new Error(
-                    SchemaBuilderError.InvalidPropertyValue.replace(
-                        "{key}",
-                        propId,
-                    ),
-                );
-            } else if ("type" in prop) {
-                this.processProp(propId, builder, prop, parentUid);
-            }
-        }
-    }
-
-    private processProp(
-        key: string,
-        builder: Builder,
-        prop: SchemaProperty,
-        parentUid: string,
-    ) {
-        if (key.includes(DataSelector.separator)) {
-            throw new Error(
-                SchemaBuilderError.InvalidPropertyKeyName.replace("{key}", key),
-            );
-        }
-
-        const selector = this.joinSelectors(parentUid, key);
-        switch (prop.type) {
-            case PropertyType.Array:
-                return builder.array(selector, prop);
-            case PropertyType.ListBoolean:
-                return builder.listBoolean(selector, prop);
-            case PropertyType.ListMixed:
-                return builder.listMixed(selector, prop);
-            case PropertyType.ListNumber:
-                return builder.listNumber(selector, prop);
-            case PropertyType.ListString:
-                return builder.listString(selector, prop);
-            case PropertyType.Boolean:
-                return builder.boolean(selector, prop);
-            case PropertyType.Object:
-                builder.object(selector, prop);
-                return this.processProps(builder, prop.__, selector);
-            case PropertyType.Null:
-                return builder.null(selector, prop);
-            case PropertyType.Number:
-                return builder.number(selector, prop);
-            case PropertyType.String:
-                return builder.string(selector, prop);
-        }
-
-        if (typeof (prop as SchemaProperty).type === "string") {
-            throw new Error(
-                SchemaBuilderError.UnknownPropertyTypeOf.replace(
-                    "{type}",
-                    (prop as SchemaProperty).type,
-                ),
-            );
-        }
-
-        throw new Error(SchemaBuilderError.UnknownPropertyType);
-    }
-
-    private joinSelectors(parentSelector: string, selector: string): string {
-        if (parentSelector === "root" || parentSelector === "") {
-            return selector;
-        }
-        return joinSelectors(parentSelector, selector);
     }
 }

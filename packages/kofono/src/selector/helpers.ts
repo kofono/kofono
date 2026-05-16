@@ -9,6 +9,21 @@ export function joinSelectors(...selectors: string[]): string {
 }
 
 /**
+ * Join the parent selector with the selector.
+ * If the parent selector is "root" or empty, the selector is returned as is.
+ * ex: joinParentSelector("a", "b") => "a.b"
+ */
+export function joinParentSelector(
+    parentSelector: string,
+    selector: string,
+): string {
+    if (parentSelector === "root" || parentSelector === "") {
+        return selector;
+    }
+    return joinSelectors(parentSelector, selector);
+}
+
+/**
  * Remove the base selector from the selector.
  * ex: removeSelectorBase("a", "a.b.c") => "b.c"
  */

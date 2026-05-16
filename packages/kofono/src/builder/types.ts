@@ -5,7 +5,7 @@ import type { Token } from "../schema/Tokens";
 import type { PropertyDeclaration } from "./k/PropertyDeclaration";
 
 export interface PropertyBuilder<TSchemaType extends SchemaProperty> {
-    buildProperty(): Property<TSchemaType>;
+    build(): Property<TSchemaType>;
 }
 
 export type SchemaBuildResult =

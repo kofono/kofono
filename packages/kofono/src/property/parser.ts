@@ -41,9 +41,7 @@ export function parseValidators(
 /**
  * Determine the property type and the tree type from the given type.
  */
-export function determinePropertyTypes(
-    type: string,
-): [PropertyType | "unknown", TreeType] {
+export function determinePropertyTypes(type: string): [PropertyType, TreeType] {
     switch (type) {
         case PropertyType.Object:
             return [PropertyType.Object, TreeType.Node];
@@ -66,6 +64,6 @@ export function determinePropertyTypes(
         case PropertyType.ListMixed:
             return [PropertyType.ListMixed, TreeType.Leaf];
         default:
-            return ["unknown", TreeType.Leaf];
+            return [PropertyType.Unknown, TreeType.Leaf];
     }
 }

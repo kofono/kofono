@@ -3,11 +3,11 @@ import { Token } from "../schema/Tokens";
 import { GenericDataQuerier } from "../selector/GenericDataQuerier";
 import { validateSelector } from "./helpers";
 import { determinePropertyTypes, parseValidators } from "./parser";
-import type {
-    BaseProperty,
+import {
+    type BaseProperty,
     PropertyType,
-    PropertyValidator,
-    TreeType,
+    type PropertyValidator,
+    type TreeType,
 } from "./types";
 
 export class Property<TSchemaType extends SchemaProperty>
@@ -24,7 +24,7 @@ export class Property<TSchemaType extends SchemaProperty>
 
     constructor(selector: string, def: TSchemaType) {
         const [type, treeType] = determinePropertyTypes(def.type);
-        if (type === "unknown") {
+        if (type === PropertyType.Unknown) {
             throw new Error(`Unknown type: ${def.type}`);
         }
         this.type = type;

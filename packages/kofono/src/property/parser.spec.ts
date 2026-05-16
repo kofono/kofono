@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import type { SchemaPropertyValidator } from "../validator/types";
+import type { SchemaPropertyValidator } from "../validator/schema";
 import { parseValidators } from "./parser";
 
 test("parseValidators()", () => {

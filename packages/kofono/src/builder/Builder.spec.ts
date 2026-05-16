@@ -12,12 +12,11 @@ import { Builder } from "./Builder";
 test("builder object", () => {
     const builder = new Builder();
 
-    const obj = builder.object("main", {
+    builder.object("main", {
         __: {},
         test: "ok",
     });
 
-    expect(obj).not.toBeNull();
     expect(builder.errors()).toHaveLength(0);
     expect(builder.uids()).toHaveLength(1);
     expect(builder.uids()[0]).toBe("main");
@@ -26,39 +25,16 @@ test("builder object", () => {
 test("builder unique uid", () => {
     const builder = new Builder();
 
-    const obj = builder.object("main", {
+    builder.object("main", {
         __: {},
     });
-    const obj2 = builder.object("main", {
+    builder.object("main", {
         __: {},
     });
 
-    expect(obj).not.toBeNull();
-    expect(obj2).toBeNull();
     expect(builder.errors()).toHaveLength(1);
     expect(builder.uids()).toHaveLength(1);
     expect(builder.errors()[0].message).toBe("Duplicate property uid: main");
-});
-
-test("builder nested obj", () => {
-    const builder = new Builder();
-
-    const obj = builder.object("main", {});
-    const subObj = obj?.object("second", {
-        __: {},
-    });
-
-    const aString = builder.string("aString", {});
-    expect(aString).not.toBeNull();
-    expect(obj).not.toBeNull();
-    expect(subObj).not.toBeNull();
-
-    // biome-ignore lint/style/noNonNullAssertion: won't be called because the above expect.not.null
-    const prop = subObj!.buildProperty();
-
-    expect(prop.selector).toBe("main.second");
-    expect(builder.errors()).toHaveLength(0);
-    expect(builder.uids()).toHaveLength(3);
 });
 
 test("Builder simplified syntax", async () => {

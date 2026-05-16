@@ -21,7 +21,7 @@ export interface SchemaBaseProperty {
     [Token.Qualifications]?: SchemaPropertyValidator[];
     [Token.Validations]?: SchemaPropertyValidator[];
     [Token.DefaultValue]?: unknown;
-    [Token.Enum]?: SchemaPropertyEnum<unknown>[];
+    [Token.Enum]?: DirtySchemaPropertyEnum<unknown>[];
     [Token.Component]?: SchemaComponent;
     [key: string]: unknown;
 }
@@ -98,3 +98,9 @@ export interface SchemaPropertyEnum<T> {
     label?: string;
     [key: string]: unknown;
 }
+
+type SchemaPropertyEnumValue<T> = T;
+
+export type DirtySchemaPropertyEnum<T> =
+    | SchemaPropertyEnum<T>
+    | SchemaPropertyEnumValue<T>;
