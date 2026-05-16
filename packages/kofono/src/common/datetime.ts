@@ -6,9 +6,8 @@
  * Checks whether a Date object is valid (not Invalid Date).
  */
 export function isValid(date: unknown): boolean {
-    if (typeof date === "string") {
-        const d = new Date(date);
-        return d instanceof Date && !Number.isNaN(d.getTime());
+    if (["string", "number"].includes(typeof date)) {
+        date = new Date(date as string | number);
     }
     return date instanceof Date && !Number.isNaN(date.getTime());
 }
@@ -52,6 +51,9 @@ export function parse(
     const seconds = parseInt(g.seconds ?? "0", 10);
 
     const result = new Date(year, month, day, hours, minutes, seconds);
+    if (!isValid(result)) {
+        return undefined;
+    }
 
     // Only validate fields that were present in the format string
     if (g.year !== undefined && result.getFullYear() !== year) {

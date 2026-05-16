@@ -11,7 +11,7 @@ describe("datetime isValid()", () => {
         ["plain string with text", "2024-01-15 hello", false],
         ["null", null, false],
         ["undefined", undefined, false],
-        ["random number", 1705276800000, false],
+        ["random number", 1705276800000, true],
         ["invalid minutes", "2023-01-01 12:60:45", false],
         ["invalid seconds", "2023-01-01 12:34:60", false],
         ["invalid years", "999999-01-01", false],
@@ -67,7 +67,7 @@ describe("datetime parse()", () => {
     }
 });
 
-describe("isAfter", () => {
+describe("datetime isAfter()", () => {
     const earlier = new Date(2024, 0, 1);
     const later = new Date(2024, 5, 15);
 
@@ -97,7 +97,7 @@ describe("isAfter", () => {
     });
 });
 
-describe("isEqual", () => {
+describe("datetime isEqual()", () => {
     it("returns true for two identical dates", () => {
         expect(isEqual(new Date(2024, 0, 1), new Date(2024, 0, 1))).toBe(true);
     });
