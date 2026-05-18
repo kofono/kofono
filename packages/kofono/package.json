@@ -12,8 +12,8 @@
     ],
     "author": "Francois Lajoie",
     "license": "Apache-2.0",
-    "main": "dist/kofono.js",
-    "types": "dist/src/index.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "type": "module",
     "repository": {
         "type": "git",
@@ -22,9 +22,8 @@
     },
     "files": ["dist", "README.md", "LICENSE.md"],
     "scripts": {
-        "build": "tsc -p tsconfig.json && pnpm bundle",
-        "build:watch": "tsc -p tsconfig.json -w",
-        "bundle": "rolldown -c",
+        "build": "tsdown --config tsdown.config.ts",
+        "build:watch": "pnpm build --watch",
         "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
         "coverage": "vitest run --coverage",
         "check": "pnpm biome check",
@@ -36,7 +35,7 @@
     "devDependencies": {
         "@types/node": "^25.7.0",
         "@vitest/coverage-v8": "^4.1.6",
-        "rolldown": "^1.0.1",
+        "tsdown": "^0.22.0",
         "tslib": "^2.8.1",
         "typescript": "^6.0.3",
         "vitest": "^4.1.6"
