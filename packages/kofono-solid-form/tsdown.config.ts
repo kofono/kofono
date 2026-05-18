@@ -5,6 +5,7 @@ export default defineConfig({
     clean: false,
     dts: true,
     entry: ["src/index.tsx"],
+    root: "src",
     minify: true,
     outDir: "dist/",
     platform: "neutral",
