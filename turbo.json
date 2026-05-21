@@ -1,8 +1,9 @@
 {
     "$schema": "https://turborepo.com/schema.json",
-    "ui": "stream-with-experimental-timestamps",
+    "ui": "stream",
     "tasks": {
         "build": {
+            "dependsOn": ["kofono#build", "@kofono/solid-editor#build"],
             "cache": true,
             "inputs": ["$TURBO_DEFAULT$", ".env*"],
             "outputs": ["dist/**"]
@@ -13,6 +14,18 @@
             "outputs": ["dist/**"],
             "persistent": true
         },
+
+        "kofono#build": {
+            "cache": true,
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputs": ["dist/**"]
+        },
+        "@kofono/solid-editor#build": {
+            "cache": true,
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputs": ["dist/**"]
+        },
+
         "clean": {
             "cache": false
         },
