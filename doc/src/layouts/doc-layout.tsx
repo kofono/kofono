@@ -1,7 +1,7 @@
 import type { JSX } from "solid-js";
 import { Header } from "@/components/header";
 import { TableOfContents } from "@/components/table-of-contents";
-import { tableOfContents } from "@/doc/table-of-contents";
+import { tableOfContents } from "@/table-of-contents";
 
 export function DocLayout(props: { children: JSX.Element }) {
     // const navigate = useNavigate();

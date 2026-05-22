@@ -58,7 +58,7 @@ export function Code(props: ElementWithProps) {
 }
 
 export function Hr(props: ElementWithClass) {
-    return <hr class={cn("text-secondary", props.class)} />;
+    return <hr class={cn("text-base-100", props.class)} />;
 }
 
 export interface TableProps {

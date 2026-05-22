@@ -1,7 +1,7 @@
 import { Title } from "@solidjs/meta";
 import { CodeBlock } from "@/components/code-block";
 import { H1 } from "@/components/html";
-import { DocLayout } from "@/components/layouts/doc-layout";
+import { DocLayout } from "@/layouts/doc-layout";
 
 export const SchemaSelectors: DocComponentPage = {
     path: "/schema/selectors",

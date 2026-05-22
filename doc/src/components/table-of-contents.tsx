@@ -22,7 +22,7 @@ export function TableOfContents(props: TableOfContentsProps) {
                     return (
                         <>
                             <H2>{item.title}</H2>
-                            <NodeContent children={item.children} />
+                            <NodeContent children={item.children} root={true} />
                         </>
                     );
                 }}
@@ -35,9 +35,17 @@ function isDocComponent(item: TableOfContentsItem): item is DocComponentPage {
     return (item as DocComponentPage).component !== undefined;
 }
 
-function NodeContent(props: { children: TableOfContentsType }) {
+type NodeContentProps = {
+    children: TableOfContentsType;
+    root?: boolean;
+};
+function NodeContent(props: NodeContentProps) {
     return (
-        <div class="my-2">
+        <div
+            class={cn(
+                "pb-2 mb-2",
+                props.root === true && "border-b border-base-100",
+            )}>
             <For each={props.children} fallback={<li>Loading2...</li>}>
                 {(item: TableOfContentsItem) => {
                     if (isDocComponent(item)) {
@@ -45,9 +53,12 @@ function NodeContent(props: { children: TableOfContentsType }) {
                     }
                     return (
                         <>
-                            <H4 class="pl-3 mt-2">{item.title}</H4>
-                            <div class="pl-5">
-                                <NodeContent children={item.children} />
+                            <H4 class="pl-0 mt-2">{item.title}</H4>
+                            <div class="pl-0">
+                                <NodeContent
+                                    children={item.children}
+                                    root={false}
+                                />
                             </div>
                         </>
                     );
@@ -61,12 +72,14 @@ function LeafContent(props: { item: DocComponentPage }) {
     const location = useLocation();
     const isActive = createMemo(() => location.pathname === props.item.path);
     return (
-        <li>
+        <li class="h-7">
             <A
                 href={props.item.path}
                 class={cn(
+                    "text-accent-content",
                     "is-drawer-close:tooltip is-drawer-close:tooltip-right",
-                    isActive() && " bg-primary text-primary-content",
+                    "hover:bg-transparent hover:text-primary",
+                    isActive() && "text-primary",
                 )}
                 data-tip={props.item.title}>
                 <span class="is-drawer-close:hidden">

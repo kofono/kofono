@@ -1,7 +1,7 @@
 import { CodeBlock } from "@/components/code-block";
 import { CodeTabs } from "@/components/code-tabs";
 import { Code, H1, Spacer } from "@/components/html";
-import { DocLayout } from "@/components/layouts/doc-layout";
+import { DocLayout } from "@/layouts/doc-layout";
 
 export const SchemaBasics: DocComponentPage = {
     path: "/schema/basics",

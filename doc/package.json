@@ -3,8 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite serve --port 8080",
+        "doc": "vite serve --port 8080",
         "build": "tsc && vite build",
+        "build:prod": "tsc && vite build --mode production",
         "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
         "test": "vitest run"
     },
@@ -13,25 +14,25 @@
         "@kofono/solid-editor": "workspace:*",
         "@fontsource/lato": "5.2.7",
         "@fontsource/roboto": "5.2.10",
-        "@fontsource/roboto-mono": "5.2.8",
-        "@tailwindcss/postcss": "^4.2.4",
-        "@tailwindcss/vite": "^4.1.18",
-        "@tanstack/solid-query": "^5.100.4",
-        "@tanstack/virtual-file-routes": "^1.161.7",
+        "@fontsource/roboto-mono": "5.2.9",
+        "@tailwindcss/postcss": "^4.3.0",
+        "@tailwindcss/vite": "^4.3.0",
+        "@tanstack/solid-query": "^5.100.10",
         "@solidjs/router": "^0.16.1",
         "@solidjs/meta": "^0.29.4",
         "clsx": "2.1.1",
         "kofono": "workspace:*",
         "solid-icons": "^1.2.0",
         "solid-js": "^1.9.12",
-        "tailwindcss": "^4.2.4"
+        "tailwindcss": "^4.3.0"
     },
     "devDependencies": {
+        "@types/node": "^25.7.0",
         "daisyui": "^5.5.19",
-        "tailwind-merge": "^3.5.0",
+        "tailwind-merge": "^3.6.0",
         "tailwindcss-animate": "^1.0.7",
         "typescript": "^6.0.3",
-        "vite": "8.0.10",
+        "vite": "8.0.13",
         "vite-plugin-solid": "2.11.12"
     }
 }

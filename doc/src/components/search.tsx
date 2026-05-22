@@ -1,4 +1,4 @@
-import { tableOfContents } from "@/doc/table-of-contents";
+import { tableOfContents } from "@/table-of-contents";
 
 export function Search() {
     const search = (s: string) => {

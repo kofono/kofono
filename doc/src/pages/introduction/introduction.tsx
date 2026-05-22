@@ -1,14 +1,14 @@
 import { CodeBlock } from "@/components/code-block";
 import { CodeTabs } from "@/components/code-tabs";
 import { H1, Spacer, StrongAccent } from "@/components/html";
-import { DocLayout } from "@/components/layouts/doc-layout";
+import { DocLayout } from "@/layouts/doc-layout";
 
-export const Landing: DocComponentPage = {
+export const Introduction: DocComponentPage = {
     title: "Kofono documentation",
-    menuTitle: "Overview",
+    menuTitle: "Introduction",
     path: "/",
     description: "Kofono official documentation",
-    keywords: ["kofono", "form", "schema", "typescript"],
+    keywords: ["kofono", "headless", "form", "schema", "typescript"],
     component: Content,
 };
 
@@ -20,10 +20,47 @@ function Content() {
 
             <p>
                 Kofono is a <StrongAccent>headless form engine</StrongAccent>{" "}
-                for TypeScript. Define forms with a schema-first approach
-                inspired by JSON Schema, then render and validate them frontend
-                or backend without duplicating logic.
+                for TypeScript. You define forms with a schema-first approach.
+                This let you validate them frontend/backend without duplicating
+                logic.
             </p>
+
+            {/*<CodeBlock*/}
+            {/*    height={"150px"}*/}
+            {/*    value={}*/}
+            {/*/>*/}
+
+            <CodeTabs
+                tabs={[
+                    {
+                        label: "JSON Schema",
+                        content: (
+                            <CodeBlock
+                                height={"80px"}
+                                value={`const schema = K.schema({
+    intro: K.null(),
+});`}
+                            />
+                        ),
+                        active: true,
+                    },
+                    {
+                        label: "Typescript Builder",
+                        content: (
+                            <CodeBlock
+                                height={"160px"}
+                                value={`const form = await K.form({
+    $id: "my-form",
+    name: K.string(required()),
+    product: K.string(required()).enum(["product1", "product2", "product3"]),
+    quantity: K.number(min(5), max(20)).default(7),
+    consent: K.boolean(required()).default(false),
+}`}
+                            />
+                        ),
+                    },
+                ]}
+            />
 
             <Spacer />
 

@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import { render } from "solid-js/web";
-import "../../packages/kofono-solid-form/dist/index.css";
+import "../../packages/kofono-solid-form/dist/style.css";
 import "./styles.css";
 import "@fontsource/roboto-mono/700.css";
 import "@fontsource/lato/400.css";
@@ -10,13 +10,8 @@ import "@fontsource/lato/400-italic.css";
 import { MetaProvider } from "@solidjs/meta";
 import { Route, Router } from "@solidjs/router";
 import { For, type ParentProps } from "solid-js";
-import { RootLayout } from "@/components/layouts/root-layout";
-import { SchemaBasics } from "@/doc/schema.basics";
-import { SchemaProperties } from "@/doc/schema.properties";
-import { SchemaSelectors } from "@/doc/schema.selectors";
-import { ValidatorList } from "@/doc/validator.list";
-import { Landing } from "@/pages/landing";
-import { Playground } from "@/pages/playground";
+import { RootLayout } from "@/layouts/root-layout";
+import { docPages } from "@/table-of-contents";
 
 const queryClient = new QueryClient();
 
@@ -30,20 +25,11 @@ function App(props: ParentProps) {
     );
 }
 
-const docPages: DocComponentPage[] = [
-    Landing,
-    Playground,
-    SchemaBasics,
-    SchemaProperties,
-    SchemaSelectors,
-    ValidatorList,
-];
-
 const rootElement = document.getElementById("app");
 if (rootElement) {
     render(
         () => (
-            <Router root={App}>
+            <Router root={App} base={import.meta.env.BASE_URL}>
                 <For each={docPages}>
                     {d => (
                         <Route path={d.path} component={d.component as any} />

@@ -4,7 +4,8 @@ import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+    base: command === "build" ? "/docs/" : "/",
     plugins: [solidPlugin(), tailwindcss()],
     resolve: {
         alias: [
@@ -14,4 +15,19 @@ export default defineConfig({
             },
         ],
     },
-});
+    build: {
+        rolldownOptions: {
+            output: {
+                codeSplitting: true,
+                advancedChunks: {
+                    groups: [
+                        { name: "solid", test: /node_modules\/solid-js/ },
+                        { name: "tanstack", test: /node_modules\/@tanstack/ },
+                        { name: "ace", test: /node_modules\/ace-builds/ },
+                        { name: "vendor", test: /node_modules/ },
+                    ],
+                },
+            },
+        },
+    },
+}));

@@ -2,12 +2,13 @@ import { Editor } from "@kofono/solid-editor";
 import {
     ComponentType,
     FormSchemaProvider,
-    GridForm
+    GridForm,
 } from "@kofono/solid-form";
 import { K, max, min, type Schema } from "kofono";
 import { createSignal, Show } from "solid-js";
 import { H1, H4, Hr } from "@/components/html";
-import { FullScreenLayout } from "@/components/layouts/fullscreen-layout";
+import { FullScreenLayout } from "@/layouts/fullscreen-layout";
+import { cn } from "@/utils";
 import { evalWithContext } from "./schema";
 
 export const Playground: DocComponentPage = {
@@ -79,14 +80,17 @@ function RouteComponent() {
     // const [value, setValue] = createSignal<string>(startingSchemaString);
     const [previewSchema, setPreviewSchema] = createSignal<Schema>(schema);
     const [previewSchemaVersion, setPreviewSchemaVersion] = createSignal(1);
+    const [doesParse, setDoesParse] = createSignal(false);
 
     const onEditorChange = (val: string) => {
         console.log("onEditorChange");
         try {
             const schema = evalWithContext(val);
             updateSchema(schema);
+            setDoesParse(true);
         } catch (error) {
             console.error(error);
+            setDoesParse(false);
         }
     };
 
@@ -103,27 +107,69 @@ function RouteComponent() {
         <FullScreenLayout>
             <H1>Playground</H1>
             <div class="flex flex-row justify-between gap-2">
-                <div class="flex-3/5 bg-base-200 p-2">
-                    <H4>Schema</H4>
+                <div class="flex-3/5 p-2">
+                    <div class="tabs tabs-lift">
+                        <input
+                            type="radio"
+                            name="my_tabs_1"
+                            class={cn(
+                                "tab tab-active text-base-100 checked:[--tab-bg:var(--color-primary)]",
+                                !doesParse() &&
+                                    "bg-(--color-error) checked:[--tab-bg:var(--color-error)]",
+                            )}
+                            aria-label="Schema"
+                            checked={true}
+                        />
+                        <div
+                            class={cn(
+                                "tab-content border-base-300 bg-(--color-primary) p-1",
+                                !doesParse() && "bg-(--color-error)",
+                            )}>
+                            <Editor
+                                onChange={onEditorChange}
+                                class="p-0"
+                                value={startingSchemaString}
+                                mode={"javascript"}
+                                theme="github_dark"
+                                style={{
+                                    height: "calc(100vh - 220px)",
+                                    width: "100%",
+                                    backgroundColor: "black",
+                                }}
+                                options={{
+                                    showPrintMargin: false,
+                                    showLineNumbers: true,
+                                    showFoldWidgets: true,
+                                    showGutter: true,
+                                    highlightActiveLine: false,
+                                }}
+                            />
+                        </div>
+
+                        <input
+                            type="radio"
+                            name="my_tabs_2"
+                            class="tab"
+                            aria-label="Tab 2"
+                        />
+                        <div class="tab-content border-base-300 bg-base-100 p-10">
+                            Tab content 2
+                        </div>
+
+                        <input
+                            type="radio"
+                            name="my_tabs_3"
+                            class="tab"
+                            aria-label="Tab 3"
+                        />
+                        <div class="tab-content border-base-300 bg-base-100 p-10">
+                            Tab content 3
+                        </div>
+                    </div>
                     <button class="hidden" type="button" onClick={reloadBtn}>
                         reload
                     </button>
                     <Hr class="-mx-2 my-3" />
-                    <Editor
-                        onChange={onEditorChange}
-                        class="p-0"
-                        value={JSON.stringify(schema, null, 2)}
-                        mode={"javascript"}
-                        theme="github_dark"
-                        style={{ height: "500px", width: "100%" }}
-                        options={{
-                            showPrintMargin: false,
-                            showLineNumbers: true,
-                            showFoldWidgets: true,
-                            showGutter: true,
-                            highlightActiveLine: false,
-                        }}
-                    />
                 </div>
                 <div class="flex-2/5 bg-base-200 p-2">
                     <H4>Preview</H4>
