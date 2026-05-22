@@ -27,12 +27,10 @@
         "tailwindcss": "^4.3.0"
     },
     "devDependencies": {
-        "@types/node": "^25.7.0",
         "daisyui": "^5.5.19",
         "tailwind-merge": "^3.6.0",
         "tailwindcss-animate": "^1.0.7",
-        "typescript": "^6.0.3",
-        "vite": "8.0.13",
+        "vite": "8.0.14",
         "vite-plugin-solid": "2.11.12"
     }
 }
