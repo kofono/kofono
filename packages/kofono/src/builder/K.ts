@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: i like it that way */
 
-import { optional } from "../common/helpers";
+import { isObjectLiteral, optional } from "../common/helpers";
 import { defaultConfig } from "../form/defaults";
 import type { Form } from "../form/Form";
 import type { FormConfig } from "../form/types";
@@ -22,14 +22,20 @@ import type { SchemaPropertiesDeclarations } from "./types";
 
 export class K {
     public static async form(
-        def: SchemaPropertiesDeclarations,
+        def: SchemaPropertiesDeclarations | Schema,
         config: Partial<FormConfig> = defaultConfig,
     ): Promise<Form> {
         config = {
             ...defaultConfig,
             ...config,
         };
-        return await buildSchema(K.schema(def), config as FormConfig);
+
+        const schema: Schema =
+            "__" in def && isObjectLiteral(def.__)
+                ? (def as Schema)
+                : K.schema(def as SchemaPropertiesDeclarations);
+
+        return await buildSchema(schema, config as FormConfig);
     }
 
     public static schema(def: SchemaPropertiesDeclarations): Schema {

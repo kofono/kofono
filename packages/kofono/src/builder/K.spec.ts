@@ -247,6 +247,22 @@ describe("K builder", () => {
             });
             expect(form.id).toBe("test");
         });
+
+        it("should also work with Schema type", async () => {
+            const form = await K.form({
+                $id: "test",
+                __: {
+                    propA: {
+                        type: "string",
+                        $v: ["notEmpty"],
+                    },
+                },
+            });
+            expect(form).toBeInstanceOf(Form);
+            expect(form.state.data).toEqual({
+                propA: null,
+            });
+        });
     });
 
     describe("test extendsSchema()", () => {

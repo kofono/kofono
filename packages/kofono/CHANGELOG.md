@@ -8,6 +8,7 @@
 - switch to rolldown for building the library
 - modify ts compilation to only output declaration files
 - modify RequiredValidator validates against enum values if defined
+- modify K.form() to also accept raw Schema
 
 # 0.8.0 - 2026-04-28
 
