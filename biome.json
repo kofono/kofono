@@ -47,7 +47,8 @@
                 "noExplicitAny": "off",
                 "noConsole": "warn",
                 "noVar": "error",
-                "noWith": "error"
+                "noWith": "error",
+                "noThenProperty": "warn"
             }
         }
     },
@@ -61,5 +62,20 @@
         "parser": {
             "tailwindDirectives": true
         }
-    }
+    },
+    "overrides": [
+        {
+            "includes": ["doc/**"],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "noDefaultExport": "off"
+                    }
+                }
+            },
+            "formatter": {
+                "lineWidth": 120
+            }
+        }
+    ]
 }
