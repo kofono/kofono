@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext, ValidatorResponseContext } from "../types";
 import {
     BetweenValidator,
+    betweenValidator,
     type SchemaBetweenValidator,
 } from "./BetweenValidator";
 
@@ -48,7 +48,7 @@ describe("BetweenValidator test", () => {
             ...minMax(0, 10),
             expected: false,
             value: -1,
-            error: ValidatorErrors.Between.BelowMin,
+            error: betweenValidator.err.BelowMin,
             context: { min: 0 },
         },
         {

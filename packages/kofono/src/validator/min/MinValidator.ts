@@ -1,6 +1,5 @@
 import { objectHasKey, optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import { OptionsError } from "../OptionsError";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
@@ -24,6 +23,10 @@ export const minValidator = {
     name: "min" as const,
     factory: (selector: string, type: ValidationType, opts: MinValidatorOpts) =>
         new MinValidator(selector, type, opts),
+    err: {
+        InvalidType: "_MIN_INVALID_TYPE",
+        BelowMin: "_MIN_BELOW_MIN",
+    },
 };
 
 export function min(min: number, expect?: string): SchemaMinValidator {
@@ -61,19 +64,19 @@ export class MinValidator
         const type = typeof ctx.value;
         if (type === "number") {
             if (ctx.value < this.min) {
-                return this.error(ValidatorErrors.Min.BelowMin, {
+                return this.error(minValidator.err.BelowMin, {
                     min: this.min,
                 });
             }
             return this.success();
         } else if (type === "string" || Array.isArray(ctx.value)) {
             if (ctx.value.length < this.min) {
-                return this.error(ValidatorErrors.Min.BelowMin, {
+                return this.error(minValidator.err.BelowMin, {
                     min: this.min,
                 });
             }
             return this.success();
         }
-        return this.error(ValidatorErrors.Min.InvalidType);
+        return this.error(minValidator.err.InvalidType);
     }
 }

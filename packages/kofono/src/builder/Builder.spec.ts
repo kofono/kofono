@@ -3,7 +3,7 @@ import {
     defaultPassHandler,
     ExtensionsFactory,
     FormEnv,
-    ValidatorErrors,
+    notEmptyValidator,
 } from "../";
 import { IsValidValidator } from "../validator/isValid/IsValidValidator";
 import { ValidatorsFactory } from "../validator/ValidatorsFactory";
@@ -46,7 +46,7 @@ test("Builder simplified syntax", async () => {
 
     const form = await builder.build();
     expect(form.hasProp("propA")).toBeTruthy();
-    expect(form.$v("propA")).toEqual([false, ValidatorErrors.NotEmpty.IsEmpty]);
+    expect(form.$v("propA")).toEqual([false, notEmptyValidator.err.IsEmpty]);
 });
 
 describe("Builder FormConfig", () => {

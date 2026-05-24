@@ -1,7 +1,7 @@
 import { PropertyType, TreeType } from "../../property/types";
 import {
+    QualificationError,
     type ValidationContext,
-    ValidatorError,
     type ValidatorResponse,
 } from "../../validator/types";
 import type { Form } from "../Form";
@@ -100,7 +100,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
     private async handlePropDisqualification(
         prop: FormProperty,
     ): Promise<void> {
-        prop.validation = [false, ValidatorError.SelectorDisqualified];
+        prop.validation = [false, QualificationError.SelectorDisqualified];
 
         if (prop.type === PropertyType.Object) {
             const children = prop.childrenSelectors();
@@ -108,11 +108,11 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
                 const childProp = this.form.prop(childSelector);
                 childProp.validation = [
                     false,
-                    ValidatorError.SelectorDisqualified,
+                    QualificationError.SelectorDisqualified,
                 ];
                 childProp.qualification = [
                     false,
-                    ValidatorError.ParentDisqualified,
+                    QualificationError.ParentDisqualified,
                 ];
                 await this.resetValueOfDisqualifiedSelector(childProp);
             }

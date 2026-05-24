@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -30,6 +29,15 @@ export const passwordValidator = {
         type: ValidationType,
         opts: PasswordValidatorOpts,
     ) => new PasswordValidator(selector, type, opts),
+    err: {
+        IsEmpty: "_PASSWORD_IS_EMPTY",
+        MinLength: "_PASSWORD_MIN_LENGTH",
+        MaxLength: "_PASSWORD_MAX_LENGTH",
+        NoLowerCase: "_PASSWORD_NO_LOWER_CASE",
+        UpperCase: "_PASSWORD_UPPER_CASE",
+        Numbers: "_PASSWORD_NUMBERS",
+        SpecialChars: "_PASSWORD_SPECIAL_CHARS",
+    },
 };
 export function password(
     opts: PasswordValidatorOpts,
@@ -52,14 +60,14 @@ export class PasswordValidator extends AbstractValidator implements Validator {
 
     validate(ctx: ValidationContext): ValidatorResponse {
         if (!ctx.value) {
-            return this.error(ValidatorErrors.Password.IsEmpty);
+            return this.error(passwordValidator.err.IsEmpty);
         }
 
         if (
             typeof this.opts.min === "number" &&
             ctx.value.length < this.opts.min
         ) {
-            return this.error(ValidatorErrors.Password.MinLength, {
+            return this.error(passwordValidator.err.MinLength, {
                 min: this.opts.min,
             });
         }
@@ -68,26 +76,26 @@ export class PasswordValidator extends AbstractValidator implements Validator {
             typeof this.opts.max === "number" &&
             ctx.value.length > this.opts.max
         ) {
-            return this.error(ValidatorErrors.Password.MaxLength, {
+            return this.error(passwordValidator.err.MaxLength, {
                 max: this.opts.max,
             });
         }
 
         if (typeof this.opts.lowerCase === "boolean" && this.opts.lowerCase) {
             if (!/[a-z]/.test(ctx.value)) {
-                return this.error(ValidatorErrors.Password.NoLowerCase);
+                return this.error(passwordValidator.err.NoLowerCase);
             }
         }
 
         if (typeof this.opts.upperCase === "boolean" && this.opts.upperCase) {
             if (!/[A-Z]/.test(ctx.value)) {
-                return this.error(ValidatorErrors.Password.UpperCase);
+                return this.error(passwordValidator.err.UpperCase);
             }
         }
 
         if (typeof this.opts.numbers === "boolean" && this.opts.numbers) {
             if (!/[0-9]/.test(ctx.value)) {
-                return this.error(ValidatorErrors.Password.Numbers);
+                return this.error(passwordValidator.err.Numbers);
             }
         }
 
@@ -98,7 +106,7 @@ export class PasswordValidator extends AbstractValidator implements Validator {
             const specialCharsList =
                 this.opts.specialCharsList || "!@#$%^&*()_+";
             if (!new RegExp(`[${specialCharsList}]`).test(ctx.value)) {
-                return this.error(ValidatorErrors.Password.SpecialChars);
+                return this.error(passwordValidator.err.SpecialChars);
             }
         }
 

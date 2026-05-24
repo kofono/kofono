@@ -2,8 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
 import type { ValidationContext } from "../types";
-import { EqualValidator } from "./EqualValidator";
-import type { EqualValidatorOpts } from "./types";
+import { EqualValidator, type EqualValidatorOpts } from "./EqualValidator";
 
 describe("equalValidator", () => {
     let form: Form;

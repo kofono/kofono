@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -28,6 +27,10 @@ export const emailValidator = {
         type: ValidationType,
         opts: EmailValidatorOpts,
     ) => new EmailValidator(selector, type, opts),
+    err: {
+        InvalidType: "_EMAIL_INVALID_TYPE",
+        InvalidFormat: "_EMAIL_INVALID_FORMAT",
+    } as const,
 };
 
 /**
@@ -38,14 +41,14 @@ export const emailValidator = {
 export class EmailValidator extends AbstractValidator implements Validator {
     validate(ctx: ValidationContext): ValidatorResponse {
         if (typeof ctx.value !== "string") {
-            return this.error(ValidatorErrors.Email.InvalidType);
+            return this.error(emailValidator.err.InvalidType);
         }
         // const regex = /^.*[^@].*@.*[^@].*$/gm;
         // const regex = /^[^@]*@[^@]*\.[^@]*$/gm;
         const regex = /^[a-zA-Z0-9._+-]*@[a-zA-Z0-9._+-]*\.[a-zA-Z0-9._+-]*$/gm;
 
         if (regex.exec(ctx.value) === null) {
-            return this.error(ValidatorErrors.Email.InvalidFormat);
+            return this.error(emailValidator.err.InvalidFormat);
         }
         return this.success();
     }

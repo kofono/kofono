@@ -3,7 +3,9 @@ import { buildSchema } from "../builder/helpers";
 import { K } from "../builder/K";
 import { Property } from "../property/Property";
 import type { Schema } from "../schema/Schema";
-import { ValidatorErrors } from "../validator/errors";
+import { notEmptyValidator } from "../validator/empty/NotEmptyValidator";
+import { isValidValidator } from "../validator/isValid/IsValidValidator";
+import { QualificationError } from "../validator/types";
 import { defaultConfig } from "./defaults";
 import { Events } from "./events/types";
 import { Form } from "./Form";
@@ -117,24 +119,30 @@ test("FormTest_legacy", async () => {
         return [false, "CUSTOM_QUALIFICATION"];
     }, ["propA"]);
 
-    expect(form.$v("propA")).toEqual([false, ValidatorErrors.NotEmpty.IsEmpty]);
+    expect(form.$v("propA")).toEqual([false, notEmptyValidator.err.IsEmpty]);
     expect(form.$q("propA")).toEqual([true, ""]);
 
-    expect(form.$v("propB")).toEqual([false, "SELECTOR_DISQUALIFIED"]);
+    expect(form.$v("propB")).toEqual([
+        false,
+        QualificationError.SelectorDisqualified,
+    ]);
     expect(form.$q("propB")).toEqual([
         false,
-        ValidatorErrors.IsValid.SelectorNotValid,
+        isValidValidator.err.SelectorNotValid,
         { selectors: ["propA"] },
     ]);
 
-    expect(form.$v("propC")).toEqual([false, "SELECTOR_DISQUALIFIED"]);
+    expect(form.$v("propC")).toEqual([
+        false,
+        QualificationError.SelectorDisqualified,
+    ]);
     expect(form.$q("propC")).toEqual([
         false,
-        ValidatorErrors.IsValid.SelectorNotValid,
+        isValidValidator.err.SelectorNotValid,
         { selectors: ["propA", "propB"] },
     ]);
 
-    expect(form.$v("propD")).toEqual([false, ValidatorErrors.NotEmpty.IsEmpty]);
+    expect(form.$v("propD")).toEqual([false, notEmptyValidator.err.IsEmpty]);
     expect(form.$q("propD")).toEqual([true, ""]);
 
     await form.update("propA", 5);
@@ -142,7 +150,7 @@ test("FormTest_legacy", async () => {
     expect(form.$q("propB")).toEqual([false, "CUSTOM_QUALIFICATION"]);
     expect(form.$q("propC")).toEqual([
         false,
-        ValidatorErrors.IsValid.SelectorNotValid,
+        isValidValidator.err.SelectorNotValid,
         { selectors: ["propA", "propB"] },
     ]);
 
@@ -236,11 +244,11 @@ describe("Form errors()", () => {
         const errors = form.errors();
         // default msgs are not that great, but they are meant to be translated or customized
         expect(errors).toEqual({
-            $global: "FORM_NOT_COMPLETE",
-            propA: "_validator.notEmpty.isEmpty",
-            propB: "SELECTOR_DISQUALIFIED",
-            propC: "SELECTOR_DISQUALIFIED",
-            propD: "_validator.notEmpty.isEmpty",
+            $global: "_FORM_NOT_COMPLETE",
+            propA: notEmptyValidator.err.IsEmpty,
+            propB: QualificationError.SelectorDisqualified,
+            propC: QualificationError.SelectorDisqualified,
+            propD: notEmptyValidator.err.IsEmpty,
         });
     });
 

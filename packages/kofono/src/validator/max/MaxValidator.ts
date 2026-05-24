@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -23,6 +22,10 @@ export const maxValidator = {
     name: "max" as const,
     factory: (selector: string, type: ValidationType, opts: MaxValidatorOpts) =>
         new MaxValidator(selector, type, opts),
+    err: {
+        InvalidType: "_MAX_INVALID_TYPE",
+        AboveMax: "_MAX_ABOVE_MAX",
+    },
 };
 
 export function max(max: number, expect?: string): SchemaMaxValidator {
@@ -55,19 +58,19 @@ export class MaxValidator
         const type = typeof ctx.value;
         if (type === "number") {
             if (ctx.value > this.max) {
-                return this.error(ValidatorErrors.Max.AboveMax, {
+                return this.error(maxValidator.err.AboveMax, {
                     max: this.max,
                 });
             }
             return this.success();
         } else if (type === "string" || Array.isArray(ctx.value)) {
             if (ctx.value.length > this.max) {
-                return this.error(ValidatorErrors.Max.AboveMax, {
+                return this.error(maxValidator.err.AboveMax, {
                     max: this.max,
                 });
             }
             return this.success();
         }
-        return this.error(ValidatorErrors.Max.InvalidType);
+        return this.error(maxValidator.err.InvalidType);
     }
 }

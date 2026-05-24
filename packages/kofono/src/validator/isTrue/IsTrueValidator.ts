@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -20,6 +19,9 @@ export const isTrueValidator = {
         type: ValidationType,
         opts: IsTrueValidatorOpts,
     ) => new IsTrueValidator(selector, type, opts),
+    err: {
+        IsNotTrue: "_IS_TRUE_IS_NOT_TRUE",
+    },
 };
 
 export function isTrue(expect?: string): SchemaIsTrueValidator {
@@ -35,6 +37,6 @@ export class IsTrueValidator extends AbstractValidator implements Validator {
         if (ctx.value === true) {
             return this.success();
         }
-        return this.error(ValidatorErrors.IsTrue.IsNotTrue);
+        return this.error(isTrueValidator.err.IsNotTrue);
     }
 }

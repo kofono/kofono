@@ -3,7 +3,7 @@ import {
     Events,
     type Form,
     K,
-    ValidatorErrors,
+    notEmptyValidator,
     type ValidatorResponse,
 } from "../../src";
 
@@ -24,10 +24,7 @@ describe("FormEvents schema events with custom events", () => {
     });
 
     it("should be error VALUE_IS_EMPTY", () => {
-        expect(f.$v("propA")).toEqual([
-            false,
-            ValidatorErrors.NotEmpty.IsEmpty,
-        ]);
+        expect(f.$v("propA")).toEqual([false, notEmptyValidator.err.IsEmpty]);
     });
 
     it("should be error CUSTOM_VALIDATION", async () => {

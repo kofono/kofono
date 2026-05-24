@@ -4,7 +4,6 @@ import {
     resolvePartialSelectors,
 } from "../../selector/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import { OptionsError } from "../OptionsError";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
@@ -32,6 +31,10 @@ export const isValidValidator = {
         type: ValidationType,
         opts: IsValidValidatorOpts,
     ) => new IsValidValidator(selector, type, opts),
+    err: {
+        SelectorNotFound: "_IS_VALID_SELECTOR_NOT_FOUND",
+        SelectorNotValid: "_IS_VALID_SELECTOR_NOT_VALID",
+    },
 };
 export function isValid(selectors: string | string[], expect?: string) {
     return {
@@ -81,7 +84,7 @@ export class IsValidValidator
     validate(ctx: ValidationContext): ValidatorResponse {
         for (const selector of this.selectors) {
             if (!ctx.form.hasProp(selector)) {
-                return this.error(ValidatorErrors.IsValid.SelectorNotFound, {
+                return this.error(isValidValidator.err.SelectorNotFound, {
                     selectors: this.selectors,
                 });
             }
@@ -89,7 +92,7 @@ export class IsValidValidator
                 !ctx.form.prop(selector).isValid() ||
                 !ctx.form.prop(selector).isQualified()
             ) {
-                return this.error(ValidatorErrors.IsValid.SelectorNotValid, {
+                return this.error(isValidValidator.err.SelectorNotValid, {
                     selectors: this.selectors,
                 });
             }

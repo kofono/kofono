@@ -21,10 +21,10 @@ import * as Min from "./min/MinValidator";
 import * as Password from "./password/PasswordValidator";
 import * as Regexp from "./regexp/RegexpValidator";
 import * as Required from "./required/RequiredValidator";
-import type { ValidatorFactoryHandler } from "./types";
+import type { ValidatorDeclaration, ValidatorFactoryHandler } from "./types";
 import * as Url from "./url/UrlValidator";
 
-export const builtinValidators = [
+export const builtinValidators: ValidatorDeclaration<any>[] = [
     Alpha.alphaValidator,
     AlphaNum.alphaNumValidator,
     Between.betweenValidator,

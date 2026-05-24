@@ -1,9 +1,8 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext } from "../types";
-import { PasswordValidator } from "./PasswordValidator";
+import { PasswordValidator, passwordValidator } from "./PasswordValidator";
 
 describe("PasswordValidator", () => {
     let form: Form;
@@ -23,7 +22,7 @@ describe("PasswordValidator", () => {
         ctx.value = "";
         const [isValid, error] = validator.validate(ctx);
         expect(isValid).toBe(false);
-        expect(error).toBe(ValidatorErrors.Password.IsEmpty);
+        expect(error).toBe(passwordValidator.err.IsEmpty);
     });
 
     it("should fail if shorter than min length!", () => {
@@ -33,7 +32,7 @@ describe("PasswordValidator", () => {
         ctx.value = "1234";
         const [isValid, error] = validator.validate(ctx);
         expect(isValid).toBe(false);
-        expect(error).toBe(ValidatorErrors.Password.MinLength);
+        expect(error).toBe(passwordValidator.err.MinLength);
     });
 
     it("should pass if length is equal to min length", () => {
@@ -52,7 +51,7 @@ describe("PasswordValidator", () => {
         ctx.value = "123456";
         const [isValid, error] = validator.validate(ctx);
         expect(isValid).toBe(false);
-        expect(error).toBe(ValidatorErrors.Password.MaxLength);
+        expect(error).toBe(passwordValidator.err.MaxLength);
     });
 
     it("should pass if length is equal to max length", () => {
@@ -72,7 +71,7 @@ describe("PasswordValidator", () => {
             ctx.value = "UPPER123!";
             const [isValid, error] = validator.validate(ctx);
             expect(isValid).toBe(false);
-            expect(error).toBe(ValidatorErrors.Password.NoLowerCase);
+            expect(error).toBe(passwordValidator.err.NoLowerCase);
         });
 
         it("should fail if upperCase is true and no uppercase char present", () => {
@@ -82,7 +81,7 @@ describe("PasswordValidator", () => {
             ctx.value = "lower123!";
             const [isValid, error] = validator.validate(ctx);
             expect(isValid).toBe(false);
-            expect(error).toBe(ValidatorErrors.Password.UpperCase);
+            expect(error).toBe(passwordValidator.err.UpperCase);
         });
 
         it("should fail if numbers is true and no number present", () => {
@@ -92,7 +91,7 @@ describe("PasswordValidator", () => {
             ctx.value = "LowerUpper!";
             const [isValid, error] = validator.validate(ctx);
             expect(isValid).toBe(false);
-            expect(error).toBe(ValidatorErrors.Password.Numbers);
+            expect(error).toBe(passwordValidator.err.Numbers);
         });
 
         it("should fail if specialChars is true and no special char present", () => {
@@ -102,7 +101,7 @@ describe("PasswordValidator", () => {
             ctx.value = "LowerUpper123";
             const [isValid, error] = validator.validate(ctx);
             expect(isValid).toBe(false);
-            expect(error).toBe(ValidatorErrors.Password.SpecialChars);
+            expect(error).toBe(passwordValidator.err.SpecialChars);
         });
     });
 

@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -25,6 +24,9 @@ export const equalValidator = {
         type: ValidationType,
         opts: EqualValidatorOpts,
     ) => new EqualValidator(selector, type, opts),
+    err: {
+        IsNotEqual: "_EQUAL_IS_NOT_EQUAL",
+    },
 };
 
 export function equal(
@@ -67,6 +69,6 @@ export class EqualValidator extends AbstractValidator implements Validator {
         if (ctx.value === this.expectedValue) {
             return this.success();
         }
-        return this.error(ValidatorErrors.Equal.IsNotEqual);
+        return this.error(equalValidator.err.IsNotEqual);
     }
 }

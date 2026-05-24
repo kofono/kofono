@@ -15,6 +15,9 @@
 - rename type SchemaPropertiesDeclarations to SchemaDeclaration
 - replace non-generic type FormProperties by BaseProperties generic type
 - fix RequiredValidator to work with enum values and list properties
+- refactor validator errors to their respective folders 
+- introduce ValidatorDeclaration type
+- rename wrong name ValidatorError enum to QualificationError
 
 # 0.8.0 - 2026-04-28
 
@@ -72,7 +75,7 @@
 - add RequiredValidator
 - add FormProperty isRequired() && isOptional() methods
 - add S builder extendsSchema()
-- refactor validators errors under a object called ValidatorErrors
+- refactor validator errors under an object called ValidatorErrors
 - support optional context for validator response
 
 # 0.4.0 - 2025-07-01

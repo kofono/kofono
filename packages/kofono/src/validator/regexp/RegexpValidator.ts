@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -35,6 +34,10 @@ export const regexpValidator = {
         type: ValidationType,
         opts: RegexValidatorOpts,
     ) => new RegexpValidator(selector, type, opts),
+    err: {
+        InvalidType: "_REGEXP_INVALID_TYPE",
+        NotMatching: "_REGEXP_NOT_MATCHING",
+    },
 };
 
 export function regexp(
@@ -71,12 +74,12 @@ export class RegexpValidator
 
     validate(ctx: ValidationContext): ValidatorResponse {
         if (typeof ctx.value !== "string") {
-            return this.error(ValidatorErrors.Regexp.InvalidType);
+            return this.error(regexpValidator.err.InvalidType);
         }
 
         if (this.pattern.test(ctx.value)) {
             return this.success();
         }
-        return this.error(ValidatorErrors.Regexp.NotMatching);
+        return this.error(regexpValidator.err.NotMatching);
     }
 }

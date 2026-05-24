@@ -1,6 +1,5 @@
 import { isEmptyString, optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -22,6 +21,9 @@ export const notEmptyValidator = {
         type: ValidationType,
         opts: NotEmptyValidatorOpts,
     ) => new NotEmptyValidator(selector, type, opts),
+    err: {
+        IsEmpty: "_NOT_EMPTY_IS_EMPTY",
+    },
 };
 
 export function notEmpty(expect?: string): SchemaNotEmptyValidator {
@@ -35,13 +37,13 @@ export function notEmpty(expect?: string): SchemaNotEmptyValidator {
 export class NotEmptyValidator extends AbstractValidator implements Validator {
     validate(ctx: ValidationContext): ValidatorResponse {
         if (!ctx.value) {
-            return this.error(ValidatorErrors.NotEmpty.IsEmpty);
+            return this.error(notEmptyValidator.err.IsEmpty);
         } else if (typeof ctx.value !== "string") {
             ctx.value = String(ctx.value);
         }
 
         if (isEmptyString(ctx.value)) {
-            return this.error(ValidatorErrors.NotEmpty.IsEmpty);
+            return this.error(notEmptyValidator.err.IsEmpty);
         }
         return this.success();
     }

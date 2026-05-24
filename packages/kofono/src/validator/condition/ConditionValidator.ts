@@ -6,7 +6,6 @@ import {
 } from "../_condition/condition";
 import type { Condition, PlaceholderList } from "../_condition/types";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -32,6 +31,9 @@ export const conditionValidator = {
         type: ValidationType,
         opts: ConditionValidatorOpts,
     ) => new ConditionValidator(selector, type, opts),
+    err: {
+        IsFailing: "_CONDITION_IS_FAILING",
+    },
 };
 
 export function condition(
@@ -73,6 +75,6 @@ export class ConditionValidator
             return this.success();
         }
 
-        return this.error(ValidatorErrors.Condition.IsFailing);
+        return this.error(conditionValidator.err.IsFailing);
     }
 }

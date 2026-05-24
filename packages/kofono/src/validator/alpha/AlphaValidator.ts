@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -22,6 +21,10 @@ export const alphaValidator = {
         type: ValidationType,
         opts: AlphaValidatorOpts,
     ) => new AlphaValidator(selector, type, opts),
+    err: {
+        InvalidType: "_ALPHA_INVALID_TYPE",
+        InvalidChar: "_ALPHA_INVALID_CHAR",
+    },
 };
 
 export function alpha(opts: AlphaValidatorOpts, expect?: string) {
@@ -47,7 +50,7 @@ export class AlphaValidator extends AbstractValidator implements Validator {
 
     validate(ctx: ValidationContext): ValidatorResponse {
         if (typeof ctx.value !== "string") {
-            return this.error(ValidatorErrors.Alpha.InvalidType);
+            return this.error(alphaValidator.err.InvalidType);
         }
 
         const pattern = this.allowSpaces ? /^[A-Za-z\s]+$/ : /^[A-Za-z]+$/;
@@ -55,6 +58,6 @@ export class AlphaValidator extends AbstractValidator implements Validator {
         if (pattern.test(ctx.value)) {
             return this.success();
         }
-        return this.error(ValidatorErrors.Alpha.InvalidChar);
+        return this.error(alphaValidator.err.InvalidChar);
     }
 }

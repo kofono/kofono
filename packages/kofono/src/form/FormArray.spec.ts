@@ -2,7 +2,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { buildSchema } from "../builder/helpers";
 import { K } from "../builder/K";
 import type { SchemaArrayProperty } from "../schema/Schema";
-import { ValidatorErrors } from "../validator/errors";
+import { notEmptyValidator } from "../validator/empty/NotEmptyValidator";
+import { isValidValidator } from "../validator/isValid/IsValidValidator";
 import { Events } from "./events/types";
 import type { Form } from "./Form";
 
@@ -60,11 +61,11 @@ describe("FormArray expand", () => {
     it("should have correct validation and qualification after expand once", async () => {
         expect(form.$v("propA.0.A")).toEqual([
             false,
-            ValidatorErrors.NotEmpty.IsEmpty,
+            notEmptyValidator.err.IsEmpty,
         ]);
         expect(form.$q("propA.0.C")).toEqual([
             false,
-            ValidatorErrors.IsValid.SelectorNotValid,
+            isValidValidator.err.SelectorNotValid,
             {
                 selectors: ["propA.0.A"],
             },
@@ -140,11 +141,11 @@ describe("FormArray expand", () => {
     it("third item should have correct validation and qualification", () => {
         expect(form.$v("propA.2.A")).toEqual([
             false,
-            ValidatorErrors.NotEmpty.IsEmpty,
+            notEmptyValidator.err.IsEmpty,
         ]);
         expect(form.$q("propA.2.C")).toEqual([
             false,
-            ValidatorErrors.IsValid.SelectorNotValid,
+            isValidValidator.err.SelectorNotValid,
             {
                 selectors: ["propA.2.A"],
             },

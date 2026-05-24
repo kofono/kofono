@@ -1,7 +1,6 @@
 import { optional } from "../../common/helpers";
 import { PropertyType } from "../../property/types";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -25,6 +24,9 @@ export const includesValidator = {
         type: ValidationType,
         opts: IncludesValidatorOpts,
     ) => new IncludesValidator(selector, type, opts),
+    err: {
+        NotIncludes: "_INCLUDES_NOT_INCLUDES",
+    },
     support: [
         PropertyType.String,
         PropertyType.ListBoolean,
@@ -67,6 +69,6 @@ export class IncludesValidator extends AbstractValidator implements Validator {
     validate(ctx: ValidationContext): ValidatorResponse {
         return safeIncludes(ctx.value, this.value)
             ? this.success()
-            : this.error(ValidatorErrors.Includes.NotIncludes);
+            : this.error(includesValidator.err.NotIncludes);
     }
 }

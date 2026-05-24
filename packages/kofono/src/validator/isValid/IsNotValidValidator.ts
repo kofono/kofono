@@ -1,5 +1,4 @@
 import { optional } from "../../common/helpers";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -26,6 +25,10 @@ export const isNotValidValidator = {
         type: ValidationType,
         opts: IsNotValidValidatorOpts,
     ) => new IsNotValidValidator(selector, type, opts),
+    err: {
+        SelectorNotFound: "_IS_NOT_VALID_SELECTOR_NOT_FOUND",
+        IsValid: "_IS_NOT_VALID_IS_VALID",
+    },
 };
 
 export function isNotValid(
@@ -44,7 +47,7 @@ export class IsNotValidValidator extends IsValidValidator {
     validate(ctx: ValidationContext): ValidatorResponse {
         for (const selector of this.selectors) {
             if (!ctx.form.hasProp(selector)) {
-                return this.error(ValidatorErrors.IsNotValid.SelectorNotFound, {
+                return this.error(isNotValidValidator.err.SelectorNotFound, {
                     selectors: this.selectors,
                 });
             }
@@ -53,7 +56,7 @@ export class IsNotValidValidator extends IsValidValidator {
                 ctx.form.prop(selector).isValid() &&
                 ctx.form.prop(selector).isQualified()
             ) {
-                return this.error(ValidatorErrors.IsNotValid.SelectorValid, {
+                return this.error(isNotValidValidator.err.IsValid, {
                     selectors: this.selectors,
                 });
             }

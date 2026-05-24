@@ -1,6 +1,5 @@
 import { isEmptyString, optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import { isInEnum } from "../isInEnum/isInEnum";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
@@ -23,6 +22,9 @@ export const requiredValidator = {
         type: ValidationType,
         opts: RequiredValidatorOpts,
     ) => new RequiredValidator(selector, type, opts),
+    err: {
+        IsRequired: "_REQUIRED_IS_REQUIRED",
+    },
 };
 
 export function required(expect?: string): SchemaRequiredValidator {
@@ -58,6 +60,6 @@ export class RequiredValidator extends AbstractValidator implements Validator {
     }
 
     private get _error() {
-        return this.error(ValidatorErrors.Required.IsRequired);
+        return this.error(requiredValidator.err.IsRequired);
     }
 }

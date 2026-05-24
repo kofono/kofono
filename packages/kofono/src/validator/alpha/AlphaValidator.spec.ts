@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext } from "../types";
-import { AlphaValidator, type AlphaValidatorOpts } from "./AlphaValidator";
+import {
+    AlphaValidator,
+    type AlphaValidatorOpts,
+    alphaValidator,
+} from "./AlphaValidator";
 
 describe("alphaValidator", () => {
     const ctx: ValidationContext = {
@@ -40,6 +43,7 @@ describe("alphaValidator", () => {
             alpha: {},
             value: "abc def",
             expected: false,
+            error: alphaValidator.err.InvalidChar,
         },
         {
             name: "should validate string with spaces when space option is true",
@@ -54,7 +58,7 @@ describe("alphaValidator", () => {
             alpha: {},
             value: 123,
             expected: false,
-            error: ValidatorErrors.Alpha.InvalidType,
+            error: alphaValidator.err.InvalidType,
         },
     ];
 

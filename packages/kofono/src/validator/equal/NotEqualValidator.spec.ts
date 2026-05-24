@@ -1,10 +1,12 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext } from "../types";
-import { NotEqualValidator } from "./NotEqualValidator";
-import type { NotEqualValidatorOpts } from "./types";
+import {
+    NotEqualValidator,
+    type NotEqualValidatorOpts,
+    notEqualValidator,
+} from "./NotEqualValidator";
 
 describe("notEqualValidator", () => {
     let form: Form;
@@ -130,6 +132,6 @@ describe("notEqualValidator", () => {
         });
         const [isValid, error] = validator.validate(ctx);
         expect(isValid).toBe(false);
-        expect(error).toBe(ValidatorErrors.NotEqual.IsEqual);
+        expect(error).toBe(notEqualValidator.err.IsEqual);
     });
 });

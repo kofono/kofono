@@ -1,9 +1,8 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { K } from "../../builder/K";
 import type { Form } from "../../form/Form";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext } from "../types";
-import { DatetimeValidator } from "./DatetimeValidator";
+import { DatetimeValidator, datetimeValidator } from "./DatetimeValidator";
 
 describe("datetimeValidator test", () => {
     let form: Form;
@@ -257,9 +256,7 @@ describe("datetimeValidator test", () => {
                 const [isValid, errorCode] = validator.validate(ctx);
                 expect(isValid).toEqual(test.expected);
                 if (!isValid && test.value && test.value !== "invalid") {
-                    expect(errorCode).toEqual(
-                        ValidatorErrors.Datetime.BeforeMin,
-                    );
+                    expect(errorCode).toEqual(datetimeValidator.err.BeforeMin);
                 }
             });
         }
@@ -332,9 +329,7 @@ describe("datetimeValidator test", () => {
                     test.value !== "invalid" &&
                     test.value !== ""
                 ) {
-                    expect(errorCode).toEqual(
-                        ValidatorErrors.Datetime.AfterMax,
-                    );
+                    expect(errorCode).toEqual(datetimeValidator.err.AfterMax);
                 }
             });
         }

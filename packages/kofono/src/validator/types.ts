@@ -36,9 +36,9 @@ export type ValidatorFn<TOptions = GenericValidatorOptions> = (
 export type GenericValidatorOptions = SchemaPropertyBaseValidator &
     Record<string, unknown>;
 
-export enum ValidatorError {
-    SelectorDisqualified = "SELECTOR_DISQUALIFIED",
-    ParentDisqualified = "PARENT_DISQUALIFIED",
+export enum QualificationError {
+    SelectorDisqualified = "_SELECTOR_DISQUALIFIED",
+    ParentDisqualified = "_PARENT_DISQUALIFIED",
 }
 
 export type ValidatorFactoryHandler<TOptions = GenericValidatorOptions> = (
@@ -46,3 +46,9 @@ export type ValidatorFactoryHandler<TOptions = GenericValidatorOptions> = (
     type: ValidationType,
     opts: TOptions,
 ) => Validator;
+
+export type ValidatorDeclaration<TOptions = GenericValidatorOptions> = {
+    name: string;
+    factory: ValidatorFactoryHandler<TOptions>;
+    err?: Record<string, string>;
+};

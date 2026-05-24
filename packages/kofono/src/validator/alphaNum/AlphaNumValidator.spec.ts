@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext } from "../types";
 import {
     AlphaNumValidator,
     type AlphaNumValidatorOpts,
+    alphaNumValidator,
 } from "./AlphaNumValidator";
 
 describe("alphaNumValidator", () => {
@@ -49,6 +49,7 @@ describe("alphaNumValidator", () => {
             alphaNum: {},
             value: "abc 123",
             expected: false,
+            error: alphaNumValidator.err.InvalidChar,
         },
         {
             name: "should validate string with spaces when space option is true",
@@ -63,7 +64,7 @@ describe("alphaNumValidator", () => {
             alphaNum: {},
             value: 123,
             expected: false,
-            error: ValidatorErrors.AlphaNum.InvalidType,
+            error: alphaNumValidator.err.InvalidType,
         },
     ];
 

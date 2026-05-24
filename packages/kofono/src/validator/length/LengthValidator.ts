@@ -1,7 +1,6 @@
 import { optional } from "../../common/helpers";
 import { PropertyType } from "../../property/types";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -25,6 +24,9 @@ export const lengthValidator = {
         type: ValidationType,
         opts: LengthValidatorOpts,
     ) => new LengthValidator(selector, type, opts),
+    err: {
+        NotMatch: "_LENGTH_NOT_MATCH",
+    },
     support: [
         PropertyType.String,
         PropertyType.ListBoolean,
@@ -64,6 +66,6 @@ export class LengthValidator extends AbstractValidator implements Validator {
     validate(ctx: ValidationContext): ValidatorResponse {
         return safeLength(ctx.value, this.value)
             ? this.success()
-            : this.error(ValidatorErrors.Length.NotMatch);
+            : this.error(lengthValidator.err.NotMatch);
     }
 }

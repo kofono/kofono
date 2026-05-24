@@ -1,7 +1,6 @@
 import { isAfter, isEqual, parse } from "../../common/datetime";
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -43,6 +42,13 @@ export const datetimeValidator = {
         type: ValidationType,
         opts: DatetimeValidatorOpts,
     ) => new DatetimeValidator(selector, type, opts),
+    err: {
+        InvalidType: "_DATETIME_INVALID_TYPE",
+        InvalidFormat: "_DATETIME_INVALID_FORMAT",
+        InvalidValue: "_DATETIME_INVALID_VALUE",
+        BeforeMin: "_DATETIME_BEFORE_MIN",
+        AfterMax: "_DATETIME_AFTER_MAX",
+    },
 };
 
 /**
@@ -111,11 +117,11 @@ export class DatetimeValidator
 
     validate(ctx: ValidationContext): ValidatorResponse {
         if (typeof ctx.value !== "string") {
-            return this.error(ValidatorErrors.Datetime.InvalidType);
+            return this.error(datetimeValidator.err.InvalidType);
         }
 
         if (ctx.value.trim() === "") {
-            return this.error(ValidatorErrors.Datetime.InvalidFormat, {
+            return this.error(datetimeValidator.err.InvalidFormat, {
                 format: this.format,
             });
         }
@@ -134,7 +140,7 @@ export class DatetimeValidator
                         isEqual(parsedDate, this.min)
                     )
                 ) {
-                    return this.error(ValidatorErrors.Datetime.BeforeMin, {
+                    return this.error(datetimeValidator.err.BeforeMin, {
                         min: this.min,
                     });
                 }
@@ -147,7 +153,7 @@ export class DatetimeValidator
                         isEqual(parsedDate, this.max)
                     )
                 ) {
-                    return this.error(ValidatorErrors.Datetime.AfterMax, {
+                    return this.error(datetimeValidator.err.AfterMax, {
                         max: this.max,
                     });
                 }
@@ -155,9 +161,9 @@ export class DatetimeValidator
                 return this.success();
             }
 
-            return this.error(ValidatorErrors.Datetime.InvalidValue);
+            return this.error(datetimeValidator.err.InvalidValue);
         } catch (_e) {
-            return this.error(ValidatorErrors.Datetime.InvalidFormat, {
+            return this.error(datetimeValidator.err.InvalidFormat, {
                 format: this.format,
             });
         }
