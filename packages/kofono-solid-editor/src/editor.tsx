@@ -16,7 +16,7 @@ import "ace-builds/src-noconflict/theme-github_dark";
 import "ace-builds/src-noconflict/theme-merbivore";
 
 interface AceEditorProps {
-    class?: string;
+    class?: string; //todo: deprecated
     value?: string;
     onChange?: (value: string) => void;
     mode?: string;
@@ -128,15 +128,28 @@ export function Editor(props: AceEditorProps) {
         editor.resize();
     });
 
+    const style = (name: string, defaultValue: string) => ({
+        [name]: props.style?.[name] ?? defaultValue,
+    });
+    style("width", "100%");
+
     return (
         <div
             class={props.class ?? ""}
             ref={editorRef!}
             style={{
-                width: props.style?.width ?? "100%",
-                height: props.style?.height ?? "auto",
-                padding: "8px",
-                background: "transparent",
+                ...style("width", "100%"),
+                ...style("height", "auto"),
+                ...style("background", "rgba(0, 0, 0, 0.1)"),
+                ...style("border-radius", "6px"),
+                ...style("padding", "0"),
+                ...style("box-sizing", "border-box"),
+                ...style("overflow", "auto"),
+                ...style("font-family", "Roboto Mono, monospace"),
+                ...style("font-size", "1rem"),
+                ...style("line-height", "1.1rem"),
+                ...style("tab-size", "4"),
+                ...style("border", "transparent"),
             }}
         />
     );
