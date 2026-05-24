@@ -85,15 +85,26 @@ describe("requiredValidator", () => {
         });
     }
 
-    it("should respect enum values is set", async () => {
-        const form = await K.form({
-            prop: K.string("required").enum(["a", "b", "c"]),
-        });
+    describe("property with enum values", () => {
+        it("should respect enum values", async () => {
+            const form = await K.form({
+                propA: K.string("required").enum(["a", "b", "c"]),
+                propB: K.listString("required").enum(["a", "b", "c"]),
+            });
 
-        expect(form.isValid("prop")).toBe(false);
-        await form.update("prop", "z");
-        expect(form.isValid("prop")).toBe(false);
-        await form.update("prop", "a");
-        expect(form.isValid("prop")).toBe(true);
+            expect(form.isValid("propA")).toBe(false);
+            await form.update("propA", "z");
+            expect(form.isValid("propA")).toBe(false);
+            await form.update("propA", "a");
+            expect(form.isValid("propA")).toBe(true);
+
+            expect(form.isValid("propB")).toBe(false);
+            await form.update("propB", ["c"]);
+            expect(form.isValid("propB")).toBe(true);
+            await form.update("propB", ["g"]);
+            expect(form.isValid("propB")).toBe(false);
+            await form.update("propB", "a"); // here the required work, but value itself do no respect property type
+            expect(form.isValid("propB")).toBe(true);
+        });
     });
 });

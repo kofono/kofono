@@ -10,6 +10,10 @@ export function isInEnum(ctx: ValidationContext): boolean {
         return false;
     }
 
+    if (Array.isArray(ctx.value)) {
+        return ctx.value.every(v => propEnum.some(x => x.value === v));
+    }
+
     const result = propEnum.filter(x => x.value === ctx.value);
     return result.length > 0;
 }

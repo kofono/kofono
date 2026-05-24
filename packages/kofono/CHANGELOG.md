@@ -14,6 +14,7 @@
 - cleanup FormProperty unused getters/setters
 - rename type SchemaPropertiesDeclarations to SchemaDeclaration
 - replace non-generic type FormProperties by BaseProperties generic type
+- fix RequiredValidator to work with enum values and list properties
 
 # 0.8.0 - 2026-04-28
 

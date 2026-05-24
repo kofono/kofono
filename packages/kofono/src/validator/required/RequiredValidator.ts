@@ -41,6 +41,7 @@ export class RequiredValidator extends AbstractValidator implements Validator {
 
         const valueType = typeof ctx.value;
 
+        // todo early return of success by type ?
         if (valueType === "string" && isEmptyString(ctx.value)) {
             return this._error;
         } else if (valueType === "boolean" && ctx.value === false) {
@@ -49,7 +50,7 @@ export class RequiredValidator extends AbstractValidator implements Validator {
             return this._error;
         }
 
-        if (ctx.form.rawProp(this.attachTo).has("enum") && !isInEnum(ctx)) {
+        if (ctx.form.prop(this.attachTo).has("enum") && !isInEnum(ctx)) {
             return this._error;
         }
 
