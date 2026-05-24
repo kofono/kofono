@@ -76,6 +76,21 @@
             "formatter": {
                 "lineWidth": 120
             }
+        },
+        {
+            "includes": [
+                "packages/kofono/tsdown.config.ts",
+                "packages/kofono/vitest.config.ts",
+                "packages/kofono-solid-form/tsdown.config.ts",
+                "packages/kofono-solid-editor/tsdown.config.ts"
+            ],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "noDefaultExport": "off"
+                    }
+                }
+            }
         }
     ]
 }
