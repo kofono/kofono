@@ -1,11 +1,11 @@
-import type { Properties } from "../types";
+import type { BaseProperties } from "../types";
 import { Events, type SelectorsEventsValidators } from "./types";
 
 /**
  * Transform all properties validators into SelectorsEventsValidators
  */
 export function parseSelectorsEventsValidators(
-    props: Properties,
+    props: BaseProperties,
     _parent: string = "", // todo remove it eventually
 ): SelectorsEventsValidators {
     const propertiesEvents: SelectorsEventsValidators = {};
@@ -16,9 +16,9 @@ export function parseSelectorsEventsValidators(
         };
 
         propertiesEvents[prop.selector][Events.SelectorValidation] =
-            prop.validationValidators;
+            prop.validators();
         propertiesEvents[prop.selector][Events.SelectorQualification] =
-            prop.qualificationValidators;
+            prop.qualifiers();
     }
     return propertiesEvents;
 }

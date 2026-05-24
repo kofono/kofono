@@ -6,6 +6,7 @@ import {
 } from "../../validator/types";
 import type { Form } from "../Form";
 import type { FormProperty } from "../FormProperty";
+import { Update } from "../types";
 import { SelectorEventResponse } from "./SelectorEventResponse";
 import { Events, type SelectorEventCtx, type SelectorEvents } from "./types";
 
@@ -170,7 +171,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
     }
 
     /**
-     * Revert to default value of a disqualified selector
+     * Revert to the default value of a disqualified selector
      */
     private async resetValueOfDisqualifiedSelector(
         prop: FormProperty,
@@ -180,7 +181,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
             await this.form.update(
                 prop.selector,
                 defaultValue,
-                "resetQualification",
+                Update.ResetQualification,
             );
         }
     }
