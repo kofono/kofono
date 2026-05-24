@@ -9,7 +9,7 @@
         "sourceMap": false,
         "declarationMap": false,
         "declaration": true,
-        "emitDeclarationOnly": true
+        "noEmit": true
     },
     "exclude": ["test.ts", "**/*.spec.ts", "**/*.test.ts"],
     "files": ["./src/index.ts"]

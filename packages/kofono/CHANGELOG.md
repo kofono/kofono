@@ -9,6 +9,11 @@
 - modify ts compilation to only output declaration files
 - modify RequiredValidator validates against enum values if defined
 - modify K.form() to also accept raw Schema
+- Form constructor convert Property to FormProperty instances
+- deprecate Form.rawProp()
+- cleanup FormProperty unused getters/setters
+- rename type SchemaPropertiesDeclarations to SchemaDeclaration
+- replace non-generic type FormProperties by BaseProperties generic type
 
 # 0.8.0 - 2026-04-28
 
