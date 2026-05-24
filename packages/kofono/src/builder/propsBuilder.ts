@@ -1,5 +1,5 @@
 import { isObjectLiteral } from "../common/helpers";
-import type { Properties } from "../form/types";
+import type { BaseProperties } from "../form/types";
 import { PropertyType } from "../property/types";
 import type { SchemaProperties, SchemaProperty } from "../schema/Schema";
 import { DataSelector } from "../selector/DataSelector";
@@ -11,7 +11,7 @@ export function buildProps(
     id: string,
     prop: SchemaProperty,
     parentUid: string,
-): Properties {
+): BaseProperties {
     const builder = new Builder();
     processSchemaProp(id, builder, prop, parentUid);
     return builder.buildProps();

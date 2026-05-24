@@ -16,13 +16,16 @@ export class Property<TSchemaType extends SchemaProperty>
     public readonly type: PropertyType;
     public readonly treeType: TreeType;
 
-    #validationValidators: PropertyValidator[];
-    #qualificationValidators: PropertyValidator[];
+    #validators: PropertyValidator[];
+    #qualifiers: PropertyValidator[];
     #defQuerier: GenericDataQuerier;
-    #selector: string = "";
+    #selector: string;
     #def: TSchemaType;
 
     constructor(selector: string, def: TSchemaType) {
+        mustBeValidSelectorName(selector);
+        this.#selector = selector;
+
         const [type, treeType] = determinePropertyTypes(def.type);
         if (type === PropertyType.Unknown) {
             throw new Error(`Unknown type: ${def.type}`);
@@ -30,36 +33,18 @@ export class Property<TSchemaType extends SchemaProperty>
         this.type = type;
         this.treeType = treeType;
 
-        this.#selector = selector;
         this.#def = def;
-        this.#defQuerier = new GenericDataQuerier(this.#def);
-
-        this.#validationValidators = parseValidators(
-            this.get(Token.Validations, []),
-        );
-        this.#qualificationValidators = parseValidators(
-            this.get(Token.Qualifications, []),
-        );
-    }
-
-    public set selector(selector: string) {
-        const [isValid, errorMessage] = validateSelector(selector);
-        if (!isValid) {
-            throw new Error(errorMessage);
-        }
-        this.#selector = selector;
+        this.#defQuerier = new GenericDataQuerier(def);
+        this.#validators = parseValidators(def[Token.Validations] ?? []);
+        this.#qualifiers = parseValidators(def[Token.Qualifications] ?? []);
     }
 
     public get selector(): string {
         return this.#selector;
     }
 
-    public get validationValidators(): PropertyValidator[] {
-        return this.#validationValidators;
-    }
-
-    public get qualificationValidators(): PropertyValidator[] {
-        return this.#qualificationValidators;
+    public def(): TSchemaType {
+        return this.#def as TSchemaType;
     }
 
     public get<T>(defKeyPath: string, defaultValue: unknown = null): T {
@@ -70,7 +55,23 @@ export class Property<TSchemaType extends SchemaProperty>
         return this.#defQuerier.has(defKeyPath);
     }
 
-    public def(): TSchemaType {
-        return this.#def as TSchemaType;
+    public qualifiers(): PropertyValidator[] {
+        return this.#qualifiers;
+    }
+
+    public renameSelector(selector: string) {
+        mustBeValidSelectorName(selector);
+        this.#selector = selector;
+    }
+
+    public validators(): PropertyValidator[] {
+        return this.#validators;
+    }
+}
+
+function mustBeValidSelectorName(selector: string) {
+    const [isValid, errorMessage] = validateSelector(selector);
+    if (!isValid) {
+        throw new Error(errorMessage);
     }
 }

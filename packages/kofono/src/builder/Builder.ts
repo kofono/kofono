@@ -1,7 +1,7 @@
 import { defaultConfig } from "../form/defaults";
 import { Form } from "../form/Form";
 import type { ExtensionDefinition } from "../form/FormExtensions";
-import type { FormConfig, Properties } from "../form/types";
+import type { BaseProperties, FormConfig } from "../form/types";
 import { PropertyType } from "../property/types";
 import type {
     SchemaArrayProperty,
@@ -42,8 +42,8 @@ export class Builder {
         return form;
     }
 
-    public buildProps(): Properties {
-        const props: Properties = {};
+    public buildProps(): BaseProperties {
+        const props: BaseProperties = {};
         for (const builder of Object.values(this._builders)) {
             const prop = builder.build();
             props[prop.selector] = prop;

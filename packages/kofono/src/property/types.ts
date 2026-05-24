@@ -27,9 +27,12 @@ export enum TreeType {
 export interface BaseProperty<T> {
     readonly type: PropertyType;
     readonly treeType: TreeType;
-    selector: string;
+    readonly selector: string;
 
     def(): T;
     get<T>(defKeyPath: string, defaultValue: unknown): T;
     has(defKeyPath: string): boolean;
+    renameSelector(selector: string): void;
+    validators(): PropertyValidator[];
+    qualifiers(): PropertyValidator[];
 }

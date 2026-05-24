@@ -1,6 +1,7 @@
 import { version as packageVersion } from "../../package.json";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { Property } from "../property/Property";
+import type { BaseProperty } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
 import { DataSelector } from "../selector/DataSelector";
 import type { ValidatorResponse } from "../validator/types";
@@ -18,21 +19,23 @@ import { FormSession } from "./FormSession";
 import { generateNewFormState } from "./FormState";
 import { FormStats } from "./FormStats";
 import {
+    type BaseProperties,
     type FormConfig,
     type FormEnv,
     type FormInitConfig,
+    type FormProperties,
     FormStatus,
     type PassHandler,
-    type Properties,
     type PropertyState,
     type State,
+    Update,
     type UpdateType,
 } from "./types";
 
 export class Form {
     static readonly version: string = packageVersion;
 
-    #props: Properties = {};
+    #props: FormProperties = {};
     #state: State;
     #status: FormStatus = FormStatus.Init;
     #updateId: number = 0;
@@ -51,7 +54,7 @@ export class Form {
     readonly #validatorsFactory: ValidatorsFactory;
     readonly #vars: Record<string, unknown>;
 
-    constructor(config: FormConfig, properties: Properties = {}) {
+    constructor(config: FormConfig, properties: BaseProperties = {}) {
         // order is important here for this block
         this.#state = generateNewFormState(); // side effect: new state
         Object.values(properties).map(x => this._addProp(x)); // side effect: add form props
@@ -108,7 +111,7 @@ export class Form {
         return this.#id;
     }
 
-    public get props(): Properties {
+    public get props(): FormProperties {
         return this.#props;
     }
 
@@ -155,7 +158,7 @@ export class Form {
         return this.#state.validations[selector];
     }
 
-    public async addProp(prop: Property<SchemaProperty>): Promise<void> {
+    public async addProp(prop: BaseProperty<SchemaProperty>): Promise<void> {
         this._addProp(prop);
         await this.#events.emit(Events.PropertyAdded, {
             selector: prop.selector,
@@ -165,8 +168,8 @@ export class Form {
     public childrenProps(
         parentSelector: string,
         includeParent: boolean = false,
-    ): Properties {
-        const props: Properties = {};
+    ): BaseProperties {
+        const props: BaseProperties = {};
         if (includeParent) {
             props[parentSelector] = this.#props[parentSelector];
         }
@@ -270,14 +273,14 @@ export class Form {
     public prop<T extends SchemaProperty = SchemaProperty>(
         selector: string,
     ): FormProperty<T> {
-        return new FormProperty<T>(this.#props[selector], this);
+        return this.#props[selector] as FormProperty<T>;
     }
 
     public propsKeys(): string[] {
         return Object.keys(this.#props);
     }
 
-    public propsEntries(): [string, Property<SchemaProperty>][] {
+    public propsEntries(): [string, FormProperty<SchemaProperty>][] {
         return Object.entries(this.#props);
     }
 
@@ -294,10 +297,11 @@ export class Form {
         };
     }
 
+    // deprecated
     public rawProp<T extends SchemaProperty = SchemaProperty>(
         selector: string,
     ): Property<T> {
-        return this.#props[selector] as Property<T>;
+        return this.#props[selector].property as Property<T>;
     }
 
     /**
@@ -310,7 +314,7 @@ export class Form {
     public async update(
         selector: string,
         newValue: unknown,
-        updateType: UpdateType = "normal",
+        updateType: UpdateType = Update.Normal,
     ): Promise<void> {
         const [exists, oldValue] = this.#formDataSelector.tryGet(selector);
         if (!exists) {
@@ -324,7 +328,7 @@ export class Form {
             newValue,
         };
 
-        if (updateType === "normal") {
+        if (updateType === Update.Normal) {
             this.#session.update(selector);
         }
 
@@ -364,7 +368,7 @@ export class Form {
      */
     public async updates(
         values: Record<string, unknown>,
-        updateType: UpdateType = "normal",
+        updateType: UpdateType = Update.Normal,
     ): Promise<void> {
         for (const [sel, val] of Object.entries(values)) {
             await this.update(sel, val, updateType);
@@ -375,8 +379,8 @@ export class Form {
         return this.#dataSelector.getOrDefault(keyPath, undefined, this.#vars);
     }
 
-    private _addProp(prop: Property<SchemaProperty>) {
-        this.#props[prop.selector] = prop;
+    private _addProp(prop: BaseProperty<SchemaProperty>) {
+        this.#props[prop.selector] = new FormProperty(prop, this);
         this.state.validations[prop.selector] = [true, ""];
         this.state.qualifications[prop.selector] = [true, ""];
     }

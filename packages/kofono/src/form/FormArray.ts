@@ -138,9 +138,11 @@ export class FormArray {
                 this.form.events.offSelector(sel);
                 await this.form.deleteProp(sel);
 
-                prop.selector = sel.replace(
-                    oldSelectorIndex,
-                    joinSelectors(arraySelector, String(i)),
+                prop.renameSelector(
+                    sel.replace(
+                        oldSelectorIndex,
+                        joinSelectors(arraySelector, String(i)),
+                    ),
                 );
 
                 await this.form.addProp(prop);

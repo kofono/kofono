@@ -1,12 +1,13 @@
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { MetaExtension } from "../extension/types";
-import type { Property } from "../property/Property";
+import type { BaseProperty } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
 import type { ValidatorResponse } from "../validator/types";
 import type { ValidatorsFactory } from "../validator/ValidatorsFactory";
 import type { Form } from "./Form";
 import type { ExtensionDefinition } from "./FormExtensions";
 import type { FormInitContext } from "./FormInitContext";
+import type { FormProperty } from "./FormProperty";
 
 export enum FormStatus {
     Init = "init",
@@ -35,7 +36,8 @@ export type FormInitConfig = {
     extensions?: ExtensionDefinition[];
 };
 
-export type Properties = Record<string, Property<SchemaProperty>>;
+export type BaseProperties = Record<string, BaseProperty<SchemaProperty>>;
+export type FormProperties = Record<string, FormProperty>;
 
 export type Data = Record<string, any>;
 
@@ -75,4 +77,8 @@ export type PropertyState = {
 
 export type PassHandler = (form: Form) => ValidatorResponse;
 
-export type UpdateType = "normal" | "resetQualification";
+export type UpdateType = Update.Normal | Update.ResetQualification;
+export enum Update {
+    Normal = "normal",
+    ResetQualification = "resetQualification",
+}
