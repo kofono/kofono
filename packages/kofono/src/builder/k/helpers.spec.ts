@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import type { Schema } from "../../schema/Schema";
-import type { SchemaPropertiesDeclarations } from "../types";
+import type { SchemaDeclaration } from "../types";
 import {
     schemaToPropertiesDeclarations,
     separate$keysFromProps,
@@ -8,7 +8,7 @@ import {
 import { PropertyDeclaration } from "./PropertyDeclaration";
 
 test("separate$keysFromProps()", () => {
-    const props: SchemaPropertiesDeclarations = {
+    const props: SchemaDeclaration = {
         $id: "test",
         $vars: {
             name: "foo",

@@ -1,10 +1,10 @@
 import type { Schema } from "../../schema/Schema";
 import { Token } from "../../schema/Tokens";
-import type { SchemaPropertiesDeclarations } from "../types";
+import type { SchemaDeclaration } from "../types";
 import { PropertyDeclaration } from "./PropertyDeclaration";
 
 export function separate$keysFromProps(
-    props: SchemaPropertiesDeclarations,
+    props: SchemaDeclaration,
 ): [
     props: Record<string, PropertyDeclaration>,
     schemaOptions: Partial<Omit<Schema, "__">>,
@@ -23,8 +23,8 @@ export function separate$keysFromProps(
 
 export function schemaToPropertiesDeclarations(
     schema: Schema,
-): SchemaPropertiesDeclarations {
-    const properties: SchemaPropertiesDeclarations = {};
+): SchemaDeclaration {
+    const properties: SchemaDeclaration = {};
     for (const [key, prop] of Object.entries(schema.__)) {
         properties[key] = new PropertyDeclaration(prop);
     }

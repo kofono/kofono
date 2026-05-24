@@ -22,7 +22,7 @@ export type SchemaBuildResultFailed = {
     form: undefined;
 };
 
-export interface SchemaPropertiesDeclarations {
+export interface SchemaDeclaration {
     $id?: Schema[Token.SchemaId];
     $vars?: Schema[Token.SchemaVars];
     $extensions?: Schema[Token.SchemaExtensions];

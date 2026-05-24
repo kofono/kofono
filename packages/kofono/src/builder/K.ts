@@ -18,11 +18,11 @@ import {
     separate$keysFromProps,
 } from "./k/helpers";
 import { PropertyDeclaration } from "./k/PropertyDeclaration";
-import type { SchemaPropertiesDeclarations } from "./types";
+import type { SchemaDeclaration } from "./types";
 
 export class K {
     public static async form(
-        def: SchemaPropertiesDeclarations | Schema,
+        def: SchemaDeclaration | Schema,
         config: Partial<FormConfig> = defaultConfig,
     ): Promise<Form> {
         config = {
@@ -33,12 +33,12 @@ export class K {
         const schema: Schema =
             "__" in def && isObjectLiteral(def.__)
                 ? (def as Schema)
-                : K.schema(def as SchemaPropertiesDeclarations);
+                : K.schema(def as SchemaDeclaration);
 
         return await buildSchema(schema, config as FormConfig);
     }
 
-    public static schema(def: SchemaPropertiesDeclarations): Schema {
+    public static schema(def: SchemaDeclaration): Schema {
         const [props, opts] = separate$keysFromProps(def);
         const innerBody = K.object(props);
         return {
@@ -55,7 +55,7 @@ export class K {
 
     public static extendsSchema(
         schema: Schema,
-        def: SchemaPropertiesDeclarations,
+        def: SchemaDeclaration,
     ): Schema {
         const declarations = schemaToPropertiesDeclarations(schema);
         return K.schema({
