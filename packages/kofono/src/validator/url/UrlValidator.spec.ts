@@ -1,9 +1,8 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
-import { ValidatorErrors } from "../errors";
 import type { ValidationContext } from "../types";
-import { UrlValidator } from "./UrlValidator";
+import { UrlValidator, urlValidator } from "./UrlValidator";
 
 describe("urlValidator test", () => {
     let form: Form;
@@ -141,12 +140,12 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "https://example.com",
-                    errorCode: ValidatorErrors.Url.ProtocolUnallowed,
+                    errorCode: urlValidator.err.ProtocolUnallowed,
                 },
                 {
                     expected: false,
                     value: "ftp://example.com",
-                    errorCode: ValidatorErrors.Url.ProtocolUnallowed,
+                    errorCode: urlValidator.err.ProtocolUnallowed,
                 },
             ];
 
@@ -176,7 +175,7 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "http://example.com",
-                    errorCode: ValidatorErrors.Url.ProtocolUnallowed,
+                    errorCode: urlValidator.err.ProtocolUnallowed,
                 },
             ];
 
@@ -210,7 +209,7 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "ftp://example.com",
-                    errorCode: ValidatorErrors.Url.ProtocolUnallowed,
+                    errorCode: urlValidator.err.ProtocolUnallowed,
                 },
             ];
 
@@ -254,7 +253,7 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "https://test.com",
-                    errorCode: ValidatorErrors.Url.HostnameUnallowed,
+                    errorCode: urlValidator.err.HostnameUnallowed,
                 },
             ];
 
@@ -284,7 +283,7 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "https://example.com",
-                    errorCode: ValidatorErrors.Url.HostnameUnallowed,
+                    errorCode: urlValidator.err.HostnameUnallowed,
                 },
             ];
 
@@ -322,7 +321,7 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "https://unknown.com",
-                    errorCode: ValidatorErrors.Url.HostnameUnallowed,
+                    errorCode: urlValidator.err.HostnameUnallowed,
                 },
             ];
 
@@ -361,12 +360,12 @@ describe("urlValidator test", () => {
                 {
                     expected: false,
                     value: "http://example.com",
-                    errorCode: ValidatorErrors.Url.ProtocolUnallowed,
+                    errorCode: urlValidator.err.ProtocolUnallowed,
                 },
                 {
                     expected: false,
                     value: "https://test.com",
-                    errorCode: ValidatorErrors.Url.HostnameUnallowed,
+                    errorCode: urlValidator.err.HostnameUnallowed,
                 },
             ];
 

@@ -1,6 +1,5 @@
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorErrors } from "../errors";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
     ValidationContext,
@@ -20,6 +19,12 @@ export const urlValidator = {
     name: "url" as const,
     factory: (selector: string, type: ValidationType, opts: UrlValidatorOpts) =>
         new UrlValidator(selector, type, opts),
+    err: {
+        InvalidType: "_URL_INVALID_TYPE",
+        InvalidFormat: "_URL_INVALID_FORMAT",
+        ProtocolUnallowed: "_URL_PROTOCOL_UNALLOWED",
+        HostnameUnallowed: "_URL_HOSTNAME_UNALLOWED",
+    },
 };
 
 export function url(
@@ -57,7 +62,7 @@ export class UrlValidator extends AbstractValidator implements Validator {
 
     validate(ctx: ValidationContext): ValidatorResponse {
         if (typeof ctx.value !== "string") {
-            return this.error(ValidatorErrors.Url.InvalidType);
+            return this.error(urlValidator.err.InvalidType);
         }
 
         try {
@@ -69,7 +74,7 @@ export class UrlValidator extends AbstractValidator implements Validator {
                 // Extract protocol (remove trailing colon)
                 const protocol = url.protocol.replace(/:$/, "");
                 if (!this.protocols.includes(protocol)) {
-                    return this.error(ValidatorErrors.Url.ProtocolUnallowed, {
+                    return this.error(urlValidator.err.ProtocolUnallowed, {
                         protocols: this.protocols,
                     });
                 }
@@ -78,7 +83,7 @@ export class UrlValidator extends AbstractValidator implements Validator {
             // If hostnames are specified, check if the URL's hostname is in the list
             if (this.hostnames && this.hostnames.length > 0) {
                 if (!this.hostnames.includes(url.hostname)) {
-                    return this.error(ValidatorErrors.Url.HostnameUnallowed, {
+                    return this.error(urlValidator.err.HostnameUnallowed, {
                         hostnames: this.hostnames,
                     });
                 }
@@ -86,7 +91,7 @@ export class UrlValidator extends AbstractValidator implements Validator {
 
             return this.success();
         } catch (e) {
-            return this.error(ValidatorErrors.Url.InvalidFormat, {
+            return this.error(urlValidator.err.InvalidFormat, {
                 error: e instanceof Error ? e.message : "Unknown error",
             });
         }
