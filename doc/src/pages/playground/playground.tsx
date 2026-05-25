@@ -9,16 +9,25 @@ import { createSignal, Show } from "solid-js";
 import { H1, H4, Hr } from "@/components/html";
 import { FullScreenLayout } from "@/layouts/fullscreen-layout";
 import { cn } from "@/utils";
-import { evalWithContext } from "./schema";
+import { evalWithContext } from "./schema"; /*
 
-export const Playground: DocComponentPage = {
-    title: "Kofono documentation",
-    menuTitle: "Playground",
-    path: "/playground",
-    description: "Kofono playground",
-    keywords: ["kofono", "form", "schema", "typescript", "playground"],
-    component: RouteComponent,
-};
+K.schema({
+    name: K.string(
+            min(1, "Your name must be at least 1 character"),
+            max(250, "Your name should not exceed 250 characters!"),
+        )
+        .component({
+            title: "Enter your ndfsdfsdfsdfame",
+            description: "Please enter your name",
+        }),
+
+    acceptTerms: K.boolean(required()).component({
+        type: "checkbox2",
+        title:"DO you surrender your soul?"
+    })
+})
+ */
+
 /*
 
 K.schema({
@@ -56,10 +65,7 @@ const startingSchemaString = `K.schema({
 startingSchemaString;
 
 const schema = K.schema({
-    name: K.string(
-        min(1, "name.min.error"),
-        max(250, "name.max.error"),
-    ).component({
+    name: K.string(min(1, "name.min.error"), max(250, "name.max.error")).component({
         type: ComponentType.Input,
         title: "name.title",
         description: "name.description",
@@ -76,7 +82,7 @@ const schema = K.schema({
     },
 });
 
-function RouteComponent() {
+export default function () {
     // const [value, setValue] = createSignal<string>(startingSchemaString);
     const [previewSchema, setPreviewSchema] = createSignal<Schema>(schema);
     const [previewSchemaVersion, setPreviewSchemaVersion] = createSignal(1);
@@ -114,8 +120,7 @@ function RouteComponent() {
                             name="my_tabs_1"
                             class={cn(
                                 "tab tab-active text-base-100 checked:[--tab-bg:var(--color-primary)]",
-                                !doesParse() &&
-                                    "bg-(--color-error) checked:[--tab-bg:var(--color-error)]",
+                                !doesParse() && "bg-(--color-error) checked:[--tab-bg:var(--color-error)]",
                             )}
                             aria-label="Schema"
                             checked={true}
@@ -123,7 +128,7 @@ function RouteComponent() {
                         <div
                             class={cn(
                                 "tab-content border-base-300 bg-(--color-primary) p-1",
-                                !doesParse() && "bg-(--color-error)",
+                                !doesParse() && "bg-(--color-error)/10",
                             )}>
                             <Editor
                                 onChange={onEditorChange}
@@ -146,25 +151,11 @@ function RouteComponent() {
                             />
                         </div>
 
-                        <input
-                            type="radio"
-                            name="my_tabs_2"
-                            class="tab"
-                            aria-label="Tab 2"
-                        />
-                        <div class="tab-content border-base-300 bg-base-100 p-10">
-                            Tab content 2
-                        </div>
+                        <input type="radio" name="my_tabs_2" class="tab" aria-label="Tab 2" />
+                        <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 2</div>
 
-                        <input
-                            type="radio"
-                            name="my_tabs_3"
-                            class="tab"
-                            aria-label="Tab 3"
-                        />
-                        <div class="tab-content border-base-300 bg-base-100 p-10">
-                            Tab content 3
-                        </div>
+                        <input type="radio" name="my_tabs_3" class="tab" aria-label="Tab 3" />
+                        <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 3</div>
                     </div>
                     <button class="hidden" type="button" onClick={reloadBtn}>
                         reload
@@ -176,9 +167,7 @@ function RouteComponent() {
                     <Hr class="-mx-2 my-3" />
                     <Show when={previewSchemaVersion()} keyed>
                         {_version => (
-                            <FormSchemaProvider
-                                schema={previewSchema()}
-                                locale={"en"}>
+                            <FormSchemaProvider schema={previewSchema()} locale={"en"}>
                                 <GridForm />
                             </FormSchemaProvider>
                         )}

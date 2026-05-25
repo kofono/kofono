@@ -3,15 +3,6 @@ import { CodeTabs } from "@/components/code-tabs";
 import { Code, H1, H2, Spacer, Table } from "@/components/html";
 import { DocLayout } from "@/layouts/doc-layout";
 
-export const SchemaProperties: DocComponentPage = {
-    path: "/schema/properties",
-    title: "Schema Properties",
-    menuTitle: "Properties",
-    description: "",
-    keywords: [],
-    component: RouteComponent,
-};
-
 const exampleObjectJson: string = `const schema = {
     __: {
         propA: { 
@@ -45,7 +36,7 @@ const exampleStringNumberBoolJson: string = `const schema = {
     }
 }`;
 
-function RouteComponent() {
+export default function () {
     return (
         <DocLayout>
             <H1>Properties</H1>

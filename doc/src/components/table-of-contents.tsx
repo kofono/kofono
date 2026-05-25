@@ -1,19 +1,17 @@
 import { A, useLocation } from "@solidjs/router";
 import { createMemo, For } from "solid-js";
 import { H2, H4 } from "@/components/html";
-import type {
-    TableOfContents as TableOfContentsType,
-    TableOfContentsItem,
-} from "@/types";
+import { isDocComponent } from "@/table-of-contents";
+import type { TableOfContentsItem } from "@/types";
 import { cn } from "@/utils";
 
 export type TableOfContentsProps = {
-    table: TableOfContentsType;
+    table: TableOfContentsItem[];
 };
 
 export function TableOfContents(props: TableOfContentsProps) {
     return (
-        <ul class="menu w-full grow pt-0 mt-0 px-4">
+        <ul class="menu w-full grow pt-0 mt-0 px-4 ">
             <For each={props.table} fallback={<li>Loading...</li>}>
                 {(item: TableOfContentsItem) => {
                     if (isDocComponent(item)) {
@@ -21,7 +19,7 @@ export function TableOfContents(props: TableOfContentsProps) {
                     }
                     return (
                         <>
-                            <H2>{item.title}</H2>
+                            <H2 class="is-drawer-close:hidden">{item.title}</H2>
                             <NodeContent children={item.children} root={true} />
                         </>
                     );
@@ -31,21 +29,14 @@ export function TableOfContents(props: TableOfContentsProps) {
     );
 }
 
-function isDocComponent(item: TableOfContentsItem): item is DocComponentPage {
-    return (item as DocComponentPage).component !== undefined;
-}
-
 type NodeContentProps = {
-    children: TableOfContentsType;
+    children: TableOfContentsItem[];
     root?: boolean;
 };
+
 function NodeContent(props: NodeContentProps) {
     return (
-        <div
-            class={cn(
-                "pb-2 mb-2",
-                props.root === true && "border-b border-base-100",
-            )}>
+        <div class={cn("pb-2 mb-2 is-drawer-close:hidden", props.root === true && "border-b border-base-100")}>
             <For each={props.children} fallback={<li>Loading2...</li>}>
                 {(item: TableOfContentsItem) => {
                     if (isDocComponent(item)) {
@@ -53,12 +44,9 @@ function NodeContent(props: NodeContentProps) {
                     }
                     return (
                         <>
-                            <H4 class="pl-0 mt-2">{item.title}</H4>
-                            <div class="pl-0">
-                                <NodeContent
-                                    children={item.children}
-                                    root={false}
-                                />
+                            <H4 class="mt-2">{item.title}</H4>
+                            <div class="">
+                                <NodeContent children={item.children} root={false} />
                             </div>
                         </>
                     );
@@ -68,7 +56,7 @@ function NodeContent(props: NodeContentProps) {
     );
 }
 
-function LeafContent(props: { item: DocComponentPage }) {
+function LeafContent(props: { item: DocComponentPageMeta }) {
     const location = useLocation();
     const isActive = createMemo(() => location.pathname === props.item.path);
     return (
@@ -76,15 +64,13 @@ function LeafContent(props: { item: DocComponentPage }) {
             <A
                 href={props.item.path}
                 class={cn(
-                    "text-accent-content",
+                    "text-base-content",
                     "is-drawer-close:tooltip is-drawer-close:tooltip-right",
                     "hover:bg-transparent hover:text-primary",
-                    isActive() && "text-primary",
+                    isActive() && "text-primary text-shadow-black text-shadow-lg",
                 )}
                 data-tip={props.item.title}>
-                <span class="is-drawer-close:hidden">
-                    {props.item.menuTitle ?? props.item.title}
-                </span>
+                <span class="is-drawer-close:hidden">{props.item.menuTitle ?? props.item.title}</span>
             </A>
         </li>
     );

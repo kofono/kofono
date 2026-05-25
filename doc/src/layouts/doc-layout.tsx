@@ -1,41 +1,51 @@
 import type { JSX } from "solid-js";
+import { FooterNavigation } from "@/components/footer-navigation";
 import { Header } from "@/components/header";
+import { Spacer } from "@/components/html";
 import { TableOfContents } from "@/components/table-of-contents";
 import { tableOfContents } from "@/table-of-contents";
 
-export function DocLayout(props: { children: JSX.Element }) {
+interface DocLayoutProps {
+    children: JSX.Element;
+    meta?: DocComponentPageMeta;
+}
+
+export function DocLayout(props: DocLayoutProps) {
     // const navigate = useNavigate();
+
+    console.log(props.meta);
 
     return (
         <div class="m-auto max-w-screen-2xl">
             <Header />
             <div class="drawer drawer-open">
-                <input
-                    id="my-drawer-4"
-                    type="checkbox"
-                    class="drawer-toggle"
-                    checked={true}
-                />
+                <input id="my-drawer-4" type="checkbox" class="drawer-toggle" checked={true} />
                 <div class="drawer-content">
                     <div class="p-8 mb-40">
-                        <div class="flex flex-col gap-5">{props.children}</div>
+                        <div class="flex flex-col gap-5">
+                            {props.children}
+                            <Spacer />
+                            <div class="flex justify-between">
+                                <FooterNavigation
+                                    next={props.meta?.next?.title}
+                                    nextUrl={props.meta?.next?.path}
+                                    previous={props.meta?.previous?.title}
+                                    previousUrl={props.meta?.previous?.path}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="drawer-side is-drawer-close:overflow-visible p-0">
-                    <label
-                        for="my-drawer-4"
-                        aria-label="close sidebar"
-                        class="drawer-overlay"></label>
+                    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
                     <div class="is-drawer-close:w-14 is-drawer-open:w-64 bg-base-200 flex flex-col items-start min-h-full pt-8">
                         {/* Sidebar content here */}
                         <TableOfContents table={tableOfContents} />
                         {/*<ul class="menu w-full grow mt-0 pt-0"></ul>*/}
 
                         {/* button to open/close drawer */}
-                        <div
-                            class="m-2 is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                            data-tip="Open">
+                        <div class="m-2 is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Open">
                             <label
                                 for="my-drawer-4"
                                 class="btn btn-ghost btn-circle drawer-button is-drawer-open:rotate-y-180">

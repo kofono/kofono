@@ -25,16 +25,31 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: 1.1rem;
     font-weight: 400;
-    /*@apply text-base-content/70;*/
 }
 
-code {
-    font-family:
-        "Roboto Mono", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+code,
+pre {
+    font-family: "Roboto Mono", source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
     font-weight: 400;
+    width: auto !important;
 }
 
-.code {
-    @apply bg-primary text-primary-content;
+.readonly .ace_cursor {
+    opacity: 0 !important;
+    display: none !important;
+}
+
+/*!* Or hide the whole cursor layer *!*/
+.readonly .ace_cursor-layer {
+    display: none !important;
+}
+
+.rounded-box-border {
+    @apply rounded-xl;
+    /*@apply border-b-4 border-b-gray-800;*/
+    /*!*@apply border-r-4 border-r-gray-700;*!*/
+    /*@apply border-r-4 border-r-base-300;*/
+    /*@apply border-l border-l-gray-800;*/
+    /*@apply border-t border-t-gray-800;*/
+    @apply drop-shadow-black drop-shadow-xs inset-shadow-xs inset-shadow-base-300;
 }

@@ -5,7 +5,6 @@ export default function () {
     return (
         <DocLayout>
             <H1>Title</H1>
-            <p>content</p>
             <Spacer />
         </DocLayout>
     );

@@ -1,8 +1,8 @@
 import type { JSX } from "solid-js";
 
-export type Node = {
+export type DocNode = {
     title: string;
-    children: TableOfContents;
+    children: TableOfContentsItem[];
     meta?: Meta;
     icon?: JSX.Element;
 };
@@ -12,6 +12,4 @@ export type Meta = {
     pageTitle?: string;
 };
 
-export type TableOfContentsItem = Node | DocComponentPage;
-
-export type TableOfContents = TableOfContentsItem[];
+export type TableOfContentsItem = DocNode | DocComponentPageMeta;

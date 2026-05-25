@@ -10,7 +10,7 @@ type ElementWithProps = ElementWithClass & {
 };
 
 export function H1(props: ElementWithProps) {
-    return <h1 class={cn("text-2xl mb-2", props.class)}>{props.children}</h1>;
+    return <h1 class={cn("text-4xl mb-2", props.class)}>{props.children}</h1>;
 }
 
 export function H2(props: ElementWithProps) {
@@ -26,19 +26,11 @@ export function H4(props: ElementWithProps) {
 }
 
 export function StrongSecondary(props: ElementWithProps) {
-    return (
-        <strong class={cn("text-secondary", props.class)}>
-            {props.children}
-        </strong>
-    );
+    return <strong class={cn("text-secondary", props.class)}>{props.children}</strong>;
 }
 
 export function StrongAccent(props: ElementWithProps) {
-    return (
-        <strong class={cn("text-primary", props.class)}>
-            {props.children}
-        </strong>
-    );
+    return <strong class={cn("text-primary", props.class)}>{props.children}</strong>;
 }
 
 export function Spacer() {
@@ -49,12 +41,17 @@ export function Code(props: ElementWithProps) {
     return (
         <code
             class={cn(
-                "code px-1 mx-1 text-[0.95rem] text-bold tracking-tight rounded-sm",
+                "px-1 mx-1 text-[0.95rem] text-bold tracking-tight",
+                "rounded-sm bg-base-content/20 text-base text-shadow-accent text-shadow-2xs",
                 props.class,
             )}>
             {props.children}
         </code>
     );
+}
+
+export function CodeAccent(props: ElementWithProps) {
+    return <code class={cn("text-shadow-accent text-shadow-2xs", props.class)}>{props.children}</code>;
 }
 
 export function Hr(props: ElementWithClass) {
@@ -72,9 +69,7 @@ export function Table(props: TableProps) {
         <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-200">
             <table class="table">
                 <Show when={props.head}>
-                    <thead class="bg-primary text-primary-content">
-                        {props.head}
-                    </thead>
+                    <thead class="bg-primary text-primary-content">{props.head}</thead>
                 </Show>
                 <tbody>{props.body}</tbody>
                 <Show when={props.foot}>
@@ -83,4 +78,12 @@ export function Table(props: TableProps) {
             </table>
         </div>
     );
+}
+
+export function Blockquote(props: ElementWithProps) {
+    return <blockquote class={cn("blockquote", props.class)}>{props.children}</blockquote>;
+}
+
+export function List(props: ElementWithProps) {
+    return <ul class={cn("list-disc list-inside", props.class)}>{props.children}</ul>;
 }

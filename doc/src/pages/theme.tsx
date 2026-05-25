@@ -1,13 +1,4 @@
-export const Theme: DocComponentPage = {
-    title: "Doc themes",
-    menuTitle: "Doc themes",
-    path: "/theme",
-    description: "Example of theme colors and elements",
-    keywords: [],
-    component: RouteComponent,
-};
-
-function RouteComponent() {
+export default function () {
     return (
         <div class="p-4 space-y-8">
             <h1 class="text-3xl font-bold">Theme Preview</h1>

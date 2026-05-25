@@ -3,16 +3,7 @@ import { CodeTabs } from "@/components/code-tabs";
 import { Code, H1, Spacer } from "@/components/html";
 import { DocLayout } from "@/layouts/doc-layout";
 
-export const SchemaBasics: DocComponentPage = {
-    path: "/schema/basics",
-    title: "Schema Basics",
-    menuTitle: "Basics",
-    description: "",
-    keywords: [],
-    component: RouteComponent,
-};
-
-function RouteComponent() {
+export default function () {
     return (
         <DocLayout>
             <H1>Schema Basics</H1>

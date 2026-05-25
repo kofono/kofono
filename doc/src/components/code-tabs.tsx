@@ -15,7 +15,7 @@ export function CodeTabs(props: CodeTabsProps) {
     const uniqueId = Math.random().toString(36).substring(7);
 
     return (
-        <div class="p-1 bg-base-300 rounded-xl">
+        <div class="rounded-box-border">
             <div class="tabs tabs-box">
                 <For each={props.tabs}>
                     {tab => (

@@ -1,11 +1,15 @@
+import type { Component } from "solid-js";
+
 declare global {
-    interface DocComponentPage {
+    interface DocComponentPageMeta {
         path: string;
         title: string;
         menuTitle?: string;
         description: string;
         keywords?: string[];
-        component: () => JSX.Element;
+        next?: DocComponentPageMeta | undefined;
+        previous?: DocComponentPageMeta | undefined;
+        loader: () => Promise<{ default: Component }>;
     }
 }
 

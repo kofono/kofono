@@ -1,18 +1,10 @@
 import { Title } from "@solidjs/meta";
 import { CodeBlock } from "@/components/code-block";
 import { H1 } from "@/components/html";
+import { SchemaSelectors } from "@/doc/schema.selectors.meta";
 import { DocLayout } from "@/layouts/doc-layout";
 
-export const SchemaSelectors: DocComponentPage = {
-    path: "/schema/selectors",
-    title: "Schema Selectors",
-    menuTitle: "Selectors",
-    description: "",
-    keywords: [],
-    component: RouteComponent,
-};
-
-function RouteComponent() {
+export default function () {
     return (
         <DocLayout>
             <Title>{SchemaSelectors.title}</Title>

@@ -3,16 +3,7 @@ import { For } from "solid-js";
 import { H1, Spacer } from "@/components/html";
 import { DocLayout } from "@/layouts/doc-layout";
 
-export const ValidatorList: DocComponentPage = {
-    path: "/validator-list",
-    title: "Validators List",
-    menuTitle: "List of validators",
-    description: "",
-    keywords: [],
-    component: RouteComponent,
-};
-
-function RouteComponent() {
+export default function () {
     return (
         <DocLayout>
             <H1>Built-in Validators</H1>

@@ -9,7 +9,7 @@ import "@fontsource/lato/400-italic.css";
 
 import { MetaProvider } from "@solidjs/meta";
 import { Route, Router } from "@solidjs/router";
-import { For, type ParentProps } from "solid-js";
+import { For, lazy, type ParentProps } from "solid-js";
 import { RootLayout } from "@/layouts/root-layout";
 import { docPages } from "@/table-of-contents";
 
@@ -25,14 +25,17 @@ function App(props: ParentProps) {
     );
 }
 
-const rootElement = document.getElementById("app");
+const rootElement = document.getElementById("doc");
 if (rootElement) {
     render(
         () => (
             <Router root={App} base={import.meta.env.BASE_URL}>
                 <For each={docPages}>
                     {d => (
-                        <Route path={d.path} component={d.component as any} />
+                        <Route
+                            path={d.path}
+                            component={lazy(d.loader as any)}
+                        />
                     )}
                 </For>
             </Router>
