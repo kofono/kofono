@@ -1,4 +1,4 @@
-Copyright (c) 2024-2026 FlyingBoat.Dev
+Copyright (c) 2024-present Kofono
 
 Portions of this software are licensed as follows:
 
