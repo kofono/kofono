@@ -30,15 +30,12 @@ importers:
 
   doc:
     dependencies:
-      '@fontsource/lato':
-        specifier: 5.2.7
-        version: 5.2.7
-      '@fontsource/roboto':
-        specifier: 5.2.10
-        version: 5.2.10
-      '@fontsource/roboto-mono':
-        specifier: 5.2.9
-        version: 5.2.9
+      '@fontsource-variable/intel-one-mono':
+        specifier: ^5.2.2
+        version: 5.2.2
+      '@fontsource-variable/inter':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@kofono/solid-editor':
         specifier: workspace:*
         version: link:../packages/kofono-solid-editor
@@ -489,14 +486,11 @@ packages:
       '@noble/hashes':
         optional: true
 
-  '@fontsource/lato@5.2.7':
-    resolution: {integrity: sha512-k5mum1ADbDW5cTw1Ett1eQVWeoZ6gq0ct6SFBibEhB4LRxhniChJZTBgd6ph5yBxLkN1fcnsnmicBNA4S/3nbw==}
+  '@fontsource-variable/intel-one-mono@5.2.2':
+    resolution: {integrity: sha512-dXmY1M3SJhQ3mtCdI4L3zMik8YabWMO912BjI2LG3uQQVBZJubH9+sEt/YHHPz5e3II0h+LhORd2JIGNTynldw==}
 
-  '@fontsource/roboto-mono@5.2.9':
-    resolution: {integrity: sha512-iIeSyrRGoM15uIWqXslW1K9UFnUYfnCFNrNoWjXE0huO1L+hM0Jst0KNLuRc7P21xPpGL0bZouzYSX0Em9eyWg==}
-
-  '@fontsource/roboto@5.2.10':
-    resolution: {integrity: sha512-8HlA5FtSfz//oFSr2eL7GFXAiE7eIkcGOtx7tjsLKq+as702x9+GU7K95iDeWFapHC4M2hv9RrpXKRTGGBI8Zg==}
+  '@fontsource-variable/inter@5.2.8':
+    resolution: {integrity: sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2151,11 +2145,9 @@ snapshots:
 
   '@exodus/bytes@1.15.0': {}
 
-  '@fontsource/lato@5.2.7': {}
+  '@fontsource-variable/intel-one-mono@5.2.2': {}
 
-  '@fontsource/roboto-mono@5.2.9': {}
-
-  '@fontsource/roboto@5.2.10': {}
+  '@fontsource-variable/inter@5.2.8': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

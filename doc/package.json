@@ -12,9 +12,8 @@
     "dependencies": {
         "@kofono/solid-form": "workspace:*",
         "@kofono/solid-editor": "workspace:*",
-        "@fontsource/lato": "5.2.7",
-        "@fontsource/roboto": "5.2.10",
-        "@fontsource/roboto-mono": "5.2.9",
+        "@fontsource-variable/inter": "^5.2.8",
+        "@fontsource-variable/intel-one-mono": "^5.2.2",
         "@tailwindcss/postcss": "^4.3.0",
         "@tailwindcss/vite": "^4.3.0",
         "@tanstack/solid-query": "^5.100.10",
