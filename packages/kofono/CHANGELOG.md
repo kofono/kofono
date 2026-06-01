@@ -17,7 +17,8 @@
 - fix RequiredValidator to work with enum values and list properties
 - refactor validator errors to their respective folders 
 - introduce ValidatorDeclaration type
-- rename wrong name ValidatorError enum to QualificationError
+- rename the wrong name ValidatorError enum to QualificationError
+- modify form stats compilation to round the progression value
 
 # 0.8.0 - 2026-04-28
 

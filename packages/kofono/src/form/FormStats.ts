@@ -35,7 +35,9 @@ export class FormStats {
 
         stats.invalid = stats.qualified - stats.valid;
         stats.progression =
-            stats.qualified > 0 ? (stats.valid / stats.qualified) * 100 : 0;
+            stats.qualified > 0
+                ? ((stats.valid / stats.qualified) * 100 + 0.5) | 0
+                : 0;
 
         this.form.state.stats = stats;
 

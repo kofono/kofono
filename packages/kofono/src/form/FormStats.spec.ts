@@ -73,3 +73,20 @@ test("FormStats cache update when property added / deleted", async () => {
         valid: 1,
     });
 });
+
+test("FormStats progression rounding", async () => {
+    const form = await K.form({
+        propA: K.string(notEmpty()).default("foo"),
+        propB: K.string(notEmpty()),
+        propC: K.string(notEmpty()),
+    });
+
+    expect(form.state.stats).toEqual({
+        invalid: 2,
+        leaf: 3,
+        node: 0,
+        progression: 33,
+        qualified: 3,
+        valid: 1,
+    });
+});
