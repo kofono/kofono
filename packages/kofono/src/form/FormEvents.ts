@@ -253,21 +253,17 @@ export class FormEvents {
             if (prop.type === PropertyType.Null) {
                 continue;
             }
-            await this.emitSelector(selector, Events.SelectorValidation, {
+            const ctx = {
                 form: this.form,
                 selector,
                 value: this.form.$d(selector),
-            });
-        }
-        for (const [selector, prop] of Object.entries(this.form.props)) {
-            if (prop.type === PropertyType.Null) {
-                continue;
-            }
-            await this.emitSelector(selector, Events.SelectorQualification, {
-                form: this.form,
+            };
+            await this.emitSelector(
                 selector,
-                value: this.form.$d(selector),
-            });
+                Events.SelectorQualification,
+                ctx,
+            );
+            await this.emitSelector(selector, Events.SelectorValidation, ctx);
         }
         return this;
     }

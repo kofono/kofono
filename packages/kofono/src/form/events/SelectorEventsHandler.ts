@@ -30,18 +30,19 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
         //     qualify: this.form.prop(this.selector)!.isQualify(),
         // });
 
+        const isValidation = this.event === Events.SelectorValidation;
+
         if (
             !this.form.events.selectorsEvents[this.selector] ||
-            (this.event === Events.SelectorValidation &&
-                this.form.prop(this.selector)?.isQualified() === false)
+            !this.form.prop(this.selector).parentsQualified() ||
+            (isValidation && !this.form.isQualified(this.selector))
         ) {
             return null;
         }
 
-        const before: ValidatorResponse =
-            this.event === Events.SelectorValidation
-                ? this.form.$v(this.selector)
-                : this.form.$q(this.selector);
+        const before: ValidatorResponse = isValidation
+            ? this.form.$v(this.selector)
+            : this.form.$q(this.selector);
 
         for (const handler of this.form.events.selectorsEvents[this.selector][
             this.event
@@ -156,8 +157,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
                     ctx,
                 );
             }
-        } else {
-            // call validation on newly qualified selector
+        } else if (prop.parentsQualified()) {
             await this.form.events.emitSelector(
                 this.selector,
                 Events.SelectorValidation,
