@@ -6,6 +6,9 @@ import solidPlugin from "vite-plugin-solid";
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => ({
     base: command === "build" ? "/docs/" : "/",
+    define: {
+        __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+    },
     plugins: [solidPlugin(), tailwindcss()],
     resolve: {
         alias: [

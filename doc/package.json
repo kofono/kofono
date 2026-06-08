@@ -1,5 +1,6 @@
 {
     "name": "@kofono/doc",
+    "version": "",
     "private": true,
     "type": "module",
     "scripts": {

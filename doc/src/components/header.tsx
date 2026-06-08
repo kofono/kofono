@@ -1,7 +1,7 @@
 import { ThemeSwitcher } from "@kofono/solid-form";
 import { A } from "@solidjs/router";
 import { CgFormatCenter } from "solid-icons/cg";
-import { VsSourceControl } from "solid-icons/vs";
+import { VsGithub } from "solid-icons/vs"
 import { H2 } from "@/components/html";
 import { Search } from "@/components/search";
 
@@ -13,9 +13,7 @@ export function Header() {
                     <A href={"/"}>
                         {/*<TbForms />*/}
                         <CgFormatCenter class="inline-block w-6 h-6 mr-2 -mt-1 text-(--color-brand)" />
-                        <span class="bg-primary-content/10 p-2 rounded-md text-(--color-brand)">
-                            Kofono docs
-                        </span>
+                        <span class="bg-primary-content/10 p-2 rounded-md text-(--color-brand)">Kofono docs</span>
                         <sup class="ml-2 -mt-1 font-light text-xs text-(--color-brand)">
                             v{import.meta.env.VITE_VERSION}
                         </sup>
@@ -28,7 +26,7 @@ export function Header() {
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn btn-primary">
-                        <VsSourceControl class="w-6 h-6 text-(--color-brand)" />
+                        <VsGithub class="w-6 h-6 text-(--color-brand)" />
                     </a>
                     <ThemeSwitcher class="text-(--color-brand)" />
                 </div>

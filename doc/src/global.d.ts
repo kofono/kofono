@@ -1,6 +1,8 @@
 import type { Component } from "solid-js";
 
 declare global {
+    const __BUILD_DATE__: string;
+
     interface DocComponentPageMeta {
         path: string;
         title: string;

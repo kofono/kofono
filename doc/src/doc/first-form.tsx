@@ -4,10 +4,26 @@ import { Code, H1, H2, Spacer } from "@/components/html";
 import { FirstForm } from "@/doc/first-form.meta";
 import { DocLayout } from "@/layouts/doc-layout";
 
+enum Anchor {
+    CreateYourSchema = "create-your-schema",
+    UpdateAProperty = "update-a-property",
+    AccessToPropertyInfos = "access-to-property-infos",
+    ValidateTheForm = "validate-the-form",
+    AccessToTheFormState = "access-to-the-form-state",
+}
+
+const onThisPage = {
+    [Anchor.CreateYourSchema]: "Create your schema",
+    [Anchor.UpdateAProperty]: "Update a property",
+    [Anchor.AccessToPropertyInfos]: "Access to property infos",
+    [Anchor.ValidateTheForm]: "Validate the form",
+    [Anchor.AccessToTheFormState]: "Access to the form state",
+};
+
 export default function () {
     return (
-        <DocLayout meta={FirstForm}>
-            <H1>Create you first form</H1>
+        <DocLayout meta={FirstForm} onThisPage={onThisPage}>
+            <H1 id={Anchor.CreateYourSchema}>Create you first form</H1>
             <Spacer />
             <p>
                 Let's create our first form with Kofono by reusing the schema we created in the previous section. But
@@ -20,6 +36,7 @@ export default function () {
                         label: "JSON Schema",
                         content: (
                             <CodeBlock
+                                copyable={true}
                                 value={`import { K } from "kofono"
 
 const form = await K.form({
@@ -47,6 +64,7 @@ const form = await K.form({
                         label: "Typescript Builder",
                         content: (
                             <CodeBlock
+                                copyable={true}
                                 value={`import { K, required, max } from "kofono";
 
 const form = await K.form({
@@ -64,11 +82,11 @@ const form = await K.form({
             <p>Once the form is created, you can interact with it by accessing its properties and updating its data.</p>
 
             <Spacer />
-            <H2>Update a property</H2>
+            <H2 id={Anchor.UpdateAProperty}>Update a property</H2>
             <CodeBlockLarge class="p-0" value={`await form.update("firstName", "John");`} />
 
             <Spacer />
-            <H2>Access to property informations</H2>
+            <H2 id={Anchor.AccessToPropertyInfos}>Access to property informations</H2>
             <CodeBlockLarge
                 class="p-0"
                 value={`const firstName = form.prop("firstName");
@@ -81,7 +99,7 @@ firstName.validationError;
             />
 
             <Spacer />
-            <H2>Check if the form is valid</H2>
+            <H2 id={Anchor.ValidateTheForm}>Validate the form</H2>
             <CodeBlockLarge
                 class="p-0"
                 value={`if (form.pass()) {
@@ -92,7 +110,7 @@ firstName.validationError;
             />
 
             <Spacer />
-            <H2>Access to the form state</H2>
+            <H2 id={Anchor.AccessToTheFormState}>Access to the form state</H2>
             <CodeBlockLarge
                 class="p-0"
                 value={`console.log(form.state);

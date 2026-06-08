@@ -9,20 +9,40 @@ type ElementWithProps = ElementWithClass & {
     children?: JSXElement;
 };
 
-export function H1(props: ElementWithProps) {
-    return <h1 class={cn("text-4xl mb-2", props.class)}>{props.children}</h1>;
+type HeadingElementWithProps = ElementWithProps & {
+    id?: string;
+};
+
+export function H1(props: HeadingElementWithProps) {
+    return (
+        <h1 id={props.id} class={cn("text-4xl mb-2", props.class)}>
+            {props.children}
+        </h1>
+    );
 }
 
-export function H2(props: ElementWithProps) {
-    return <h2 class={cn("text-xl mb-1", props.class)}>{props.children}</h2>;
+export function H2(props: HeadingElementWithProps) {
+    return (
+        <h2 id={props.id} class={cn("text-xl mb-1", props.class)}>
+            {props.children}
+        </h2>
+    );
 }
 
-export function H3(props: ElementWithProps) {
-    return <h3 class={cn("text-lg mb-1", props.class)}>{props.children}</h3>;
+export function H3(props: HeadingElementWithProps) {
+    return (
+        <h3 id={props.id} class={cn("text-lg mb-1", props.class)}>
+            {props.children}
+        </h3>
+    );
 }
 
-export function H4(props: ElementWithProps) {
-    return <h4 class={cn("text-md mb-1", props.class)}>{props.children}</h4>;
+export function H4(props: HeadingElementWithProps) {
+    return (
+        <h4 id={props.id} class={cn("text-md mb-1", props.class)}>
+            {props.children}
+        </h4>
+    );
 }
 
 export function StrongSecondary(props: ElementWithProps) {

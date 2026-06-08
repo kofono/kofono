@@ -3,6 +3,7 @@
 // import { SchemaSelectors } from "@/doc/schema.selectors";
 // import { ValidatorList } from "@/doc/validator.list";
 
+import { ConceptQv } from "@/doc/concept.qv.meta";
 import { FirstForm } from "@/doc/first-form.meta";
 import { FirstSchema } from "@/doc/first-schema.meta";
 // import { Playground } from "@/pages/playground";
@@ -11,7 +12,6 @@ import { FirstSchema } from "@/doc/first-schema.meta";
 // import { GettingStarted } from "@/doc/getting-started.meta";
 // register all site pages here for routing
 import { GettingStarted } from "@/doc/getting-started.meta";
-import { InteractFirstForm } from "@/doc/interact-first-form.meta";
 import { SchemaBasics } from "@/doc/schema.basics.meta";
 import { SchemaProperties } from "@/doc/schema.properties.meta";
 import { SchemaSelectors } from "@/doc/schema.selectors.meta";
@@ -26,20 +26,24 @@ export const docPages: DocComponentPageMeta[] = [
     GettingStarted,
     FirstSchema,
     FirstForm,
-    InteractFirstForm,
     Playground,
     SchemaBasics,
     SchemaProperties,
     SchemaSelectors,
     Theme,
     ValidatorList,
+    ConceptQv,
 ];
 
 // register the actual table of contents (sidebar) structure
 export const tableOfContents: TableOfContentsItem[] = [
     {
         title: "Guides",
-        children: [Introduction, GettingStarted, FirstSchema, FirstForm, InteractFirstForm, Playground],
+        children: [Introduction, GettingStarted, FirstSchema, FirstForm, Playground],
+    },
+    {
+        title: "Concepts",
+        children: [ConceptQv],
     },
     // {
     //     title: "Schema",

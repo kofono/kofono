@@ -2,31 +2,14 @@ import { Editor } from "@kofono/solid-editor";
 import {
     ComponentType,
     FormSchemaProvider,
-    GridForm,
+    GridForm
 } from "@kofono/solid-form";
 import { K, max, min, type Schema } from "kofono";
 import { createSignal, Show } from "solid-js";
 import { H1, H4, Hr } from "@/components/html";
 import { FullScreenLayout } from "@/layouts/fullscreen-layout";
 import { cn } from "@/utils";
-import { evalWithContext } from "./schema"; /*
-
-K.schema({
-    name: K.string(
-            min(1, "Your name must be at least 1 character"),
-            max(250, "Your name should not exceed 250 characters!"),
-        )
-        .component({
-            title: "Enter your ndfsdfsdfsdfame",
-            description: "Please enter your name",
-        }),
-
-    acceptTerms: K.boolean(required()).component({
-        type: "checkbox2",
-        title:"DO you surrender your soul?"
-    })
-})
- */
+import { evalWithContext } from "./schema";
 
 /*
 
@@ -127,7 +110,7 @@ export default function () {
                         />
                         <div
                             class={cn(
-                                "tab-content border-base-300 bg-(--color-primary) p-1",
+                                "tab-content relative border-base-300 bg-(--color-primary) p-1",
                                 !doesParse() && "bg-(--color-error)/10",
                             )}>
                             <Editor
@@ -151,10 +134,10 @@ export default function () {
                             />
                         </div>
 
-                        <input type="radio" name="my_tabs_2" class="tab" aria-label="Tab 2" />
+                        <input type="radio" name="my_tabs_1" class="tab" aria-label="Tab 2" />
                         <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 2</div>
 
-                        <input type="radio" name="my_tabs_3" class="tab" aria-label="Tab 3" />
+                        <input type="radio" name="my_tabs_1" class="tab" aria-label="Tab 3" />
                         <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 3</div>
                     </div>
                     <button class="hidden" type="button" onClick={reloadBtn}>
