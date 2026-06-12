@@ -18,14 +18,14 @@
         "turbo:clean": "turbo daemon clean"
     },
     "devDependencies": {
-        "@types/node": "25.9.1",
-        "@biomejs/biome": "2.4.15",
-        "turbo": "2.9.14",
+        "@types/node": "25.9.2",
+        "@biomejs/biome": "2.4.16",
+        "turbo": "2.9.16",
         "typescript": "6.0.3"
     },
     "engines": {
-        "node": ">=22",
+        "node": ">=24",
         "pnpm": ">=10"
     },
-    "packageManager": "pnpm@11.5.0"
+    "packageManager": "pnpm@11.6.0"
 }
