@@ -21,6 +21,7 @@ import * as Min from "./min/MinValidator";
 import * as Password from "./password/PasswordValidator";
 import * as Regexp from "./regexp/RegexpValidator";
 import * as Required from "./required/RequiredValidator";
+import * as SameAs from "./sameAs/SameAsValidator";
 import type { ValidatorDeclaration, ValidatorFactoryHandler } from "./types";
 import * as Url from "./url/UrlValidator";
 
@@ -48,6 +49,7 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Password.passwordValidator,
     Regexp.regexpValidator,
     Required.requiredValidator,
+    SameAs.sameAsValidator,
     Url.urlValidator,
 ] as const;
 
@@ -55,3 +57,31 @@ export const builtinValidatorFactories: Record<
     string,
     ValidatorFactoryHandler<any>
 > = Object.fromEntries(builtinValidators.map(v => [v.name, v.factory]));
+
+// validator exports
+export * from "./alpha/AlphaValidator";
+export * from "./alphaNum/AlphaNumValidator";
+export * from "./between/BetweenValidator";
+export * from "./condition/ConditionValidator";
+export * from "./condition/when";
+export * from "./datetime/DatetimeValidator";
+export * from "./email/EmailValidator";
+export * from "./empty/EmptyValidator";
+export * from "./empty/NotEmptyValidator";
+export * from "./equal/EqualValidator";
+export * from "./equal/NotEqualValidator";
+export * from "./if/IfValidator";
+export * from "./includes/IncludesValidator";
+export * from "./includes/NotIncludesValidator";
+export * from "./isFalse/IsFalseValidator";
+export * from "./isTrue/IsTrueValidator";
+export * from "./isValid/IsNotValidValidator";
+export * from "./isValid/IsValidValidator";
+export * from "./length/LengthValidator";
+export * from "./max/MaxValidator";
+export * from "./min/MinValidator";
+export * from "./password/PasswordValidator";
+export * from "./regexp/RegexpValidator";
+export * from "./required/RequiredValidator";
+export * from "./sameAs/SameAsValidator";
+export * from "./url/UrlValidator";

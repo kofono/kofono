@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { condition } from "../schema";
+import { condition } from "./ConditionValidator";
 import { when, whenVar } from "./when";
 
-vi.mock("../schema", () => ({
+vi.mock("./ConditionValidator", () => ({
     condition: vi.fn(payload => ({ condition: payload })),
 }));
 

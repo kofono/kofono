@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { K } from "../builder/K";
 import { optional } from "../common/helpers";
 import type { FormConfig } from "../form/types";
+import { isValid } from "./builtinValidators";
 import { GenericValidator } from "./GenericValidator";
 import {
-    isValid,
     type SchemaPropertyBaseValidator,
     type SchemaPropertyValidator,
 } from "./schema";

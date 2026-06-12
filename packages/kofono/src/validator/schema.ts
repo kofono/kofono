@@ -10,7 +10,9 @@ import type { SchemaEqualValidator } from "./equal/EqualValidator";
 import type { SchemaNotEqualValidator } from "./equal/NotEqualValidator";
 import type { SchemaIfValidator } from "./if/IfValidator";
 import type { SchemaIncludesValidator } from "./includes/IncludesValidator";
-import type { SchemaNotIncludesValidator } from "./includes/NotIncludesValidator";
+import type {
+    SchemaNotIncludesValidator
+} from "./includes/NotIncludesValidator";
 import type { SchemaIsFalseValidator } from "./isFalse/IsFalseValidator";
 import type { SchemaIsTrueValidator } from "./isTrue/IsTrueValidator";
 import type { SchemaIsNotValidValidator } from "./isValid/IsNotValidValidator";
@@ -21,6 +23,7 @@ import type { SchemaMinValidator } from "./min/MinValidator";
 import type { SchemaPasswordValidator } from "./password/PasswordValidator";
 import type { SchemaRegexpValidator } from "./regexp/RegexpValidator";
 import type { SchemaRequiredValidator } from "./required/RequiredValidator";
+import { SchemaSameAsValidator } from "./sameAs/SameAsValidator";
 import type { SchemaUrlValidator } from "./url/UrlValidator";
 
 export type SchemaPropertyBaseValidator = {
@@ -51,31 +54,5 @@ export type SchemaPropertyValidator =
     | SchemaPasswordValidator
     | SchemaRegexpValidator
     | SchemaRequiredValidator
+    | SchemaSameAsValidator
     | SchemaUrlValidator;
-
-// validators options and schema builder functions
-export * from "./alpha/AlphaValidator";
-export * from "./alphaNum/AlphaNumValidator";
-export * from "./between/BetweenValidator";
-export * from "./condition/ConditionValidator";
-export * from "./condition/when";
-export * from "./datetime/DatetimeValidator";
-export * from "./email/EmailValidator";
-export * from "./empty/EmptyValidator";
-export * from "./empty/NotEmptyValidator";
-export * from "./equal/EqualValidator";
-export * from "./equal/NotEqualValidator";
-export * from "./if/IfValidator";
-export * from "./includes/IncludesValidator";
-export * from "./includes/NotIncludesValidator";
-export * from "./isFalse/IsFalseValidator";
-export * from "./isTrue/IsTrueValidator";
-export * from "./isValid/IsNotValidValidator";
-export * from "./isValid/IsValidValidator";
-export * from "./length/LengthValidator";
-export * from "./max/MaxValidator";
-export * from "./min/MinValidator";
-export * from "./password/PasswordValidator";
-export * from "./regexp/RegexpValidator";
-export * from "./required/RequiredValidator";
-export * from "./url/UrlValidator";

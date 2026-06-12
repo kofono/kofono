@@ -1,6 +1,5 @@
 import type { PlaceholderType } from "../_condition/types";
-import type { SchemaConditionValidator } from "../condition/ConditionValidator";
-import { condition } from "../schema";
+import { condition, type SchemaConditionValidator } from "./ConditionValidator";
 
 function _when(selector: string, type: PlaceholderType) {
     return {
