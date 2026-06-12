@@ -19,6 +19,7 @@
 - introduce ValidatorDeclaration type
 - rename the wrong name ValidatorError enum to QualificationError
 - modify form stats compilation to round the progression value
+- add SameAsValidator
 
 # 0.8.0 - 2026-04-28
 
