@@ -7,10 +7,10 @@ import type {
 } from "../types";
 import { EqualValidator } from "./EqualValidator";
 
-export type NotEqualValidatorOpts = SchemaPropertyBaseValidator & {
+export interface NotEqualValidatorOpts extends SchemaPropertyBaseValidator {
     value: string | number | boolean | null;
     caseSensitive?: boolean;
-};
+}
 
 export interface SchemaNotEqualValidator {
     notEqual: NotEqualValidatorOpts;
@@ -32,7 +32,7 @@ export function notEqual(
     value: NotEqualValidatorOpts["value"],
     opts?: Pick<NotEqualValidatorOpts, "caseSensitive">,
     expect?: string,
-) {
+): SchemaNotEqualValidator {
     return {
         notEqual: {
             value,

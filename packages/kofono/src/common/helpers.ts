@@ -36,11 +36,6 @@ export function lowerCaseFirst(value: unknown): string {
     return value.charAt(0).toLowerCase() + value.slice(1);
 }
 
-export function optional(key: string, value: unknown): any {
-    if (value === undefined) {
-        return {};
-    }
-    return {
-        [key]: value,
-    };
+export function optional(key: string, value: unknown): Record<string, unknown> {
+    return value === undefined ? {} : { [key]: value };
 }

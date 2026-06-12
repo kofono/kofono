@@ -12,7 +12,7 @@ export type SchemaIsFalseValidator =
     | "isFalse"
     | { isFalse: IsFalseValidatorOpts };
 
-export type IsFalseValidatorOpts = SchemaPropertyBaseValidator;
+export interface IsFalseValidatorOpts extends SchemaPropertyBaseValidator {}
 
 export const isFalseValidator = {
     name: "isFalse" as const,

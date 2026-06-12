@@ -19,10 +19,10 @@ export interface SchemaIfValidator {
     if: IfValidatorOpts;
 }
 
-export type IfValidatorOpts = {
+export interface IfValidatorOpts {
     condition: Condition;
     then: SchemaPropertyValidator[];
-};
+}
 
 export const ifValidator = {
     name: "if" as const,
@@ -30,7 +30,10 @@ export const ifValidator = {
         new IfValidator(selector, type, opts),
 };
 
-export class IfValidator extends AbstractValidator implements Validator {
+export class IfValidator
+    extends AbstractValidator<IfValidatorOpts>
+    implements Validator
+{
     private readonly placeholders: PlaceholderList;
     private readonly condition: Condition;
     private readonly propertyValidators: PropertyValidator[];

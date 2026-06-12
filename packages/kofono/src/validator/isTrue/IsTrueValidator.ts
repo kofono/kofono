@@ -10,7 +10,7 @@ import type {
 
 export type SchemaIsTrueValidator = "isTrue" | { isTrue: IsTrueValidatorOpts };
 
-export type IsTrueValidatorOpts = SchemaPropertyBaseValidator;
+export interface IsTrueValidatorOpts extends SchemaPropertyBaseValidator {}
 
 export const isTrueValidator = {
     name: "isTrue" as const,

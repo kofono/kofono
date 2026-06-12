@@ -13,7 +13,7 @@ export type SchemaRequiredValidator =
     | "required"
     | { required: RequiredValidatorOpts };
 
-export type RequiredValidatorOpts = SchemaPropertyBaseValidator;
+export interface RequiredValidatorOpts extends SchemaPropertyBaseValidator {}
 
 export const requiredValidator = {
     name: "required" as const,

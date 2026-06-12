@@ -9,9 +9,9 @@ import type {
     ValidatorResponse,
 } from "../types";
 
-export type LengthValidatorOpts = SchemaPropertyBaseValidator & {
+export interface LengthValidatorOpts extends SchemaPropertyBaseValidator {
     value: number;
-};
+}
 
 export interface SchemaLengthValidator {
     length: LengthValidatorOpts;
@@ -36,7 +36,7 @@ export const lengthValidator = {
     ],
 };
 
-export function length(value: number, expect?: string) {
+export function length(value: number, expect?: string): SchemaLengthValidator {
     return {
         length: {
             value,
@@ -44,6 +44,7 @@ export function length(value: number, expect?: string) {
         },
     };
 }
+
 function safeLength(value: any, expectedLength: number): boolean {
     if (typeof value === "string" || Array.isArray(value)) {
         return value.length === expectedLength;
@@ -51,7 +52,10 @@ function safeLength(value: any, expectedLength: number): boolean {
     return false;
 }
 
-export class LengthValidator extends AbstractValidator implements Validator {
+export class LengthValidator
+    extends AbstractValidator<LengthValidatorOpts>
+    implements Validator
+{
     private readonly value: number;
 
     constructor(

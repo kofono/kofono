@@ -10,9 +10,9 @@ import type {
 
 export type SchemaAlphaValidator = "alpha" | { alpha: AlphaValidatorOpts };
 
-export type AlphaValidatorOpts = SchemaPropertyBaseValidator & {
+export interface AlphaValidatorOpts extends SchemaPropertyBaseValidator {
     spaces?: boolean;
-};
+}
 
 export const alphaValidator = {
     name: "alpha" as const,
@@ -27,7 +27,10 @@ export const alphaValidator = {
     },
 };
 
-export function alpha(opts: AlphaValidatorOpts, expect?: string) {
+export function alpha(
+    opts: AlphaValidatorOpts,
+    expect?: string,
+): SchemaAlphaValidator {
     return {
         alpha: {
             ...opts,
@@ -36,7 +39,10 @@ export function alpha(opts: AlphaValidatorOpts, expect?: string) {
     };
 }
 
-export class AlphaValidator extends AbstractValidator implements Validator {
+export class AlphaValidator
+    extends AbstractValidator<AlphaValidatorOpts>
+    implements Validator
+{
     private readonly allowSpaces: boolean;
 
     constructor(

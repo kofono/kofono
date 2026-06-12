@@ -36,7 +36,10 @@ export const isValidValidator = {
         SelectorNotValid: "_IS_VALID_SELECTOR_NOT_VALID",
     },
 };
-export function isValid(selectors: string | string[], expect?: string) {
+export function isValid(
+    selectors: string | string[],
+    expect?: string,
+): SchemaIsValidValidator {
     return {
         isValid: {
             selectors,

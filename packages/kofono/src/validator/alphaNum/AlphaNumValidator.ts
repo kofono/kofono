@@ -12,9 +12,9 @@ export type SchemaAlphaNumValidator =
     | "alphaNum"
     | { alphaNum: AlphaNumValidatorOpts };
 
-export type AlphaNumValidatorOpts = SchemaPropertyBaseValidator & {
+export interface AlphaNumValidatorOpts extends SchemaPropertyBaseValidator {
     spaces?: boolean;
-};
+}
 
 export const alphaNumValidator = {
     name: "alphaNum" as const,
@@ -29,7 +29,10 @@ export const alphaNumValidator = {
     },
 };
 
-export function alphaNum(opts: AlphaNumValidatorOpts, expect?: string) {
+export function alphaNum(
+    opts: AlphaNumValidatorOpts,
+    expect?: string,
+): SchemaAlphaNumValidator {
     return {
         alphaNum: {
             ...opts,
@@ -38,7 +41,10 @@ export function alphaNum(opts: AlphaNumValidatorOpts, expect?: string) {
     };
 }
 
-export class AlphaNumValidator extends AbstractValidator implements Validator {
+export class AlphaNumValidator
+    extends AbstractValidator<AlphaNumValidatorOpts>
+    implements Validator
+{
     private readonly allowSpaces: boolean;
 
     constructor(

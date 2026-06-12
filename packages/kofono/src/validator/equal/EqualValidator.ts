@@ -8,10 +8,10 @@ import type {
     ValidatorResponse,
 } from "../types";
 
-export type EqualValidatorOpts = SchemaPropertyBaseValidator & {
+export interface EqualValidatorOpts extends SchemaPropertyBaseValidator {
     value: string | number | boolean | null;
     caseSensitive?: boolean;
-};
+}
 
 export interface SchemaEqualValidator {
     equal: EqualValidatorOpts;
@@ -33,7 +33,7 @@ export function equal(
     value: EqualValidatorOpts["value"],
     opts?: Pick<EqualValidatorOpts, "caseSensitive">,
     expect?: string,
-) {
+): SchemaEqualValidator {
     return {
         equal: {
             value,
@@ -43,7 +43,10 @@ export function equal(
     };
 }
 
-export class EqualValidator extends AbstractValidator implements Validator {
+export class EqualValidator
+    extends AbstractValidator<EqualValidatorOpts>
+    implements Validator
+{
     protected readonly expectedValue: string | number | boolean | null;
     protected readonly caseSensitive: boolean = true;
 

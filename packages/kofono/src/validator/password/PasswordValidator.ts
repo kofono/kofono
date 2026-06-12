@@ -12,7 +12,7 @@ export interface SchemaPasswordValidator {
     password: PasswordValidatorOpts;
 }
 
-export type PasswordValidatorOpts = SchemaPropertyBaseValidator & {
+export interface PasswordValidatorOpts extends SchemaPropertyBaseValidator {
     min?: number;
     max?: number;
     lowerCase?: boolean;
@@ -20,7 +20,7 @@ export type PasswordValidatorOpts = SchemaPropertyBaseValidator & {
     numbers?: boolean;
     specialChars?: boolean;
     specialCharsList?: string;
-};
+}
 
 export const passwordValidator = {
     name: "password" as const,
@@ -49,7 +49,10 @@ export function password(
     };
 }
 
-export class PasswordValidator extends AbstractValidator implements Validator {
+export class PasswordValidator
+    extends AbstractValidator<PasswordValidatorOpts>
+    implements Validator
+{
     constructor(
         attachTo: string,
         type: ValidationType,

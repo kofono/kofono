@@ -10,10 +10,10 @@ import type {
 
 export type SchemaUrlValidator = "url" | { url: UrlValidatorOpts };
 
-export type UrlValidatorOpts = SchemaPropertyBaseValidator & {
+export interface UrlValidatorOpts extends SchemaPropertyBaseValidator {
     protocols?: string[];
     hostnames?: string[];
-};
+}
 
 export const urlValidator = {
     name: "url" as const,
@@ -46,7 +46,10 @@ export function url(
  * Optionally, it can check if the URL's protocol is in a list of allowed protocols.
  * Optionally, it can check if the URL's hostname is in a list of allowed hostnames.
  */
-export class UrlValidator extends AbstractValidator implements Validator {
+export class UrlValidator
+    extends AbstractValidator<UrlValidatorOpts>
+    implements Validator
+{
     private readonly protocols?: string[];
     private readonly hostnames?: string[];
 

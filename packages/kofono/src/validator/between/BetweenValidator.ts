@@ -12,10 +12,10 @@ export interface SchemaBetweenValidator {
     between: BetweenValidatorOpts;
 }
 
-export type BetweenValidatorOpts = SchemaPropertyBaseValidator & {
+export interface BetweenValidatorOpts extends SchemaPropertyBaseValidator {
     min: number;
     max: number;
-};
+}
 
 export const betweenValidator = {
     name: "between",
@@ -49,7 +49,10 @@ export function between(
 
 // BetweenValidator is a validator that checks if a value is between two numbers
 // Support value of type string, number and array
-export class BetweenValidator extends AbstractValidator implements Validator {
+export class BetweenValidator
+    extends AbstractValidator<BetweenValidatorOpts>
+    implements Validator
+{
     private readonly min: number;
     private readonly max: number;
 

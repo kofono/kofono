@@ -9,9 +9,9 @@ import type {
     ValidatorResponse,
 } from "../types";
 
-export type IncludesValidatorOpts = SchemaPropertyBaseValidator & {
+export interface IncludesValidatorOpts extends SchemaPropertyBaseValidator {
     value: string | string[];
-};
+}
 
 export interface SchemaIncludesValidator {
     includes: IncludesValidatorOpts;
@@ -39,7 +39,7 @@ export const includesValidator = {
 export function includes(
     value: IncludesValidatorOpts["value"],
     expect?: string,
-) {
+): SchemaIncludesValidator {
     return {
         includes: {
             value,
@@ -55,7 +55,10 @@ function safeIncludes(value: any, search: any): boolean {
     return !!value.includes(search);
 }
 
-export class IncludesValidator extends AbstractValidator implements Validator {
+export class IncludesValidator
+    extends AbstractValidator<IncludesValidatorOpts>
+    implements Validator
+{
     private readonly value: IncludesValidatorOpts["value"];
     constructor(
         attachTo: string,

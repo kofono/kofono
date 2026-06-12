@@ -69,6 +69,12 @@ describe("SameAsValidator tests", () => {
             expected: false,
             error: sameAsValidator.err.NotMatch,
         },
+        {
+            name: "should validate when both values are null",
+            value: null,
+            other: { selector: "other", value: null },
+            expected: true,
+        },
     ];
 
     for (const test of tests) {
@@ -83,4 +89,12 @@ describe("SameAsValidator tests", () => {
             }
         });
     }
+
+    it("should throw when selector does not exist", async () => {
+        await expect(() => {
+            return K.form({
+                prop: K.string(sameAs("something.else")).default("value"),
+            });
+        }).rejects.toThrow();
+    });
 });

@@ -8,9 +8,9 @@ import type {
     ValidatorResponse,
 } from "../types";
 
-export type SameAsValidatorOpts = SchemaPropertyBaseValidator & {
-    value: string;
-};
+export interface SameAsValidatorOpts extends SchemaPropertyBaseValidator {
+    selector: string;
+}
 
 export interface SchemaSameAsValidator {
     sameAs: SameAsValidatorOpts;
@@ -31,16 +31,22 @@ export const sameAsValidator = {
     ],
 };
 
-export function sameAs(value: string, expect?: string) {
+export function sameAs(
+    selector: string,
+    expect?: string,
+): SchemaSameAsValidator {
     return {
         sameAs: {
-            value,
+            selector,
             ...optional("error", expect),
         },
     };
 }
 
-export class SameAsValidator extends AbstractValidator implements Validator {
+export class SameAsValidator
+    extends AbstractValidator<SameAsValidatorOpts>
+    implements Validator
+{
     private readonly otherSelector: string;
 
     constructor(
@@ -49,7 +55,7 @@ export class SameAsValidator extends AbstractValidator implements Validator {
         opts: SameAsValidatorOpts,
     ) {
         super(attachTo, type, opts);
-        this.otherSelector = opts.value;
+        this.otherSelector = opts.selector;
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {

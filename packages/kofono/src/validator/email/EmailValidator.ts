@@ -12,7 +12,7 @@ export type SchemaEmailValidator = "email" | { email: EmailValidatorOpts };
 
 export type EmailValidatorOpts = SchemaPropertyBaseValidator;
 
-export function email(expect?: string) {
+export function email(expect?: string): SchemaEmailValidator {
     return {
         email: {
             ...optional("error", expect),
@@ -38,7 +38,10 @@ export const emailValidator = {
  * Note: this validator only checks value look-a-like email, not its validity nor its existence.
  * Precisely, we are looking for a string with one @ and at least one dot after it.
  */
-export class EmailValidator extends AbstractValidator implements Validator {
+export class EmailValidator
+    extends AbstractValidator<EmailValidatorOpts>
+    implements Validator
+{
     validate(ctx: ValidationContext): ValidatorResponse {
         if (typeof ctx.value !== "string") {
             return this.error(emailValidator.err.InvalidType);

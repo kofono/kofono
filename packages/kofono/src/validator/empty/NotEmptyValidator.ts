@@ -12,7 +12,7 @@ export type SchemaNotEmptyValidator =
     | "notEmpty"
     | { notEmpty: NotEmptyValidatorOpts };
 
-export type NotEmptyValidatorOpts = SchemaPropertyBaseValidator;
+export interface NotEmptyValidatorOpts extends SchemaPropertyBaseValidator {}
 
 export const notEmptyValidator = {
     name: "notEmpty" as const,

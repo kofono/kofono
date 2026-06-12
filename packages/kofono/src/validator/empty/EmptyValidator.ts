@@ -10,7 +10,7 @@ import type {
 
 export type SchemaEmptyValidator = "empty" | { empty: EmptyValidatorOpts };
 
-export type EmptyValidatorOpts = SchemaPropertyBaseValidator;
+export interface EmptyValidatorOpts extends SchemaPropertyBaseValidator {}
 
 export const emptyValidator = {
     name: "empty" as const,
