@@ -4,9 +4,9 @@ import { optional } from "../common/helpers";
 import type { FormConfig } from "../form/types";
 import { isValid } from "./builtinValidators";
 import { GenericValidator } from "./GenericValidator";
-import {
-    type SchemaPropertyBaseValidator,
-    type SchemaPropertyValidator,
+import type {
+    SchemaPropertyBaseValidator,
+    SchemaPropertyValidator,
 } from "./schema";
 
 type CustomValidatorOpts = SchemaPropertyBaseValidator & {

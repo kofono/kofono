@@ -10,9 +10,7 @@ import type { SchemaEqualValidator } from "./equal/EqualValidator";
 import type { SchemaNotEqualValidator } from "./equal/NotEqualValidator";
 import type { SchemaIfValidator } from "./if/IfValidator";
 import type { SchemaIncludesValidator } from "./includes/IncludesValidator";
-import type {
-    SchemaNotIncludesValidator
-} from "./includes/NotIncludesValidator";
+import type { SchemaNotIncludesValidator } from "./includes/NotIncludesValidator";
 import type { SchemaIsFalseValidator } from "./isFalse/IsFalseValidator";
 import type { SchemaIsTrueValidator } from "./isTrue/IsTrueValidator";
 import type { SchemaIsNotValidValidator } from "./isValid/IsNotValidValidator";
@@ -23,7 +21,7 @@ import type { SchemaMinValidator } from "./min/MinValidator";
 import type { SchemaPasswordValidator } from "./password/PasswordValidator";
 import type { SchemaRegexpValidator } from "./regexp/RegexpValidator";
 import type { SchemaRequiredValidator } from "./required/RequiredValidator";
-import { SchemaSameAsValidator } from "./sameAs/SameAsValidator";
+import type { SchemaSameAsValidator } from "./sameAs/SameAsValidator";
 import type { SchemaUrlValidator } from "./url/UrlValidator";
 
 export type SchemaPropertyBaseValidator = {
