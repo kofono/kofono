@@ -2,7 +2,7 @@ import type { Data } from "../form/types";
 
 export class DataSelectorNotFoundError extends Error {
     constructor(public readonly selector: string) {
-        super(`Data selector not found: ${selector}`);
+        super(`Data selector "${selector}" not found`);
     }
 }
 
@@ -12,7 +12,7 @@ export class DataSelectorIndexOutOfBoundsError extends Error {
         public readonly length: number,
     ) {
         super(
-            `Array index out of bounds: index ${index} on array of length ${length}`,
+            `Array index ${index} out of bounds on array of length ${length}`,
         );
     }
 }
