@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: i like it that way */
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: I like it that way */
 
 import { isObjectLiteral, optional } from "../common/helpers";
 import { defaultConfig } from "../form/defaults";
