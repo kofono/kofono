@@ -43,8 +43,8 @@ export function url(
  * URL validator.
  * Validates if a string is a valid URL.
  * It checks for a properly formatted URL with protocol (http, https, ftp, etc.).
- * Optionally, it can check if the URL's protocol is in a list of allowed protocols.
- * Optionally, it can check if the URL's hostname is in a list of allowed hostnames.
+ * Optionally, it can check if the URL's protocol/hostname is
+ * in a list of allowed protocols/hostnames.
  */
 export class UrlValidator
     extends AbstractValidator<UrlValidatorOpts>
