@@ -1,12 +1,12 @@
 import { parseValidators } from "../../property/parser";
 import type { PropertyValidator } from "../../property/types";
+import { AbstractValidator } from "../AbstractValidator";
 import {
     evaluateCondition,
     parseConditionPlaceholders,
     placeholdersListToSelectors,
-} from "../_condition/condition";
-import type { Condition, PlaceholderList } from "../_condition/types";
-import { AbstractValidator } from "../AbstractValidator";
+} from "../expression/condition";
+import type { Condition, PlaceholderList } from "../expression/types";
 import type { SchemaPropertyValidator } from "../schema";
 import type {
     ValidationContext,
