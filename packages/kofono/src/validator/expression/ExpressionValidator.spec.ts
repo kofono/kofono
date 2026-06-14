@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildSchema } from "../../builder/helpers";
 import { K } from "../../builder/K";
-import type { Condition } from "./types";
 import type { ValidationContext } from "../types";
 import { ExpressionValidator } from "./ExpressionValidator";
+import type { Condition } from "./types";
 
 describe("ExpressionValidator test", () => {
     const schema = K.schema({

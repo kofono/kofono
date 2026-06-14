@@ -1,8 +1,6 @@
 import { optional } from "../../common/helpers";
 import type { AlphaValidatorOpts } from "../../validator/alpha/AlphaValidator";
-import type {
-    AlphaNumValidatorOpts
-} from "../../validator/alphaNum/AlphaNumValidator";
+import type { AlphaNumValidatorOpts } from "../../validator/alphaNum/AlphaNumValidator";
 import type { EqualValidatorOpts } from "../../validator/equal/EqualValidator";
 import type {
     Condition,
@@ -11,9 +9,7 @@ import type {
     Operator,
 } from "../../validator/expression/types";
 import type { IfValidatorOpts } from "../../validator/if/IfValidator";
-import type {
-    PasswordValidatorOpts
-} from "../../validator/password/PasswordValidator";
+import type { PasswordValidatorOpts } from "../../validator/password/PasswordValidator";
 import type { FlagCombinations } from "../../validator/regexp/RegexpValidator";
 import type { SchemaPropertyValidator } from "../../validator/schema";
 import type { UrlValidatorOpts } from "../../validator/url/UrlValidator"; // todo: deprecated
