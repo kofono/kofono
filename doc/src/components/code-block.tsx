@@ -19,7 +19,7 @@ export function CodeBlock(props: CodeBlockProps) {
         <div class={cn("pt-1 rounded-md squircle bg-base-200", props.class, isReadonly && "readonly")}>
             <div class="relative">
                 <Editor
-                    value={props.value}
+                    value={props.value.trim()}
                     mode={props.language ?? "javascript"}
                     theme="github_dark"
                     style={{

@@ -1,5 +1,7 @@
 import { builtinValidators } from "kofono";
 import { For } from "solid-js";
+import { CodeBlock } from "@/components/code-block";
+import { CodeTabs } from "@/components/code-tabs";
 import { H1, H2, Spacer } from "@/components/html";
 import { ConceptQv } from "@/doc/concept.qv.meta";
 import { DocLayout } from "@/layouts/doc-layout";
@@ -17,6 +19,40 @@ export const onThisPage = {
     [Anchor.Validations]: "Validations",
     [Anchor.Validators]: "Validators",
 };
+//
+// const form = await K.form({
+//     $id: "my-form",
+//     __: {
+//         foo: {
+//             type: "boolean",
+//             $v: ["required"],
+//         },
+//         bar: {
+//             type: "string",
+//             $q: [{ isValid: "foo" }],
+//         },
+//     },
+// });
+
+const qualificationSchema = `
+const form = await K.form({
+    __: {
+        foo: {
+            type: "boolean",
+            $v: ["required"],
+        },
+        bar: {
+            type: "string",
+            $q: [{ isValid: "foo" }],
+        },
+    },
+})`;
+
+const qualificationSchemaBuilder = `
+const form = await K.form({
+    foo: K.boolean(required()),
+    bar: K.string().qualifications(isValid("foo")),
+}`;
 
 export default function () {
     const listItems = builtinValidators.map(validator => validator.name);
@@ -40,6 +76,19 @@ export default function () {
                 A property that is <i>disqualified</i> is always considered invalid. This rule is important to keep in
                 mind: qualification comes first, validation comes after.
             </p>
+            <CodeTabs
+                tabs={[
+                    {
+                        label: "JSON Schema",
+                        content: <CodeBlock copyable={true} value={qualificationSchema} />,
+                    },
+                    {
+                        active: true,
+                        label: "Typescript Builder",
+                        content: <CodeBlock copyable={true} value={qualificationSchemaBuilder} />,
+                    },
+                ]}
+            />
             <Spacer />
             <H2 id={Anchor.Validations}>Validations</H2>
             <p>

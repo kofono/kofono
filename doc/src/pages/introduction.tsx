@@ -7,7 +7,7 @@ import { Introduction } from "@/pages/introduction.meta";
 export default function () {
     return (
         <DocLayout meta={Introduction}>
-            <H1 class="font-bold text-3xl">Kofono documentation</H1>
+            <H1 class="font-bold text-4xl">Kofono documentation</H1>
             <H1>What is Kofono?</H1>
 
             <p>

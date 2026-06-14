@@ -49,6 +49,10 @@ pre {
     display: none !important;
 }
 
+.ace_content {
+    font-size: 0.9rem;
+}
+
 .rounded-box-border {
     @apply rounded-xl;
     /*@apply border-b-4 border-b-gray-800;*/
