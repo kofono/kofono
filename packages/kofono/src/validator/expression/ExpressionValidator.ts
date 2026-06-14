@@ -1,10 +1,4 @@
 import { optional } from "../../common/helpers";
-import {
-    evaluateCondition,
-    parseConditionPlaceholders,
-    placeholdersListToSelectors,
-} from "../_condition/condition";
-import type { Condition, PlaceholderList } from "../_condition/types";
 import { AbstractValidator } from "../AbstractValidator";
 import type { SchemaPropertyBaseValidator } from "../schema";
 import type {
@@ -13,43 +7,49 @@ import type {
     Validator,
     ValidatorResponse,
 } from "../types";
+import {
+    evaluateCondition,
+    parseConditionPlaceholders,
+    placeholdersListToSelectors,
+} from "./condition";
+import type { Condition, PlaceholderList } from "./types";
 
-export interface SchemaConditionValidator {
-    condition: ConditionValidatorOpts;
+export interface SchemaExpressionValidator {
+    expression: ExpressionValidatorOpts;
 }
 
-export type ConditionValidatorOpts =
+export type ExpressionValidatorOpts =
     | Condition
     | (SchemaPropertyBaseValidator & {
           condition: Condition;
       });
 
-export const conditionValidator = {
-    name: "condition" as const,
+export const expressionValidator = {
+    name: "expression" as const,
     factory: (
         selector: string,
         type: ValidationType,
-        opts: ConditionValidatorOpts,
-    ) => new ConditionValidator(selector, type, opts),
+        opts: ExpressionValidatorOpts,
+    ) => new ExpressionValidator(selector, type, opts),
     err: {
         IsFailing: "_CONDITION_IS_FAILING",
     },
 };
 
-export function condition(
+export function expression(
     condition: Condition,
     expect?: string,
-): SchemaConditionValidator {
+): SchemaExpressionValidator {
     return {
-        condition: {
+        expression: {
             condition,
             ...optional("error", expect),
         },
     };
 }
 
-export class ConditionValidator
-    extends AbstractValidator<ConditionValidatorOpts>
+export class ExpressionValidator
+    extends AbstractValidator<ExpressionValidatorOpts>
     implements Validator
 {
     private readonly placeholders: PlaceholderList;
@@ -58,7 +58,7 @@ export class ConditionValidator
     constructor(
         attachTo: string,
         type: ValidationType,
-        opts: ConditionValidatorOpts,
+        opts: ExpressionValidatorOpts,
     ) {
         super(attachTo, type, opts);
 
@@ -75,6 +75,6 @@ export class ConditionValidator
             return this.success();
         }
 
-        return this.error(conditionValidator.err.IsFailing);
+        return this.error(expressionValidator.err.IsFailing);
     }
 }

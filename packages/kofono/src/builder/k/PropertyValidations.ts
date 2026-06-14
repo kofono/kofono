@@ -1,18 +1,22 @@
 import { optional } from "../../common/helpers";
+import type { AlphaValidatorOpts } from "../../validator/alpha/AlphaValidator";
+import type {
+    AlphaNumValidatorOpts
+} from "../../validator/alphaNum/AlphaNumValidator";
+import type { EqualValidatorOpts } from "../../validator/equal/EqualValidator";
 import type {
     Condition,
     ExpressionField,
     ExpressionValue,
     Operator,
-} from "../../validator/_condition/types";
-import type { AlphaValidatorOpts } from "../../validator/alpha/AlphaValidator";
-import type { AlphaNumValidatorOpts } from "../../validator/alphaNum/AlphaNumValidator";
-import type { EqualValidatorOpts } from "../../validator/equal/EqualValidator";
+} from "../../validator/expression/types";
 import type { IfValidatorOpts } from "../../validator/if/IfValidator";
-import type { PasswordValidatorOpts } from "../../validator/password/PasswordValidator";
+import type {
+    PasswordValidatorOpts
+} from "../../validator/password/PasswordValidator";
 import type { FlagCombinations } from "../../validator/regexp/RegexpValidator";
 import type { SchemaPropertyValidator } from "../../validator/schema";
-import type { UrlValidatorOpts } from "../../validator/url/UrlValidator";
+import type { UrlValidatorOpts } from "../../validator/url/UrlValidator"; // todo: deprecated
 
 // todo: deprecated
 // reason: add extra mappings of validators, so its fragile and drift often
@@ -125,17 +129,17 @@ export class PropertyValidations {
     }
 
     // ExpValidator
-    public condition(
+    public expression(
         field: ExpressionField,
         operator: Operator,
         value: ExpressionValue,
     ): PropertyValidations {
-        return this.conditions([field, operator, value]);
+        return this.expressions([field, operator, value]);
     }
 
-    public conditions(condition: Condition): PropertyValidations {
+    public expressions(condition: Condition): PropertyValidations {
         return this.addValidator({
-            condition: {
+            expression: {
                 condition,
             },
         });

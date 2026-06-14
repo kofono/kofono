@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { condition } from "./ConditionValidator";
+import { expression } from "./ExpressionValidator";
 import { when, whenVar } from "./when";
 
-vi.mock("./ConditionValidator", () => ({
-    condition: vi.fn(payload => ({ condition: payload })),
+vi.mock("./ExpressionValidator", () => ({
+    expression: vi.fn(payload => ({ condition: payload })),
 }));
 
 describe("when helpers", () => {
@@ -77,22 +77,22 @@ describe("when helpers", () => {
         ];
 
         for (const testCase of cases) {
-            it(`should build condition for ${testCase.name}`, () => {
+            it(`should build expression for ${testCase.name}`, () => {
                 const result = testCase.call();
 
-                expect(condition).toHaveBeenCalledTimes(1);
-                expect(condition).toHaveBeenCalledWith(testCase.expected);
+                expect(expression).toHaveBeenCalledTimes(1);
+                expect(expression).toHaveBeenCalledWith(testCase.expected);
                 expect(result).toEqual({ condition: testCase.expected });
             });
         }
     });
 
     describe("whenVar(variable) -> var placeholder", () => {
-        it("should use var placeholder in condition expression", () => {
+        it("should use var placeholder in expression expression", () => {
             const result = whenVar("counter").isGreaterThan(0);
 
-            expect(condition).toHaveBeenCalledTimes(1);
-            expect(condition).toHaveBeenCalledWith(["{var:counter}", ">", 0]);
+            expect(expression).toHaveBeenCalledTimes(1);
+            expect(expression).toHaveBeenCalledWith(["{var:counter}", ">", 0]);
             expect(result).toEqual({ condition: ["{var:counter}", ">", 0] });
         });
     });

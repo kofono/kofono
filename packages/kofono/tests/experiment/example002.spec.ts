@@ -1,5 +1,5 @@
-import { expect, test } from "vitest";
-import { K, type Schema } from "../../src";
+import { beforeAll, describe, expect, it } from "vitest";
+import { type Form, K, QualificationError, type Schema } from "../../src";
 
 const schema: Schema = {
     $id: "my-form",
@@ -23,18 +23,18 @@ const schema: Schema = {
         },
         otherSubject: {
             type: "string",
-            $q: [{ condition: ["{data:subject}", "==", "other"] }],
+            $q: [{ expression: ["{data:subject}", "==", "other"] }],
             $v: ["required"],
         },
         technicalType: {
             type: "string",
             enum: ["website", "server", "mobile", "flying car", "unknown"],
-            $q: [{ condition: ["{data:subject}", "==", "technical"] }],
+            $q: [{ expression: ["{data:subject}", "==", "technical"] }],
             $v: ["required"],
         },
         productDimension: {
             type: "object",
-            $q: [{ condition: ["{data:subject}", "==", "sales"] }],
+            $q: [{ expression: ["{data:subject}", "==", "sales"] }],
             __: {
                 width: {
                     type: "number",
@@ -67,66 +67,79 @@ const schema: Schema = {
                 "hi",
             ],
             default: ["en", "fr"],
-            $q: [{ condition: ["{data:subject}", "==", "sales"] }],
+            $q: [{ expression: ["{data:subject}", "==", "sales"] }],
             $v: ["required"],
         },
     },
 };
 
-test("test example002", async () => {
-    const form = await K.form(schema);
-    expect(form.id).toBe("my-form");
+describe("test example002", () => {
+    let form: Form;
 
-    expect(
-        [
+    beforeAll(async () => {
+        form = await K.form(schema);
+    });
+
+    it("should have the correct form id", () => {
+        expect(form.id).toBe("my-form");
+    });
+
+    it("expect firstName, lastName, and contact to be invalid on start", () => {
+        expect([
             form.isValid("firstName"),
             form.isValid("lastName"),
             form.isValid("contact"),
-        ],
-        "expect firstName, lastName, and contact to be invalid on start",
-    ).toEqual([false, false, false]);
+        ]).toEqual([false, false, false]);
+    });
 
-    expect(
-        [
+    it("expect otherSubject, technicalType, and productDimension to be unqualified on start", () => {
+        expect([
             form.isQualified("otherSubject"),
             form.isQualified("technicalType"),
             form.isQualified("productDimension"),
-        ],
-        "expect otherSubject, technicalType, and productDimension to be unqualified on start",
-    ).toEqual([false, false, false]);
+        ]).toEqual([false, false, false]);
+    });
 
-    await form.update("subject", "other");
-    expect(
-        form.isQualified("otherSubject"),
-        "expect otherSubject to be qualified because subject is 'other'",
-    ).toBeTruthy();
+    it("expect otherSubject to not be qualified because subject is not 'other'", () => {
+        expect(form.prop("otherSubject").validation).toStrictEqual([
+            false,
+            QualificationError.SelectorDisqualified,
+        ]);
+    });
 
-    await form.update("subject", "sales");
-    expect(
-        [
+    it("expect otherSubject to be qualified because subject is 'other'", async () => {
+        await form.update("subject", "other");
+        expect(form.isQualified("otherSubject")).toBeTruthy();
+    });
+
+    it("expect otherSubject to not be valid just after qualification", () => {
+        expect(form.isValid("otherSubject")).toBeFalsy();
+    });
+
+    it("expect productDimension props and productDimension to be qualified because subject is 'sales'", async () => {
+        await form.update("subject", "sales");
+        expect([
             form.isQualified("productDimension"),
             form.isQualified("productTranslations"),
             form.isQualified("productDimension.width"),
             form.isQualified("productDimension.height"),
             form.isQualified("productDimension.depth"),
-        ],
-        "expect productDimension props and productDimension to be qualified because subject is 'other'",
-    ).toEqual([true, true, true, true, true]);
-    expect(
-        [
+        ]).toEqual([true, true, true, true, true]);
+    });
+
+    it("expect productDimension props to be invalid after qualification", () => {
+        expect([
             form.isValid("productDimension.width"),
             form.isValid("productDimension.height"),
             form.isValid("productDimension.depth"),
-        ],
-        "expect productDimension props and productDimension to be qualified because subject is 'other'",
-    ).toEqual([false, false, false]);
+        ]).toEqual([false, false, false]);
+    });
 
-    expect(
-        form.$d("productTranslations"),
-        "expect productTranslations value to be equal to is default",
-    ).toEqual(["en", "fr"]);
-    expect(
-        form.isValid("productTranslations"),
-        "expect productTranslations to be valid",
-    ).toBeTruthy();
+    it("expect productTranslations value to be equal to its default", () => {
+        expect(form.$d("productTranslations")).toEqual(["en", "fr"]);
+    });
+
+    it("expect productTranslations to be valid", () => {
+        expect(form.isValid("productTranslations")).toBeTruthy();
+    });
 });

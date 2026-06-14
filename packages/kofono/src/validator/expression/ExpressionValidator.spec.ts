@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { buildSchema } from "../../builder/helpers";
 import { K } from "../../builder/K";
-import type { Condition } from "../_condition/types";
+import type { Condition } from "./types";
 import type { ValidationContext } from "../types";
-import { ConditionValidator } from "./ConditionValidator";
+import { ExpressionValidator } from "./ExpressionValidator";
 
-describe("ConditionValidator test", () => {
+describe("ExpressionValidator test", () => {
     const schema = K.schema({
         test: K.string(),
         foobar: K.number().default(9),
@@ -35,7 +35,7 @@ describe("ConditionValidator test", () => {
     for (const test of tests) {
         it(`should condition ${JSON.stringify(test.condition)} return ${test.expected}`, async () => {
             const form = await buildSchema(schema);
-            const validator = new ConditionValidator(
+            const validator = new ExpressionValidator(
                 "test",
                 "validation",
                 test.condition,

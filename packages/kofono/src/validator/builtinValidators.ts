@@ -1,13 +1,13 @@
 import * as Alpha from "./alpha/AlphaValidator";
 import * as AlphaNum from "./alphaNum/AlphaNumValidator";
 import * as Between from "./between/BetweenValidator";
-import * as Condition from "./condition/ConditionValidator";
 import * as Datetime from "./datetime/DatetimeValidator";
 import * as Email from "./email/EmailValidator";
 import * as Empty from "./empty/EmptyValidator";
 import * as NotEmpty from "./empty/NotEmptyValidator";
 import * as Equal from "./equal/EqualValidator";
 import * as NotEqual from "./equal/NotEqualValidator";
+import * as Expression from "./expression/ExpressionValidator";
 import * as If from "./if/IfValidator";
 import * as Includes from "./includes/IncludesValidator";
 import * as NotIncludes from "./includes/NotIncludesValidator";
@@ -21,6 +21,7 @@ import * as Min from "./min/MinValidator";
 import * as Password from "./password/PasswordValidator";
 import * as Regexp from "./regexp/RegexpValidator";
 import * as Required from "./required/RequiredValidator";
+import * as NotSameAs from "./sameAs/NotSameAsValidator";
 import * as SameAs from "./sameAs/SameAsValidator";
 import type { ValidatorDeclaration, ValidatorFactoryHandler } from "./types";
 import * as Url from "./url/UrlValidator";
@@ -29,11 +30,11 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Alpha.alphaValidator,
     AlphaNum.alphaNumValidator,
     Between.betweenValidator,
-    Condition.conditionValidator,
     Datetime.datetimeValidator,
     Email.emailValidator,
     Empty.emptyValidator,
     Equal.equalValidator,
+    Expression.expressionValidator,
     If.ifValidator,
     Includes.includesValidator,
     IsFalse.isFalseValidator,
@@ -46,6 +47,7 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     NotEmpty.notEmptyValidator,
     NotEqual.notEqualValidator,
     NotIncludes.notIncludesValidator,
+    NotSameAs.notSameAsValidator,
     Password.passwordValidator,
     Regexp.regexpValidator,
     Required.requiredValidator,
@@ -62,14 +64,15 @@ export const builtinValidatorFactories: Record<
 export * from "./alpha/AlphaValidator";
 export * from "./alphaNum/AlphaNumValidator";
 export * from "./between/BetweenValidator";
-export * from "./condition/ConditionValidator";
-export * from "./condition/when";
+
 export * from "./datetime/DatetimeValidator";
 export * from "./email/EmailValidator";
 export * from "./empty/EmptyValidator";
 export * from "./empty/NotEmptyValidator";
 export * from "./equal/EqualValidator";
 export * from "./equal/NotEqualValidator";
+export * from "./expression/ExpressionValidator";
+export * from "./expression/when";
 export * from "./if/IfValidator";
 export * from "./includes/IncludesValidator";
 export * from "./includes/NotIncludesValidator";
@@ -83,5 +86,6 @@ export * from "./min/MinValidator";
 export * from "./password/PasswordValidator";
 export * from "./regexp/RegexpValidator";
 export * from "./required/RequiredValidator";
+export * from "./sameAs/NotSameAsValidator";
 export * from "./sameAs/SameAsValidator";
 export * from "./url/UrlValidator";
