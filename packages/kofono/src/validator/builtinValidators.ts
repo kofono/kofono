@@ -7,10 +7,10 @@ import * as Empty from "./empty/EmptyValidator";
 import * as NotEmpty from "./empty/NotEmptyValidator";
 import * as Equal from "./equal/EqualValidator";
 import * as NotEqual from "./equal/NotEqualValidator";
+import * as Excludes from "./excludes/ExcludesValidator";
 import * as Expression from "./expression/ExpressionValidator";
 import * as If from "./if/IfValidator";
 import * as Includes from "./includes/IncludesValidator";
-import * as NotIncludes from "./includes/NotIncludesValidator";
 import * as IsFalse from "./isFalse/IsFalseValidator";
 import * as IsTrue from "./isTrue/IsTrueValidator";
 import * as IsNotValid from "./isValid/IsNotValidValidator";
@@ -34,6 +34,7 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Email.emailValidator,
     Empty.emptyValidator,
     Equal.equalValidator,
+    Excludes.excludesValidator,
     Expression.expressionValidator,
     If.ifValidator,
     Includes.includesValidator,
@@ -46,7 +47,6 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Min.minValidator,
     NotEmpty.notEmptyValidator,
     NotEqual.notEqualValidator,
-    NotIncludes.notIncludesValidator,
     NotSameAs.notSameAsValidator,
     Password.passwordValidator,
     Regexp.regexpValidator,
@@ -71,11 +71,11 @@ export * from "./empty/EmptyValidator";
 export * from "./empty/NotEmptyValidator";
 export * from "./equal/EqualValidator";
 export * from "./equal/NotEqualValidator";
+export * from "./excludes/ExcludesValidator";
 export * from "./expression/ExpressionValidator";
 export * from "./expression/when";
 export * from "./if/IfValidator";
 export * from "./includes/IncludesValidator";
-export * from "./includes/NotIncludesValidator";
 export * from "./isFalse/IsFalseValidator";
 export * from "./isTrue/IsTrueValidator";
 export * from "./isValid/IsNotValidValidator";

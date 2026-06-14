@@ -2,9 +2,9 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
 import type { ValidationContext } from "../types";
-import { NotIncludesValidator } from "./NotIncludesValidator";
+import { ExcludesValidator } from "./ExcludesValidator";
 
-describe("NotIncludesValidator test", () => {
+describe("ExcludesValidator test", () => {
     let form: Form;
     let ctx: ValidationContext;
 
@@ -17,7 +17,7 @@ describe("NotIncludesValidator test", () => {
         };
     });
 
-    const notIncludes = new NotIncludesValidator("test", "validation", {
+    const validator = new ExcludesValidator("test", "validation", {
         value: "hello",
     });
 
@@ -78,7 +78,7 @@ describe("NotIncludesValidator test", () => {
     for (const test of tests) {
         it(`should return ${test.expected} for '${String(test.value)}'`, () => {
             ctx.value = test.value;
-            const [isValid] = notIncludes.validate(ctx);
+            const [isValid] = validator.validate(ctx);
             expect(isValid).toEqual(test.expected);
         });
     }

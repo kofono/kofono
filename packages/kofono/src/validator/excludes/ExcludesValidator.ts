@@ -9,23 +9,23 @@ import type {
     ValidatorResponse,
 } from "../types";
 
-export interface NotIncludesValidatorOpts extends SchemaPropertyBaseValidator {
+export interface ExcludesValidatorOpts extends SchemaPropertyBaseValidator {
     value: string | string[];
 }
 
-export interface SchemaNotIncludesValidator {
-    notIncludes: NotIncludesValidatorOpts;
+export interface SchemaExcludesValidator {
+    excludes: ExcludesValidatorOpts;
 }
 
-export const notIncludesValidator = {
-    name: "notIncludes" as const,
+export const excludesValidator = {
+    name: "excludes" as const,
     factory: (
         selector: string,
         type: ValidationType,
-        opts: NotIncludesValidatorOpts,
-    ) => new NotIncludesValidator(selector, type, opts),
+        opts: ExcludesValidatorOpts,
+    ) => new ExcludesValidator(selector, type, opts),
     err: {
-        Includes: "_NOT_INCLUDES_INCLUDES",
+        Includes: "_EXCLUDES_INCLUDES",
     },
     support: [
         PropertyType.String,
@@ -36,43 +36,43 @@ export const notIncludesValidator = {
     ],
 };
 
-export function notIncludes(
-    value: NotIncludesValidatorOpts["value"],
+export function excludes(
+    value: ExcludesValidatorOpts["value"],
     expect?: string,
-): SchemaNotIncludesValidator {
+): SchemaExcludesValidator {
     return {
-        notIncludes: {
+        excludes: {
             value,
             ...optional("error", expect),
         },
     };
 }
 
-function safeNotIncludes(value: any, search: any): boolean {
+function safeExcludes(value: any, search: any): boolean {
     if (!value?.includes) {
         return true;
     }
     return !value.includes(search);
 }
 
-export class NotIncludesValidator
-    extends AbstractValidator<NotIncludesValidatorOpts>
+export class ExcludesValidator
+    extends AbstractValidator<ExcludesValidatorOpts>
     implements Validator
 {
-    private readonly value: NotIncludesValidatorOpts["value"];
+    private readonly value: ExcludesValidatorOpts["value"];
 
     constructor(
         attachTo: string,
         type: ValidationType,
-        opts: NotIncludesValidatorOpts,
+        opts: ExcludesValidatorOpts,
     ) {
         super(attachTo, type, opts);
         this.value = opts.value;
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
-        return safeNotIncludes(ctx.value, this.value)
+        return safeExcludes(ctx.value, this.value)
             ? this.success()
-            : this.error(notIncludesValidator.err.Includes);
+            : this.error(excludesValidator.err.Includes);
     }
 }

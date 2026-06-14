@@ -7,14 +7,10 @@ import type { SchemaEmptyValidator } from "./empty/EmptyValidator";
 import type { SchemaNotEmptyValidator } from "./empty/NotEmptyValidator";
 import type { SchemaEqualValidator } from "./equal/EqualValidator";
 import type { SchemaNotEqualValidator } from "./equal/NotEqualValidator";
-import type {
-    SchemaExpressionValidator
-} from "./expression/ExpressionValidator";
+import type { SchemaExcludesValidator } from "./excludes/ExcludesValidator";
+import type { SchemaExpressionValidator } from "./expression/ExpressionValidator";
 import type { SchemaIfValidator } from "./if/IfValidator";
 import type { SchemaIncludesValidator } from "./includes/IncludesValidator";
-import type {
-    SchemaNotIncludesValidator
-} from "./includes/NotIncludesValidator";
 import type { SchemaIsFalseValidator } from "./isFalse/IsFalseValidator";
 import type { SchemaIsTrueValidator } from "./isTrue/IsTrueValidator";
 import type { SchemaIsNotValidValidator } from "./isValid/IsNotValidValidator";
@@ -42,6 +38,7 @@ export type SchemaPropertyValidator =
     | SchemaEmptyValidator
     | SchemaEqualValidator
     | SchemaExpressionValidator
+    | SchemaExcludesValidator
     | SchemaIfValidator
     | SchemaIncludesValidator
     | SchemaIsFalseValidator
@@ -53,7 +50,6 @@ export type SchemaPropertyValidator =
     | SchemaMinValidator
     | SchemaNotEmptyValidator
     | SchemaNotEqualValidator
-    | SchemaNotIncludesValidator
     | SchemaNotSameAsValidator
     | SchemaPasswordValidator
     | SchemaRegexpValidator

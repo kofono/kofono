@@ -21,6 +21,7 @@
 - modify form stats compilation to round the progression value
 - add SameAsValidator
 - rename ConditionValidator to ExpressionValidator
+- rename NotIncludesValidator to ExcludesValidator
 
 # 0.8.0 - 2026-04-28
 
