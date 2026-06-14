@@ -1,6 +1,7 @@
 import * as Alpha from "./alpha/AlphaValidator";
 import * as AlphaNum from "./alphaNum/AlphaNumValidator";
 import * as Between from "./between/BetweenValidator";
+import * as Condition from "./condition/ConditionValidator";
 import * as Datetime from "./datetime/DatetimeValidator";
 import * as Email from "./email/EmailValidator";
 import * as Empty from "./empty/EmptyValidator";
@@ -8,7 +9,6 @@ import * as NotEmpty from "./empty/NotEmptyValidator";
 import * as Equal from "./equal/EqualValidator";
 import * as NotEqual from "./equal/NotEqualValidator";
 import * as Excludes from "./excludes/ExcludesValidator";
-import * as Expression from "./expression/ExpressionValidator";
 import * as If from "./if/IfValidator";
 import * as Includes from "./includes/IncludesValidator";
 import * as IsFalse from "./isFalse/IsFalseValidator";
@@ -30,12 +30,12 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Alpha.alphaValidator,
     AlphaNum.alphaNumValidator,
     Between.betweenValidator,
+    Condition.conditionValidator,
     Datetime.datetimeValidator,
     Email.emailValidator,
     Empty.emptyValidator,
     Equal.equalValidator,
     Excludes.excludesValidator,
-    Expression.expressionValidator,
     If.ifValidator,
     Includes.includesValidator,
     IsFalse.isFalseValidator,
@@ -64,7 +64,8 @@ export const builtinValidatorFactories: Record<
 export * from "./alpha/AlphaValidator";
 export * from "./alphaNum/AlphaNumValidator";
 export * from "./between/BetweenValidator";
-
+export * from "./condition/ConditionValidator";
+export * from "./condition/when";
 export * from "./datetime/DatetimeValidator";
 export * from "./email/EmailValidator";
 export * from "./empty/EmptyValidator";
@@ -72,8 +73,6 @@ export * from "./empty/NotEmptyValidator";
 export * from "./equal/EqualValidator";
 export * from "./equal/NotEqualValidator";
 export * from "./excludes/ExcludesValidator";
-export * from "./expression/ExpressionValidator";
-export * from "./expression/when";
 export * from "./if/IfValidator";
 export * from "./includes/IncludesValidator";
 export * from "./isFalse/IsFalseValidator";

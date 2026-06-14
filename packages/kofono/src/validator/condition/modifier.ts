@@ -13,14 +13,14 @@ export function applyModifier(modifier: string | undefined, value: any) {
     }
 }
 
-export function toLowerCase(str: any) {
+function toLowerCase(str: any) {
     if (typeof str !== "string") {
         return str;
     }
     return str.toLowerCase();
 }
 
-export function toUpperCase(str: any) {
+function toUpperCase(str: any) {
     if (typeof str !== "string") {
         return str;
     }

@@ -128,10 +128,10 @@ describe("testing var and def type", () => {
                 },
             },
             something: K.string().$q(q =>
-                q.expression("{var:user.role}", "==", "admin"),
+                q.condition("{var:user.role}", "==", "admin"),
             ),
             somethingElse: K.string().$q(q =>
-                q.expression("{var:user.role}", "==", "user"),
+                q.condition("{var:user.role}", "==", "user"),
             ),
         });
 
@@ -146,7 +146,7 @@ describe("testing var and def type", () => {
                         name: "bob",
                     },
                 })
-                .$q(q => q.expression("{def:test.name}", "==", "bob")),
+                .$q(q => q.condition("{def:test.name}", "==", "bob")),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
@@ -158,10 +158,10 @@ describe("evaluateFieldValue()", () => {
         const form = await K.form({
             name: K.string().default("BOB"),
             something: K.string().$q(q =>
-                q.expression("{data:name|toLowerCase}", "==", "bob"),
+                q.condition("{data:name|toLowerCase}", "==", "bob"),
             ),
             somethingElse: K.string().$q(q =>
-                q.expression("{data:name}", "==", "bob"),
+                q.condition("{data:name}", "==", "bob"),
             ),
         });
 
@@ -185,11 +185,11 @@ describe("evaluateCondition()", () => {
                 .$v(v => v.required()),
             subscribeNewsletter: K.boolean()
                 .default(false)
-                .$q(q => q.expression("{data:acceptTerms}", "==", true)),
+                .$q(q => q.condition("{data:acceptTerms}", "==", true)),
             subscribeToMonthlyNewsletter: K.boolean()
                 .default(false)
                 .$q(q =>
-                    q.expressions([
+                    q.conditions([
                         ["{data:acceptTerms}", "==", true],
                         "and",
                         ["{data:subscribeNewsletter}", "==", true],

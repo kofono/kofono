@@ -1,6 +1,7 @@
 import type { SchemaAlphaValidator } from "./alpha/AlphaValidator";
 import type { SchemaAlphaNumValidator } from "./alphaNum/AlphaNumValidator";
 import type { SchemaBetweenValidator } from "./between/BetweenValidator";
+import type { SchemaConditionValidator } from "./condition/ConditionValidator";
 import type { SchemaDatetimeValidator } from "./datetime/DatetimeValidator";
 import type { SchemaEmailValidator } from "./email/EmailValidator";
 import type { SchemaEmptyValidator } from "./empty/EmptyValidator";
@@ -8,7 +9,6 @@ import type { SchemaNotEmptyValidator } from "./empty/NotEmptyValidator";
 import type { SchemaEqualValidator } from "./equal/EqualValidator";
 import type { SchemaNotEqualValidator } from "./equal/NotEqualValidator";
 import type { SchemaExcludesValidator } from "./excludes/ExcludesValidator";
-import type { SchemaExpressionValidator } from "./expression/ExpressionValidator";
 import type { SchemaIfValidator } from "./if/IfValidator";
 import type { SchemaIncludesValidator } from "./includes/IncludesValidator";
 import type { SchemaIsFalseValidator } from "./isFalse/IsFalseValidator";
@@ -37,7 +37,7 @@ export type SchemaPropertyValidator =
     | SchemaEmailValidator
     | SchemaEmptyValidator
     | SchemaEqualValidator
-    | SchemaExpressionValidator
+    | SchemaConditionValidator
     | SchemaExcludesValidator
     | SchemaIfValidator
     | SchemaIncludesValidator

@@ -1,13 +1,13 @@
 import { optional } from "../../common/helpers";
 import type { AlphaValidatorOpts } from "../../validator/alpha/AlphaValidator";
 import type { AlphaNumValidatorOpts } from "../../validator/alphaNum/AlphaNumValidator";
-import type { EqualValidatorOpts } from "../../validator/equal/EqualValidator";
 import type {
     Condition,
     ExpressionField,
     ExpressionValue,
     Operator,
-} from "../../validator/expression/types";
+} from "../../validator/condition/types";
+import type { EqualValidatorOpts } from "../../validator/equal/EqualValidator";
 import type { IfValidatorOpts } from "../../validator/if/IfValidator";
 import type { PasswordValidatorOpts } from "../../validator/password/PasswordValidator";
 import type { FlagCombinations } from "../../validator/regexp/RegexpValidator";
@@ -125,17 +125,17 @@ export class PropertyValidations {
     }
 
     // ExpValidator
-    public expression(
+    public condition(
         field: ExpressionField,
         operator: Operator,
         value: ExpressionValue,
     ): PropertyValidations {
-        return this.expressions([field, operator, value]);
+        return this.conditions([field, operator, value]);
     }
 
-    public expressions(condition: Condition): PropertyValidations {
+    public conditions(condition: Condition): PropertyValidations {
         return this.addValidator({
-            expression: {
+            condition: {
                 condition,
             },
         });

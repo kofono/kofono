@@ -23,18 +23,18 @@ const schema: Schema = {
         },
         otherSubject: {
             type: "string",
-            $q: [{ expression: ["{data:subject}", "==", "other"] }],
+            $q: [{ condition: ["{data:subject}", "==", "other"] }],
             $v: ["required"],
         },
         technicalType: {
             type: "string",
             enum: ["website", "server", "mobile", "flying car", "unknown"],
-            $q: [{ expression: ["{data:subject}", "==", "technical"] }],
+            $q: [{ condition: ["{data:subject}", "==", "technical"] }],
             $v: ["required"],
         },
         productDimension: {
             type: "object",
-            $q: [{ expression: ["{data:subject}", "==", "sales"] }],
+            $q: [{ condition: ["{data:subject}", "==", "sales"] }],
             __: {
                 width: {
                     type: "number",
@@ -67,7 +67,7 @@ const schema: Schema = {
                 "hi",
             ],
             default: ["en", "fr"],
-            $q: [{ expression: ["{data:subject}", "==", "sales"] }],
+            $q: [{ condition: ["{data:subject}", "==", "sales"] }],
             $v: ["required"],
         },
     },
