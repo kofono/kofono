@@ -30,7 +30,7 @@
         "daisyui": "5.5.19",
         "tailwind-merge": "^3.6.0",
         "tailwindcss-animate": "^1.0.7",
-        "vite": "8.0.14",
+        "vite": "8.1.5",
         "vite-plugin-solid": "2.11.12"
     }
 }
