@@ -19,7 +19,7 @@
 - introduce ValidatorDeclaration type
 - rename the wrong name ValidatorError enum to QualificationError
 - modify form stats compilation to round the progression value
-- add SameAsValidator
+- add SameAsValidator and NotSameAsValidator
 - rename NotIncludesValidator to ExcludesValidator
 - remove Form.dataSelector getter
 
