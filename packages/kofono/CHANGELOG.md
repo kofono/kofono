@@ -1,4 +1,4 @@
-# 0.9.0 - ?
+# 0.9.0 - 2026-07-19
 
 - add cache to speed up form stats compilation
 - remove YAML schema support
