@@ -1,4 +1,4 @@
-import { DataSelector } from "../selector/DataSelector";
+import type { DataSelector } from "../selector/DataSelector";
 import type { DataQuerier } from "../selector/types";
 import type { Form } from "./Form";
 
