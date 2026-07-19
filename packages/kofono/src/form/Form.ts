@@ -68,7 +68,7 @@ export class Form {
         this.#events = new FormEvents(this);
         this.#extensions = new FormExtensions(this);
         this.#extensionsFactory = config.extensionsFactory;
-        this.#formDataSelector = new FormDataSelector(this);
+        this.#formDataSelector = new FormDataSelector(this, this.#dataSelector);
         this.#id = config.id || "";
         this.#passHandler = config.passHandler;
         this.#selectors = new FormSelectors(this);
@@ -85,10 +85,6 @@ export class Form {
 
     public get array(): FormArray {
         return this.#array;
-    }
-
-    public get dataSelector(): FormDataSelector {
-        return this.#formDataSelector;
     }
 
     public get env(): string {

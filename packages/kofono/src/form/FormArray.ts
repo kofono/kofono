@@ -47,7 +47,7 @@ export class FormArray {
         }
 
         const arrayData = generatePartialTree(newProps, arraySelector);
-        this.form.dataSelector.set(
+        this.form.$.set(
             `${arraySelector}.${arrayIndex}`,
             arrayData[arrayIndex],
         );
@@ -110,7 +110,7 @@ export class FormArray {
         }
 
         // delete array index data
-        this.form.dataSelector.delete(arraySelectorIndex);
+        this.form.$.delete(arraySelectorIndex);
 
         // is it the last item?
         if (index === nbItems - 1) {
@@ -171,10 +171,7 @@ export class FormArray {
                 arraySelector,
                 String(i - 1),
             );
-            this.form.dataSelector.set(
-                newSelectorIndex,
-                this.form.$d(oldSelectorIndex),
-            );
+            this.form.$.set(newSelectorIndex, this.form.$d(oldSelectorIndex));
         }
 
         await emitEvents();

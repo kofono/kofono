@@ -3,11 +3,10 @@ import type { DataQuerier } from "../selector/types";
 import type { Form } from "./Form";
 
 export class FormDataSelector implements DataQuerier {
-    public readonly selector: DataSelector;
-
-    constructor(private form: Form) {
-        this.selector = new DataSelector();
-    }
+    constructor(
+        private form: Form,
+        private selector: DataSelector,
+    ) {}
 
     has(selector: string): boolean {
         return this.selector.has(selector, this.form.state.data);
