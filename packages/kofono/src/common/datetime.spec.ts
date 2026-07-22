@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isAfter, isEqual, isValid, parse } from "./datetime";
+import { isAfter, isEqual, isValidDate, parse } from "./datetime";
 
 describe("datetime isValid()", () => {
     const tests: [title: string, value: any, expected: boolean][] = [
@@ -19,7 +19,7 @@ describe("datetime isValid()", () => {
 
     for (const [title, value, expected] of tests) {
         it(title, () => {
-            expect(isValid(value)).toBe(expected);
+            expect(isValidDate(value)).toBe(expected);
         });
     }
 });

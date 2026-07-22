@@ -5,7 +5,7 @@
 /**
  * Checks whether a Date object is valid (not Invalid Date).
  */
-export function isValid(date: unknown): boolean {
+export function isValidDate(date: unknown): boolean {
     if (["string", "number"].includes(typeof date)) {
         date = new Date(date as string | number);
     }
@@ -51,7 +51,7 @@ export function parse(
     const seconds = parseInt(g.seconds ?? "0", 10);
 
     const result = new Date(year, month, day, hours, minutes, seconds);
-    if (!isValid(result)) {
+    if (!isValidDate(result)) {
         return undefined;
     }
 
