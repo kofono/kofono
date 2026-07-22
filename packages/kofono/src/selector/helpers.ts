@@ -44,9 +44,18 @@ export function getParentSelector(selector: string): string {
 }
 
 /**
+ * Get the base selector.
+ * ex: getSelectorBase("a.b.c") => "c"
+ */
+export function getSelectorBase(selector: string): string {
+    const parts = selector.split(DataSelector.separator);
+    return parts[parts.length - 1];
+}
+
+/**
  * Generator for looping over the parent(s) of a given selector
  */
-export function* parentSelectors(selector: string): Generator<string> {
+export function* getParentSelectors(selector: string): Generator<string> {
     let parts = selector.split(DataSelector.separator).slice(0, -1);
     while (parts.length > 0) {
         yield joinSelectors(...parts);
