@@ -4,6 +4,7 @@ import {
     type ValidationContext,
     type ValidatorResponse,
 } from "../../validator/types";
+import { getPropertyDefaultValue } from "../dataTree";
 import type { Form } from "../Form";
 import type { FormProperty } from "../FormProperty";
 import { Update } from "../types";
@@ -81,7 +82,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
             this.form.compileStats();
         }
 
-        // handle qualifications/disqualifications state change
+        // handle qualifications/disqualifications when state changes
         if (
             this.event === Events.SelectorQualification &&
             selectorEventResponse.hasChanged()
@@ -96,34 +97,36 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
     }
 
     /**
-     * Handle a property being disqualified
+     * Handle a property being disqualified after being qualified
      */
     private async handlePropDisqualification(
         prop: FormProperty,
     ): Promise<void> {
         prop.validation = [false, QualificationError.SelectorDisqualified];
 
-        if (prop.type === PropertyType.Object) {
-            const children = prop.childrenSelectors();
-            for (const childSelector of children) {
-                const childProp = this.form.prop(childSelector);
-                childProp.validation = [
-                    false,
-                    QualificationError.SelectorDisqualified,
-                ];
-                childProp.qualification = [
-                    false,
-                    QualificationError.ParentDisqualified,
-                ];
-                await this.resetValueOfDisqualifiedSelector(childProp);
-            }
-        } else {
-            await this.resetValueOfDisqualifiedSelector(prop);
+        if (prop.type !== PropertyType.Object) {
+            await this.nullifyPropertyValue(prop);
+            return;
+        }
+
+        const children = prop.childrenSelectors();
+        for (const childSelector of children) {
+            const childProp = this.form.prop(childSelector);
+            childProp.validation = [
+                false,
+                QualificationError.SelectorDisqualified,
+            ];
+            childProp.qualification = [
+                false,
+                QualificationError.ParentDisqualified,
+            ];
+
+            await this.nullifyPropertyValue(childProp);
         }
     }
 
     /**
-     * Handle a property being qualified
+     * Handle a property being qualified after being disqualified
      */
     private async handlePropQualification(prop: FormProperty): Promise<void> {
         if (prop.type === PropertyType.Object) {
@@ -146,18 +149,27 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
                     selector: childSelector,
                     value: this.form.prop(childSelector).value,
                 };
+
                 await this.form.events.emitSelector(
                     childSelector,
                     Events.SelectorQualification,
                     ctx,
                 );
-                await this.form.events.emitSelector(
-                    childSelector,
-                    Events.SelectorValidation,
-                    ctx,
-                );
+
+                if (
+                    this.form.isQualified(childSelector) &&
+                    prop.parentsQualified()
+                ) {
+                    await this.resetPropertyValue(prop);
+                    await this.form.events.emitSelector(
+                        childSelector,
+                        Events.SelectorValidation,
+                        ctx,
+                    );
+                }
             }
         } else if (prop.parentsQualified()) {
+            await this.resetPropertyValue(prop);
             await this.form.events.emitSelector(
                 this.selector,
                 Events.SelectorValidation,
@@ -171,13 +183,24 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
     }
 
     /**
-     * Revert to the default value of a disqualified selector
+     * Nullify the value of a property (meant for disqualified properties)
      */
-    private async resetValueOfDisqualifiedSelector(
-        prop: FormProperty,
-    ): Promise<void> {
+    private async nullifyPropertyValue(prop: FormProperty): Promise<void> {
         if (prop.treeType === TreeType.Leaf) {
-            const defaultValue = prop.get("default", null);
+            await this.form.update(
+                prop.selector,
+                null,
+                Update.ResetQualification,
+            );
+        }
+    }
+
+    /**
+     * Revert a property value to his default value (meant for qualified properties)
+     */
+    private async resetPropertyValue(prop: FormProperty): Promise<void> {
+        if (prop.treeType === TreeType.Leaf) {
+            const defaultValue = getPropertyDefaultValue(prop);
             await this.form.update(
                 prop.selector,
                 defaultValue,

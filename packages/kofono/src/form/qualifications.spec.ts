@@ -219,9 +219,9 @@ describe("Testing qualifications value resetting", () => {
     describe("on start", () => {
         it("propB children value should be null", async () => {
             expect(form.state.data.propB).toEqual({
-                one: "ONE_DEFAULT",
+                one: null,
                 two: {
-                    other: "TWO_OTHER",
+                    other: null,
                 },
             });
         });

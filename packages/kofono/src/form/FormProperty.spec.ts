@@ -42,7 +42,7 @@ describe("FormProperty", () => {
 
     describe("for method valueOrDefault()", () => {
         it("given string propA, should return null", () => {
-            expect(form.prop("propA").valueOrDefault(null)).toBeNull();
+            expect(form.prop("propA").valueOrDefault(null)).toBe("");
         });
         it("given string propB, should return default value 'test'", () => {
             expect(form.prop("propB").valueOrDefault(null)).toBe("test");

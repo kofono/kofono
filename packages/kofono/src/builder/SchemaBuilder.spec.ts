@@ -35,11 +35,11 @@ describe("SchemaBuilder", () => {
 
     it("should have the correct state", () => {
         expect(form.state.data).toEqual({
-            prop1: null,
-            prop2: null,
-            prop3: null,
+            prop1: "",
+            prop2: 0,
+            prop3: false,
             prop5: {
-                propA: null,
+                propA: "",
             },
             prop6: [],
             prop7: [],

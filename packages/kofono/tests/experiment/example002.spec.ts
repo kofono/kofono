@@ -127,12 +127,12 @@ describe("test example002", () => {
         ]).toEqual([true, true, true, true, true]);
     });
 
-    it("expect productDimension props to be invalid after qualification", () => {
+    it("expect productDimension props to be valid after qualification", () => {
         expect([
             form.isValid("productDimension.width"),
             form.isValid("productDimension.height"),
             form.isValid("productDimension.depth"),
-        ]).toEqual([false, false, false]);
+        ]).toEqual([true, true, true]);
     });
 
     it("expect productTranslations value to be equal to its default", () => {

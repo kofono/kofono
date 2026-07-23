@@ -39,7 +39,7 @@ describe("FormArray expand", () => {
         expect(form.state.data).toEqual({
             propA: [
                 {
-                    A: null,
+                    A: "",
                     B: 23,
                     C: null,
                 },
@@ -122,7 +122,7 @@ describe("FormArray expand", () => {
                 {
                     A: "foo",
                     B: 23,
-                    C: null,
+                    C: false,
                 },
                 {
                     A: "bar",

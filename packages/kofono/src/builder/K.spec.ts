@@ -236,7 +236,7 @@ describe("K builder", () => {
             });
             expect(form).toBeInstanceOf(Form);
             expect(form.state.data).toEqual({
-                propA: null,
+                propA: "",
             });
         });
 
@@ -260,7 +260,7 @@ describe("K builder", () => {
             });
             expect(form).toBeInstanceOf(Form);
             expect(form.state.data).toEqual({
-                propA: null,
+                propA: "",
             });
         });
     });

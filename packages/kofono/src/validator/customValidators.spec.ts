@@ -85,7 +85,7 @@ describe("Custom validators", () => {
         );
 
         expect(form.state.validations).toEqual({
-            name: [false, "CUSTOM_ERROR", { expect: "something", given: null }],
+            name: [false, "CUSTOM_ERROR", { expect: "something", given: "" }],
         });
 
         await form.update("name", "something");

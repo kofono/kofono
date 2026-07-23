@@ -167,8 +167,8 @@ test("FormTest_legacy", async () => {
     await form.update("propB", "something");
     expect(form.$q("propC")[0]).toBeTruthy();
     await form.update("propA", null);
-    expect(form.$q("propB")[0]).toBeFalsy();
-    expect(form.$d("propB")).toEqual(form.prop("propB").def().default);
+    expect(form.isQualified("propB")).toBeFalsy();
+    expect(form.$d("propB")).toEqual(null);
     expect(form.$q("propC")[0]).toBeFalsy();
 
     await form.update("propA", "FOO");
