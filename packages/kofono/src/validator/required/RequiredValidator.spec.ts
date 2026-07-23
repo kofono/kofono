@@ -103,8 +103,10 @@ describe("requiredValidator", () => {
             expect(form.isValid("propB")).toBe(true);
             await form.update("propB", ["g"]);
             expect(form.isValid("propB")).toBe(false);
-            await form.update("propB", "a"); // here the required work, but value itself do no respect property type
-            expect(form.isValid("propB")).toBe(true);
+            // here the required work, but value itself do no respect property type
+            const outcome = await form.update("propB", "a");
+            expect(form.isValid("propB")).toBe(false);
+            expect(outcome.ok).toBe(false);
         });
     });
 });
