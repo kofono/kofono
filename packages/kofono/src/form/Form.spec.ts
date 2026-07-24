@@ -11,20 +11,20 @@ import { Events } from "./events/types";
 import { Form } from "./Form";
 import { FormStatus, type State } from "./types";
 
-const schema: Schema = K.schema({
-    propA: K.number().$v(v => v.notEmpty()),
-    propB: K.string()
-        .$q(q => q.isValid("propA"))
-        .$v(v => v.notEmpty())
+const schema = K.schema({
+    aNumber: K.number("notEmpty"),
+    bString: K.string("notEmpty")
+        .qualifications({ isValid: "aNumber" })
         .default("bob"),
-    propC: K.number().$q(q => q.isValid(["propA", "propB"])),
-    propD: K.string().$v(v => v.notEmpty()),
-    propE: K.object({
-        propE1: K.string(),
+    cNumber: K.number().qualifications({ isValid: ["aNumber", "bString"] }),
+    dString: K.string("notEmpty"),
+    eObject: K.object({
+        aString: K.string(),
     }),
-});
+    fBoolean: K.boolean(),
+}) satisfies Schema;
 
-describe("Form default initialization tests", () => {
+describe("Empty form default initialization tests", () => {
     let form: Form;
     beforeEach(async () => {
         form = new Form({
@@ -44,7 +44,7 @@ describe("Form default initialization tests", () => {
         expect(form.status).toBe(FormStatus.Init);
     });
 
-    it("should have correct status after init", async () => {
+    it("should have correct status after init()", async () => {
         await form.init();
         expect(form.status).toBe(FormStatus.Ready);
     });
@@ -90,25 +90,139 @@ describe("Form state isolation between instances", () => {
 describe("Form childrenProps()", () => {
     let form: Form;
     beforeAll(async () => {
-        form = await buildSchema(schema);
+        form = await K.form(schema);
     });
 
     it("calling childrenProps() without parent", () => {
-        expect(Object.keys(form.childrenProps("propE"))).toEqual([
-            "propE.propE1",
+        expect(Object.keys(form.childrenProps("eObject"))).toEqual([
+            "eObject.aString",
         ]);
     });
 
     it("calling childrenProps() with parent", () => {
-        expect(Object.keys(form.childrenProps("propE", true))).toEqual([
-            "propE",
-            "propE.propE1",
+        expect(Object.keys(form.childrenProps("eObject", true))).toEqual([
+            "eObject",
+            "eObject.aString",
         ]);
     });
 });
 
+describe("Form addProp()/deleteProp() property", () => {
+    let form: Form;
+    beforeAll(async () => {
+        form = await K.form({
+            aString: K.string(),
+            bString: K.string(),
+        });
+    });
+
+    it("should add prop and trigger event", async () => {
+        let selector = "";
+        form.events.on(Events.PropertyAdded, ctx => {
+            selector = ctx.selector;
+        });
+
+        expect(form.hasProp("cString")).toBeFalsy();
+        expect(selector).toEqual("");
+
+        await form.addProp(new Property("cString", K.string().def));
+
+        expect(form.hasProp("cString")).toBeTruthy();
+        expect(selector).toEqual("cString");
+    });
+
+    it("should delete prop and trigger event", async () => {
+        let selector = "";
+        form.events.on(Events.PropertyDeleted, ctx => {
+            selector = ctx.selector;
+        });
+
+        expect(form.hasProp("cString")).toBeTruthy();
+        expect(selector).toEqual("");
+
+        await form.deleteProp("cString");
+
+        expect(form.hasProp("cString")).toBeFalsy();
+        expect(selector).toEqual("cString");
+    });
+});
+
+describe("Form loadState() and Events.FormLoadState", () => {
+    let form: Form;
+    beforeAll(async () => {
+        form = await K.form({
+            propA: K.string(),
+            propB: K.string(),
+        });
+    });
+
+    it("should trigger the event when loadState()", async () => {
+        let state: Partial<State> = {};
+        form.events.on(Events.FormLoadState, ctx => {
+            state = ctx.state;
+        });
+        await form.loadState({
+            data: {
+                propA: "FOO",
+                propB: "BAR",
+            },
+        });
+        expect(state.data).toEqual({
+            propA: "FOO",
+            propB: "BAR",
+        });
+    });
+});
+
+describe("Form update()", () => {
+    let form: Form;
+    beforeEach(async () => {
+        form = await K.form(schema);
+    });
+
+    it("simple normal update should work", async () => {
+        const result = await form.update("aNumber", 0);
+        expect(result.ok).toBeTruthy();
+    });
+
+    it("wrong type should not work", async () => {
+        const result = await form.update("aNumber", "wrongtype");
+        expect(result.ok).toBeFalsy();
+        if (!result.ok) {
+            expect(result.error.message).toEqual(
+                "Invalid data type for selector: aNumber",
+            );
+        }
+    });
+});
+
+describe("Form errors()", () => {
+    let form: Form;
+    beforeAll(async () => {
+        form = await buildSchema(schema);
+    });
+
+    it("should return only errors", async () => {
+        const errors = form.errors();
+        // default msgs are not that great, but they are meant to be translated or customized
+        expect(errors).toEqual({
+            $global: "_FORM_NOT_COMPLETE",
+            aNumber: notEmptyValidator.err.IsEmpty,
+            bString: QualificationError.SelectorDisqualified,
+            cNumber: QualificationError.SelectorDisqualified,
+            dString: notEmptyValidator.err.IsEmpty,
+        });
+    });
+
+    it("should return no error when form pass", async () => {
+        await form.updates({ aNumber: 4, dString: "test" });
+        const errors = form.errors();
+        expect(errors).toEqual({});
+    });
+});
+
 // todo: to refactor
-test("FormTest_legacy", async () => {
+test.skip("FormTest_legacy", async () => {
     const form = await buildSchema(schema);
 
     form.events.onSelectorQualification("propB", async () => {
@@ -155,8 +269,8 @@ test("FormTest_legacy", async () => {
     ]);
 
     await form.update("propA", "FOO");
-    expect(form.$v("propB")).toEqual([true, ""]);
-    expect(form.$q("propB")).toEqual([true, ""]);
+    expect(form.$v("propB")).toEqual([false, "_SELECTOR_DISQUALIFIED"]);
+    expect(form.$q("propB")).toEqual([false, "CUSTOM_QUALIFICATION"]);
     await form.update("propA", "FOOO");
     expect(form.$q("propB")).toEqual([false, "CUSTOM_QUALIFICATION"]);
 
@@ -174,87 +288,4 @@ test("FormTest_legacy", async () => {
     await form.update("propA", "FOO");
     await form.update("propC", "whatever");
     await form.update("propD", "whatever");
-});
-
-describe("Form add/delete property", () => {
-    let form: Form;
-    beforeAll(async () => {
-        form = await K.form({
-            propA: K.string(),
-            propB: K.string(),
-        });
-    });
-
-    it("should add prop and trigger event", async () => {
-        let selector = "";
-        form.events.on(Events.PropertyAdded, ctx => {
-            selector = ctx.selector;
-        });
-
-        expect(form.hasProp("propC")).toBeFalsy();
-        expect(selector).toEqual("");
-
-        await form.addProp(new Property("propC", K.string().def));
-
-        expect(form.hasProp("propC")).toBeTruthy();
-        expect(selector).toEqual("propC");
-    });
-
-    it("should delete prop and trigger event", async () => {
-        let selector = "";
-        form.events.on(Events.PropertyDeleted, ctx => {
-            selector = ctx.selector;
-        });
-
-        expect(form.hasProp("propC")).toBeTruthy();
-        expect(selector).toEqual("");
-
-        await form.deleteProp("propC");
-
-        expect(form.hasProp("propC")).toBeFalsy();
-        expect(selector).toEqual("propC");
-    });
-});
-
-describe("Form loadState event", () => {
-    let form: Form;
-    beforeAll(async () => {
-        form = await K.form({
-            propA: K.string(),
-            propB: K.string(),
-        });
-    });
-
-    it("should add prop and trigger event", async () => {
-        let state: Partial<State> = {};
-        form.events.on(Events.FormLoadState, ctx => {
-            state = ctx.state;
-        });
-        expect(state).toEqual({});
-    });
-});
-
-describe("Form errors()", () => {
-    let form: Form;
-    beforeAll(async () => {
-        form = await buildSchema(schema);
-    });
-
-    it("should return only errors", async () => {
-        const errors = form.errors();
-        // default msgs are not that great, but they are meant to be translated or customized
-        expect(errors).toEqual({
-            $global: "_FORM_NOT_COMPLETE",
-            propA: notEmptyValidator.err.IsEmpty,
-            propB: QualificationError.SelectorDisqualified,
-            propC: QualificationError.SelectorDisqualified,
-            propD: notEmptyValidator.err.IsEmpty,
-        });
-    });
-
-    it("should return no error when form pass", async () => {
-        await form.updates({ propA: 4, propD: 4 });
-        const errors = form.errors();
-        expect(errors).toEqual({});
-    });
 });

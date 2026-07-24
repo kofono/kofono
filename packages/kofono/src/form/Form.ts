@@ -1,4 +1,5 @@
 import { version as packageVersion } from "../../package.json";
+import { type Outcome, outcome } from "../common/result";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { Property } from "../property/Property";
 import type { BaseProperty } from "../property/types";
@@ -31,6 +32,7 @@ import {
     Update,
     type UpdateType,
 } from "./types";
+import { validateSelectorDataType } from "./validateSelectorDataType";
 
 export class Form {
     static readonly version: string = packageVersion;
@@ -164,8 +166,8 @@ export class Form {
     public childrenProps(
         parentSelector: string,
         includeParent: boolean = false,
-    ): BaseProperties {
-        const props: BaseProperties = {};
+    ): FormProperties {
+        const props: FormProperties = {};
         if (includeParent) {
             props[parentSelector] = this.#props[parentSelector];
         }
@@ -197,6 +199,9 @@ export class Form {
         return this;
     }
 
+    /**
+     * Get compiled form errors
+     */
     public errors(): Record<string, string> {
         const errors: Record<string, string> = {};
         if (!this.pass()) {
@@ -252,6 +257,9 @@ export class Form {
         return this.$v(selector)[0] ?? false;
     }
 
+    /**
+     * Load form complete/partial state
+     */
     public async loadState(state: Partial<State>): Promise<void> {
         this.#state = {
             ...this.#state,
@@ -274,10 +282,6 @@ export class Form {
 
     public propsKeys(): string[] {
         return Object.keys(this.#props);
-    }
-
-    public propsEntries(): [string, FormProperty<SchemaProperty>][] {
-        return Object.entries(this.#props);
     }
 
     // todo: still necessary?
@@ -311,10 +315,26 @@ export class Form {
         selector: string,
         newValue: unknown,
         updateType: UpdateType = Update.Normal,
-    ): Promise<void> {
+    ): Promise<Outcome> {
         const [exists, oldValue] = this.#formDataSelector.tryGet(selector);
         if (!exists) {
-            throw new Error(`Selector not found: ${selector}`);
+            return outcome.fail(`Selector not found: ${selector}`);
+        }
+
+        if (updateType === Update.Normal) {
+            const isValidDataType = validateSelectorDataType(
+                this,
+                selector,
+                newValue,
+            );
+
+            if (!isValidDataType) {
+                return outcome.fail(
+                    `Invalid data type for selector: ${selector}`,
+                );
+            }
+
+            this.#session.update(selector);
         }
 
         const updateCtx: SelectorUpdateCtx = {
@@ -323,10 +343,6 @@ export class Form {
             oldValue,
             newValue,
         };
-
-        if (updateType === Update.Normal) {
-            this.#session.update(selector);
-        }
 
         await this.#events.emit(Events.SelectorBeforeUpdate, updateCtx);
 
@@ -354,6 +370,8 @@ export class Form {
         }
 
         await this.#events.emit(Events.SelectorAfterUpdate, updateCtx);
+
+        return outcome.ok();
     }
 
     /**

@@ -62,7 +62,7 @@ export class FormStats {
     }
 
     private cacheProps() {
-        for (const [sel, prop] of this.form.propsEntries()) {
+        for (const [sel, prop] of Object.entries(this.form.props)) {
             this.cachedPropsEntries.push([sel, prop.treeType]);
         }
     }
