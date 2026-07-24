@@ -5,6 +5,7 @@ import { defaultConfig } from "../form/defaults";
 import type { Form } from "../form/Form";
 import type { FormConfig } from "../form/types";
 import { PropertyType } from "../property/types";
+import { schemaSelectors } from "../schema/functional";
 import type {
     Schema,
     SchemaProperties,
@@ -51,6 +52,10 @@ export class K {
             ),
             __: innerBody.def.__ as SchemaProperties,
         };
+    }
+
+    public static schemaSelectors(schema: Schema): string[] {
+        return schemaSelectors(schema);
     }
 
     public static extendsSchema(
