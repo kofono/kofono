@@ -47,6 +47,13 @@ describe("Testing qualifications with nested objects", () => {
             expect(form.$v("propB")).toEqual(errSelectorDisqualified);
         });
 
+        it("propB children value should be null", async () => {
+            expect(form.$d("propB")).toEqual({
+                one: null,
+                two: null,
+            });
+        });
+
         it("propB children should be disqualified because propB is disqualified", async () => {
             expect(form.$q("propB.one")).toEqual(errParentDisqualified);
             expect(form.$v("propB.one")).toEqual(errSelectorDisqualified);
@@ -64,7 +71,7 @@ describe("Testing qualifications with nested objects", () => {
             expect(form.$v("propC")).toEqual(errSelectorDisqualified);
         });
 
-        it("propB children should be disqualified because propB.one is disqualified", async () => {
+        it("propC children should be disqualified because propB.one is disqualified", async () => {
             expect(form.$q("propC.one")).toEqual(errParentDisqualified);
             expect(form.$v("propC.one")).toEqual(errSelectorDisqualified);
 
@@ -73,6 +80,15 @@ describe("Testing qualifications with nested objects", () => {
 
             expect(form.$q("propC.two.other")).toEqual(errParentDisqualified);
             expect(form.$v("propC.two.other")).toEqual(errSelectorDisqualified);
+        });
+
+        it("propC children value should be null", async () => {
+            expect(form.$d("propC")).toEqual({
+                one: null,
+                two: {
+                    other: null,
+                },
+            });
         });
 
         it("stats should be correct", async () => {
@@ -99,6 +115,13 @@ describe("Testing qualifications with nested objects", () => {
         it("propB children should be qualified because propA is valid", async () => {
             expect(form.$q("propB.one")).toEqual(isTrue);
             expect(form.$v("propB.one")).toEqual(errIsEmpty);
+        });
+
+        it("propB children value should be not null", async () => {
+            expect(form.$d("propB")).toEqual({
+                one: "",
+                two: "",
+            });
         });
 
         it("propC should still be disqualified because propB.one is not valid", async () => {
@@ -136,6 +159,15 @@ describe("Testing qualifications with nested objects", () => {
         it("propC should be qualified because propB.one is valid", async () => {
             expect(form.$q("propC")).toEqual(isTrue);
             expect(form.$v("propC")).toEqual(isTrue);
+        });
+
+        it("propC qualified children value should be not null", async () => {
+            expect(form.$d("propC")).toEqual({
+                one: "",
+                two: {
+                    other: null,
+                },
+            });
         });
 
         it("propC children should be qualified because propB.one is valid", async () => {

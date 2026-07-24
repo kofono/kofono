@@ -10,9 +10,9 @@ import type { Form } from "./Form";
 const schema = K.schema({
     propA: K.array(
         K.object({
-            A: K.string().$v(v => v.notEmpty()),
+            A: K.string("notEmpty"),
             B: K.number().default(23),
-            C: K.boolean().$q(q => q.isValid(".A")),
+            C: K.boolean().qualifications({ isValid: ".A" }),
         }),
     ),
 });
@@ -194,7 +194,7 @@ describe("FormArray slice in the middle", () => {
         expect(form.state.data).toEqual({
             propA: [
                 {
-                    A: null,
+                    A: "",
                     B: 23,
                     C: null,
                 },
@@ -263,7 +263,7 @@ describe("FormArray slice at the end", () => {
         expect(form.state.data).toEqual({
             propA: [
                 {
-                    A: null,
+                    A: "",
                     B: 23,
                     C: null,
                 },
