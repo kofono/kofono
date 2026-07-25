@@ -12,6 +12,8 @@
 - Form.update now returns a Result type
 - Form.updates now return a Result[] type
 - rename FormProperty.parentsQualified() to FormProperty.isParentsQualified()
+- rename Form.isValid() to Form.isPropValid()
+- rename Form.isQualified() to Form.isPropQualified()
 
 # 0.9.0 - 2026-07-19
 
