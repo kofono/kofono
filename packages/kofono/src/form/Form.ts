@@ -17,8 +17,8 @@ import { FormInitContext } from "./FormInitContext";
 import { FormProperty } from "./FormProperty";
 import { FormSelectors } from "./FormSelectors";
 import { FormSession } from "./FormSession";
-import { generateNewFormState } from "./FormState";
 import { FormStats } from "./FormStats";
+import { generateNewFormState } from "./state";
 import {
     type BaseProperties,
     type FormConfig,
@@ -249,11 +249,11 @@ export class Form {
         this.#status = FormStatus.Ready;
     }
 
-    public isQualified(selector: string): boolean {
+    public isPropQualified(selector: string): boolean {
         return this.$q(selector)[0] ?? false;
     }
 
-    public isValid(selector: string): boolean {
+    public isPropValid(selector: string): boolean {
         return this.$v(selector)[0] ?? false;
     }
 

@@ -33,22 +33,22 @@ test("test example001", async () => {
     const form = await K.form(declaration);
 
     expect(
-        form.isQualified("billingAddress"),
+        form.isPropQualified("billingAddress"),
         "expect billingAddress to be qualified on start",
     ).toBeTruthy();
 
     await form.update("sameAddressForBilling", true);
 
     expect(
-        form.isQualified("billingAddress"),
+        form.isPropQualified("billingAddress"),
         "expect billingAddress to be unqualified when sameAddressForBilling is true",
     ).toBeFalsy();
 
-    expect(form.isValid("address.street")).toBeFalsy();
-    expect(form.isValid("address.city")).toBeFalsy();
+    expect(form.isPropValid("address.street")).toBeFalsy();
+    expect(form.isPropValid("address.city")).toBeFalsy();
 
     expect(form.pass()).toBeFalsy();
 
     await form.update("sameAddressForBilling", false);
-    expect(form.isQualified("billingAddress")).toBeTruthy();
+    expect(form.isPropQualified("billingAddress")).toBeTruthy();
 });

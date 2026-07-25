@@ -83,7 +83,7 @@ describe("SameAsValidator tests", () => {
                 [test.other.selector]: K.string().default(test.other.value),
                 prop: K.string(sameAs(test.other.selector)).default(test.value),
             });
-            expect(form.isValid("prop")).toBe(test.expected);
+            expect(form.isPropValid("prop")).toBe(test.expected);
             if (!test.expected) {
                 expect(form.prop("prop").validationError).toEqual(test.error);
             }

@@ -218,7 +218,7 @@ describe.skip("Testing disqualifications with nested objects", () => {
         beforeAll(async () => {
             // propB depends on propA validity
             await form.update("propA", "");
-            expect(form.isQualified("propB")).toBeFalsy();
+            expect(form.isPropQualified("propB")).toBeFalsy();
         });
 
         afterAll(async () => {
