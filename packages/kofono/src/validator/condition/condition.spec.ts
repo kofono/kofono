@@ -9,16 +9,6 @@ import {
 } from "./condition";
 import type { Condition, Placeholder } from "./types";
 
-const t = `
-{property:my.selector:data} or
-{property:my.selector}
-{property:my.selector:validation}
-{property:my.selector:qualification}
-{property:my.selector}
-
-`;
-t;
-
 describe("parsePlaceholders()", () => {
     const tests: {
         template: string;
