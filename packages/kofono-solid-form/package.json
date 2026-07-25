@@ -35,8 +35,8 @@
     },
     "devDependencies": {
         "@solidjs/testing-library": "^0.8.10",
-        "@tailwindcss/postcss": "^4.2.4",
-        "@tailwindcss/vite": "^4.2.4",
+        "@tailwindcss/postcss": "^4.3.3",
+        "@tailwindcss/vite": "^4.3.3",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/user-event": "^14.6.1",
         "@tsdown/css": "0.22.3",
