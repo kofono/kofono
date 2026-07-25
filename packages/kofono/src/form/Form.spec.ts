@@ -1,10 +1,9 @@
-import { beforeAll, beforeEach, describe, expect, it, test } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { buildSchema } from "../builder/helpers";
 import { K } from "../builder/K";
 import { Property } from "../property/Property";
 import type { Schema } from "../schema/Schema";
 import { notEmptyValidator } from "../validator/empty/NotEmptyValidator";
-import { isValidValidator } from "../validator/isValid/IsValidValidator";
 import { QualificationError } from "../validator/types";
 import { defaultConfig } from "./defaults";
 import { Events } from "./events/types";
@@ -174,7 +173,7 @@ describe("Form loadState() and Events.FormLoadState", () => {
     });
 });
 
-describe("Form update()", () => {
+describe("Form update() and updates()", () => {
     let form: Form;
     beforeEach(async () => {
         form = await K.form(schema);
@@ -189,10 +188,41 @@ describe("Form update()", () => {
         const result = await form.update("aNumber", "wrongtype");
         expect(result.ok).toBeFalsy();
         if (!result.ok) {
-            expect(result.error.message).toEqual(
+            expect(result.error).toEqual(
                 "Invalid data type for selector: aNumber",
             );
         }
+    });
+
+    it("unknown selector type should not work", async () => {
+        const result = await form.update("unknownSelector", "foo");
+        expect(result.ok).toBeFalsy();
+        if (!result.ok) {
+            expect(result.error).toEqual("Selector not found: unknownSelector");
+        }
+    });
+
+    it("updates() should return a correct Result[]", async () => {
+        let result = await form.updates({
+            aNumber: "foo",
+            bString: "bar",
+            unknownSelector: "foo",
+        });
+
+        expect(result).toEqual([
+            { ok: false, error: "Invalid data type for selector: aNumber" },
+            { ok: false, error: "Selector not qualified: bString" },
+            { ok: false, error: "Selector not found: unknownSelector" },
+        ]);
+
+        result = await form.updates({
+            aNumber: 1,
+            bString: "bar",
+        });
+
+        expect(result).toEqual([{ ok: true }, { ok: true }]);
+        expect(form.state.data.aNumber).toEqual(1);
+        expect(form.state.data.bString).toEqual("bar");
     });
 });
 
@@ -219,73 +249,4 @@ describe("Form errors()", () => {
         const errors = form.errors();
         expect(errors).toEqual({});
     });
-});
-
-// todo: to refactor
-test.skip("FormTest_legacy", async () => {
-    const form = await buildSchema(schema);
-
-    form.events.onSelectorQualification("propB", async () => {
-        // console.log(form.$d("propA"));
-        if (form.$d("propA") === "FOO") {
-            return [true, ""];
-        }
-        return [false, "CUSTOM_QUALIFICATION"];
-    }, ["propA"]);
-
-    expect(form.$v("propA")).toEqual([false, notEmptyValidator.err.IsEmpty]);
-    expect(form.$q("propA")).toEqual([true, ""]);
-
-    expect(form.$v("propB")).toEqual([
-        false,
-        QualificationError.SelectorDisqualified,
-    ]);
-    expect(form.$q("propB")).toEqual([
-        false,
-        isValidValidator.err.SelectorNotValid,
-        { selectors: ["propA"] },
-    ]);
-
-    expect(form.$v("propC")).toEqual([
-        false,
-        QualificationError.SelectorDisqualified,
-    ]);
-    expect(form.$q("propC")).toEqual([
-        false,
-        isValidValidator.err.SelectorNotValid,
-        { selectors: ["propA", "propB"] },
-    ]);
-
-    expect(form.$v("propD")).toEqual([false, notEmptyValidator.err.IsEmpty]);
-    expect(form.$q("propD")).toEqual([true, ""]);
-
-    await form.update("propA", 5);
-    expect(form.$v("propA")).toEqual([true, ""]);
-    expect(form.$q("propB")).toEqual([false, "CUSTOM_QUALIFICATION"]);
-    expect(form.$q("propC")).toEqual([
-        false,
-        isValidValidator.err.SelectorNotValid,
-        { selectors: ["propA", "propB"] },
-    ]);
-
-    await form.update("propA", "FOO");
-    expect(form.$v("propB")).toEqual([false, "_SELECTOR_DISQUALIFIED"]);
-    expect(form.$q("propB")).toEqual([false, "CUSTOM_QUALIFICATION"]);
-    await form.update("propA", "FOOO");
-    expect(form.$q("propB")).toEqual([false, "CUSTOM_QUALIFICATION"]);
-
-    await form.update("propA", "FOO");
-    expect(form.$q("propB")[0]).toBeTruthy();
-    expect(form.$q("propC")[0]).toBeTruthy();
-
-    await form.update("propB", "something");
-    expect(form.$q("propC")[0]).toBeTruthy();
-    await form.update("propA", null);
-    expect(form.isQualified("propB")).toBeFalsy();
-    expect(form.$d("propB")).toEqual(null);
-    expect(form.$q("propC")[0]).toBeFalsy();
-
-    await form.update("propA", "FOO");
-    await form.update("propC", "whatever");
-    await form.update("propD", "whatever");
 });

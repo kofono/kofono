@@ -1,5 +1,5 @@
 import { version as packageVersion } from "../../package.json";
-import { type Outcome, outcome } from "../common/result";
+import { type Result, result } from "../common/result";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { Property } from "../property/Property";
 import type { BaseProperty } from "../property/types";
@@ -315,13 +315,20 @@ export class Form {
         selector: string,
         newValue: unknown,
         updateType: UpdateType = Update.Normal,
-    ): Promise<Outcome> {
+    ): Promise<Result> {
         const [exists, oldValue] = this.#formDataSelector.tryGet(selector);
         if (!exists) {
-            return outcome.fail(`Selector not found: ${selector}`);
+            return result.fail(`Selector not found: ${selector}`);
         }
 
         if (updateType === Update.Normal) {
+            if (
+                !this.prop(selector).isQualified() ||
+                !this.prop(selector).isParentsQualified()
+            ) {
+                return result.fail(`Selector not qualified: ${selector}`);
+            }
+
             const isValidDataType = validateSelectorDataType(
                 this,
                 selector,
@@ -329,7 +336,7 @@ export class Form {
             );
 
             if (!isValidDataType) {
-                return outcome.fail(
+                return result.fail(
                     `Invalid data type for selector: ${selector}`,
                 );
             }
@@ -371,7 +378,7 @@ export class Form {
 
         await this.#events.emit(Events.SelectorAfterUpdate, updateCtx);
 
-        return outcome.ok();
+        return result.ok();
     }
 
     /**
@@ -383,10 +390,12 @@ export class Form {
     public async updates(
         values: Record<string, unknown>,
         updateType: UpdateType = Update.Normal,
-    ): Promise<void> {
+    ): Promise<Result[]> {
+        const outcomes: Result[] = [];
         for (const [sel, val] of Object.entries(values)) {
-            await this.update(sel, val, updateType);
+            outcomes.push(await this.update(sel, val, updateType));
         }
+        return outcomes;
     }
 
     public var(keyPath: string): unknown {

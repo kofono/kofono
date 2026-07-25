@@ -107,6 +107,15 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
         return this.form.state.qualifications[this.selector][0];
     }
 
+    public isParentsQualified(): boolean {
+        for (const sel of getParentSelectors(this.selector)) {
+            if (!this.form.prop(sel).isQualified()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public isValid(): boolean {
         return this.form.state.validations[this.selector][0];
     }
@@ -157,15 +166,6 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
     //     }
     //     return selectors;
     // }
-
-    public isParentsQualified(): boolean {
-        for (const sel of getParentSelectors(this.selector)) {
-            if (!this.form.prop(sel).isQualified()) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public childrenSelectors(includeParent: boolean = false): string[] {
         const selectors = this.form.selectors.getChildrenSelectors(

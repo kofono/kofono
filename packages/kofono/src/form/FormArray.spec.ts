@@ -132,7 +132,7 @@ describe("FormArray expand", () => {
                 {
                     A: "",
                     B: 15,
-                    C: false,
+                    C: null,
                 },
             ],
         });
