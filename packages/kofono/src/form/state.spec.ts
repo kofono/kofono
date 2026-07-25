@@ -5,7 +5,7 @@ import {
     getQualifiedSelectors,
     getUnqualifiedSelectors,
     getValidSelectors,
-} from "./FormState";
+} from "./state";
 
 describe("FormState getValidSelectors() && getInvalidSelectors()", () => {
     it("should return invalid selectors", async () => {
