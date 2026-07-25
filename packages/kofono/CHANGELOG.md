@@ -1,3 +1,18 @@
+# 0.10.0 - ?
+
+- add propertyTypeDefaultValues
+- add validateSelectorDataType()
+- leaf property with qualification(s) can be nullified
+- leaf property without qualification(s) cannot be nullified
+- leaf property without qualification(s) use schema default value
+  or fall back on propertyTypeDefaultValues
+- remove Form.propEntries()
+- add common/result types
+- Form.update now fails when the data type does not equal the property data type
+- Form.update now returns a Result type
+- Form.updates now return a Result[] type
+- rename FormProperty.parentsQualified() to FormProperty.isParentsQualified()
+
 # 0.9.0 - 2026-07-19
 
 - add cache to speed up form stats compilation
