@@ -35,7 +35,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
 
         if (
             !this.form.events.selectorsEvents[this.selector] ||
-            !this.form.prop(this.selector).parentsQualified() ||
+            !this.form.prop(this.selector).isParentsQualified() ||
             (isValidation && !this.form.isQualified(this.selector))
         ) {
             return null;
@@ -158,7 +158,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
 
                 if (
                     this.form.isQualified(childSelector) &&
-                    prop.parentsQualified()
+                    prop.isParentsQualified()
                 ) {
                     await this.resetPropertyValue(prop);
                     await this.form.events.emitSelector(
@@ -168,7 +168,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
                     );
                 }
             }
-        } else if (prop.parentsQualified()) {
+        } else if (prop.isParentsQualified()) {
             await this.resetPropertyValue(prop);
             await this.form.events.emitSelector(
                 this.selector,

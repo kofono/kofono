@@ -26,17 +26,17 @@ describe("FormProperty", () => {
     describe("for method parentsQualified()", () => {
         it("given a root property, it should return true (no parent)", () => {
             const prop = form.prop("propA");
-            expect(prop.parentsQualified()).toBeTruthy();
+            expect(prop.isParentsQualified()).toBeTruthy();
         });
         it("given a disqualified root property, it should return true (no parent)", () => {
             const prop = form.prop("propB");
-            expect(prop.parentsQualified()).toBeTruthy();
+            expect(prop.isParentsQualified()).toBeTruthy();
         });
         it("given property with disqualified parent, it should return false", async () => {
             const prop = form.prop("propC.c1");
-            expect(prop.parentsQualified()).toBeFalsy();
+            expect(prop.isParentsQualified()).toBeFalsy();
             await form.update("propA", "foo");
-            expect(prop.parentsQualified()).toBeTruthy();
+            expect(prop.isParentsQualified()).toBeTruthy();
         });
     });
 

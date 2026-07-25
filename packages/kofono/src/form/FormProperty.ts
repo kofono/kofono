@@ -158,7 +158,7 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
     //     return selectors;
     // }
 
-    public parentsQualified(): boolean {
+    public isParentsQualified(): boolean {
         for (const sel of getParentSelectors(this.selector)) {
             if (!this.form.prop(sel).isQualified()) {
                 return false;
