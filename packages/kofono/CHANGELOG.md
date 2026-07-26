@@ -14,6 +14,11 @@
 - rename FormProperty.parentsQualified() to FormProperty.isParentsQualified()
 - rename Form.isValid() to Form.isPropValid()
 - rename Form.isQualified() to Form.isPropQualified()
+- deprecate FormSelectors
+- add Selector helper getChildrenSelectors()
+- move generic Data type from form/types to common/types
+- change the way extension metadata are synced to form state metadata
+- add extension ScoringExtension
 
 # 0.9.0 - 2026-07-19
 
