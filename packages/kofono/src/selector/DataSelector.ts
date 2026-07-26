@@ -1,4 +1,4 @@
-import type { Data } from "../form/types";
+import { Data } from "../common/types";
 
 export class DataSelectorNotFoundError extends Error {
     constructor(public readonly selector: string) {

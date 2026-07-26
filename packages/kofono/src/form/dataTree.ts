@@ -1,11 +1,12 @@
 import { objectHasKey } from "../common/helpers";
+import { Data } from "../common/types";
 import { arrayPropertyTypes } from "../property/categories";
 import { propertyTypeDefaultValues } from "../property/defaultValues";
 import { type BaseProperty, PropertyType } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
 import { DataSelector } from "../selector/DataSelector";
 import { removeSelectorBase } from "../selector/helpers";
-import type { BaseProperties, Data } from "./types";
+import type { BaseProperties } from "./types";
 
 export function generateTree(props: BaseProperties): Data {
     const data: Data = {};
