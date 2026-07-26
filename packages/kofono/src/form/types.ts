@@ -1,4 +1,4 @@
-import { Data } from "../common/types";
+import type { Data } from "../common/types";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { MetaExtension } from "../extension/types";
 import type { BaseProperty } from "../property/types";

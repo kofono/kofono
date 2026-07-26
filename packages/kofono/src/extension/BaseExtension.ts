@@ -10,7 +10,7 @@ export abstract class BaseExtension<
     TOptions extends ExtensionBaseOptions = ExtensionBaseOptions,
 > implements Extension<TMetaData, TOptions>
 {
-    abstract defaultMetaData: TMetaData;
+    abstract metaData: TMetaData;
     abstract init(): Promise<void> | void;
 
     public constructor(
@@ -22,12 +22,9 @@ export abstract class BaseExtension<
         return this.ctx.form;
     }
 
-    public get metaData(): TMetaData {
-        return this.ctx.form.state.meta.extensions[this.metaIndex].data;
-    }
-
-    public set metaData(value: TMetaData) {
-        this.ctx.form.state.meta.extensions[this.metaIndex].data = value;
+    public syncMetaData(): void {
+        this.ctx.form.state.meta.extensions[this.metaIndex].data =
+            structuredClone(this.metaData);
     }
 
     public get metaId(): string | undefined {

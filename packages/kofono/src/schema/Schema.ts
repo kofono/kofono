@@ -1,4 +1,4 @@
-import type { SchemaExtension } from "../extension/types";
+import type { SchemaExtension } from "../extension/schema";
 import type { PropertyType } from "../property/types";
 import type { SchemaPropertyValidator } from "../validator/schema";
 import { Token } from "./Tokens";

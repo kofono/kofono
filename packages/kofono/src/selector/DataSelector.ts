@@ -1,4 +1,4 @@
-import { Data } from "../common/types";
+import type { Data } from "../common/types";
 
 export class DataSelectorNotFoundError extends Error {
     constructor(public readonly selector: string) {

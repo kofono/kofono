@@ -1,5 +1,5 @@
 import { objectHasKey } from "../common/helpers";
-import { Data } from "../common/types";
+import type { Data } from "../common/types";
 import { arrayPropertyTypes } from "../property/categories";
 import { propertyTypeDefaultValues } from "../property/defaultValues";
 import { type BaseProperty, PropertyType } from "../property/types";

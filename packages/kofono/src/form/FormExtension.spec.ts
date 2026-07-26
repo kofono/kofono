@@ -94,13 +94,13 @@ describe("FormExtension tests", () => {
         expect(form.extensions.getById("id15")?.metaIndex).toBe(3);
         expect(form.extensions.getById("id3000")?.metaIndex).toBe(4);
 
-        // edge case here, since we introduced fake state, it should be ignored
+        // edge case here, since we introduced fake meta extension in state, it should be ignored
         expect(
             form.extensions.getById("fake-state-that-should-be-ignored")
                 ?.metaIndex,
         ).toBeUndefined();
 
-        // but todo: meta is still polluted with fake state, we should fix this
+        // but todo: meta is still polluted with the fake state, we should fix this
         expect(form.state.meta.extensions[0].id).toBe(
             "fake-state-that-should-be-ignored",
         );
