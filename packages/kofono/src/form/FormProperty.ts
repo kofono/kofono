@@ -5,7 +5,7 @@ import type {
     TreeType,
 } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
-import { getParentSelectors } from "../selector/helpers";
+import { getChildrenSelectors, getParentSelectors } from "../selector/helpers";
 import type {
     ValidatorResponse,
     ValidatorResponseContext,
@@ -167,14 +167,8 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
     //     return selectors;
     // }
 
-    public childrenSelectors(includeParent: boolean = false): string[] {
-        const selectors = this.form.selectors.getChildrenSelectors(
-            this.selector,
-        );
-        if (includeParent) {
-            selectors.push(this.selector);
-        }
-        return selectors;
+    public getChildrenSelectors(): string[] {
+        return getChildrenSelectors(this.selector, this.form.propsKeys());
     }
 
     // public childrenProps(includeParent: boolean = false): Properties {

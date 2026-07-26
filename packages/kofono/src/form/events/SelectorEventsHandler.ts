@@ -109,7 +109,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
             return;
         }
 
-        const children = prop.childrenSelectors();
+        const children = prop.getChildrenSelectors();
         for (const childSelector of children) {
             const childProp = this.form.prop(childSelector);
             childProp.validation = [
@@ -142,7 +142,7 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
             );
 
             // call validation/qualification children off newly qualified selector
-            const children = prop.childrenSelectors();
+            const children = prop.getChildrenSelectors();
             for (const childSelector of children) {
                 const ctx: ValidationContext = {
                     form: this.form,

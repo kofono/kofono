@@ -47,7 +47,7 @@ export function getParentSelector(selector: string): string {
  * Get the base selector.
  * ex: getSelectorBase("a.b.c") => "c"
  */
-export function getSelectorBase(selector: string): string {
+export function getBaseSelector(selector: string): string {
     const parts = selector.split(DataSelector.separator);
     return parts[parts.length - 1];
 }
@@ -80,4 +80,21 @@ export function resolvePartialSelectors(
     return selectors.map(sel =>
         sel.startsWith(DataSelector.separator) ? `${baseSelector}${sel}` : sel,
     );
+}
+
+/**
+ * Get the children selectors of a given parent selector.
+ */
+export function getChildrenSelectors(
+    parent: string,
+    selectors: string[],
+): string[] {
+    parent = parent + DataSelector.separator;
+    const children: string[] = [];
+    for (const selector of selectors) {
+        if (selector.startsWith(parent) && selector !== parent) {
+            children.push(selector);
+        }
+    }
+    return children;
 }

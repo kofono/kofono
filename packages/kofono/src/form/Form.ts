@@ -5,6 +5,7 @@ import type { Property } from "../property/Property";
 import type { BaseProperty } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
 import { DataSelector } from "../selector/DataSelector";
+import { getChildrenSelectors } from "../selector/helpers";
 import type { ValidatorResponse } from "../validator/types";
 import type { ValidatorsFactory } from "../validator/ValidatorsFactory";
 import { generateTree } from "./dataTree";
@@ -171,13 +172,12 @@ export class Form {
         if (includeParent) {
             props[parentSelector] = this.#props[parentSelector];
         }
-        for (const selector in this.#props) {
-            if (
-                selector.startsWith(parentSelector) &&
-                selector !== parentSelector
-            ) {
-                props[selector] = this.#props[selector];
-            }
+        const childrenSelectors = getChildrenSelectors(
+            parentSelector,
+            this.propsKeys(),
+        );
+        for (const selector of childrenSelectors) {
+            props[selector] = this.#props[selector];
         }
         return props;
     }

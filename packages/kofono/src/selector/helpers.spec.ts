@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import {
+    getChildrenSelectors,
     getParentSelector,
     getParentSelectors,
     joinSelectors,
@@ -35,4 +36,10 @@ test("resolvePartialSelectors()", () => {
     expect(
         resolvePartialSelectors("a", [".b", ".c", ".d", "foo", ".e.f"]),
     ).toEqual(["a.b", "a.c", "a.d", "foo", "a.e.f"]);
+});
+
+test("getChildrenSelectors()", () => {
+    expect(
+        getChildrenSelectors("a", ["a.b", "a.c", "a.d", "foo", "a.e.f", "z"]),
+    ).toEqual(["a.b", "a.c", "a.d", "a.e.f"]);
 });
