@@ -221,6 +221,9 @@ export class Form {
         return !!this.#props[selector]?.selector || false;
     }
 
+    /**
+     * Initializes the form. Can only be called once.
+     */
     public async init(config: FormInitConfig = {}): Promise<void> {
         if (this.#status === FormStatus.Ready) {
             return;
@@ -307,9 +310,9 @@ export class Form {
     /**
      * Update the form data with the new value.
      * This method will trigger the validation and qualification events.
-     * @param selector
-     * @param newValue
-     * @param updateType by default the updateType is "normal" which means that the form session is updated.
+     *
+     * By default, updateType is "normal" which means that the form session is
+     * updated and the property data type is validated
      */
     public async update(
         selector: string,
