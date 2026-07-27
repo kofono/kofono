@@ -7,6 +7,7 @@
 - leaf property without qualification(s) use schema default value
   or fall back on propertyTypeDefaultValues
 - remove Form.propEntries()
+- add ipv4, ipv6, uuid, uuidV4, uuidV6, uuidV7 regex validators
 - add common/result types
 - Form.update now fails when the data type does not equal the property data type
 - Form.update now returns a Result type
@@ -17,7 +18,7 @@
 - deprecate FormSelectors
 - add Selector helper getChildrenSelectors()
 - move generic Data type from form/types to common/types
-- change the way extension metadata are synced to form state metadata
+- change the way extension data are synced to form state metadata
 - add extension ScoringExtension
 
 # 0.9.0 - 2026-07-19
