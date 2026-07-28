@@ -20,6 +20,7 @@
 - move generic Data type from form/types to common/types
 - change the way extension data are synced to form state metadata
 - add extension ScoringExtension
+- add PropertyType bigint and list<bigint> types
 
 # 0.9.0 - 2026-07-19
 
