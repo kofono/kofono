@@ -1,8 +1,11 @@
 import type { SchemaProperty } from "../schema/Schema";
 import { Token } from "../schema/Tokens";
 import { GenericDataQuerier } from "../selector/GenericDataQuerier";
-import { validateSelector } from "./helpers";
-import { determinePropertyTypes, parseValidators } from "./parser";
+import {
+    determinePropertyTypes,
+    parseSelector,
+    parseValidators,
+} from "./parser";
 import {
     type BaseProperty,
     PropertyType,
@@ -70,7 +73,7 @@ export class Property<TSchemaType extends SchemaProperty>
 }
 
 function mustBeValidSelectorName(selector: string) {
-    const [isValid, errorMessage] = validateSelector(selector);
+    const [isValid, errorMessage] = parseSelector(selector);
     if (!isValid) {
         throw new Error(errorMessage);
     }
