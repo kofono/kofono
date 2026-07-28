@@ -19,6 +19,8 @@ import * as Length from "./length/LengthValidator";
 import * as Max from "./max/MaxValidator";
 import * as Min from "./min/MinValidator";
 import * as Password from "./password/PasswordValidator";
+import * as Guid from "./regexp/GuidValidator";
+import * as Integer from "./regexp/IntegerValidator";
 import * as Ipv4 from "./regexp/Ipv4v6Validators";
 import * as Ipv6 from "./regexp/Ipv4v6Validators";
 import * as Regexp from "./regexp/RegexpValidator";
@@ -42,8 +44,10 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Empty.emptyValidator,
     Equal.equalValidator,
     Excludes.excludesValidator,
+    Guid.guidValidator,
     If.ifValidator,
     Includes.includesValidator,
+    Integer.integerValidator,
     Ipv4.ipv4Validator,
     Ipv6.ipv6Validator,
     IsFalse.isFalseValidator,
@@ -95,6 +99,8 @@ export * from "./length/LengthValidator";
 export * from "./max/MaxValidator";
 export * from "./min/MinValidator";
 export * from "./password/PasswordValidator";
+export * from "./regexp/GuidValidator";
+export * from "./regexp/IntegerValidator";
 export * from "./regexp/Ipv4v6Validators";
 export * from "./regexp/RegexpValidator";
 export * from "./regexp/UuidValidators";

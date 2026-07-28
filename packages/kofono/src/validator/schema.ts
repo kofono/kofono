@@ -19,6 +19,8 @@ import type { SchemaLengthValidator } from "./length/LengthValidator";
 import type { SchemaMaxValidator } from "./max/MaxValidator";
 import type { SchemaMinValidator } from "./min/MinValidator";
 import type { SchemaPasswordValidator } from "./password/PasswordValidator";
+import type { SchemaGuidValidator } from "./regexp/GuidValidator";
+import type { SchemaIntegerValidator } from "./regexp/IntegerValidator";
 import type {
     SchemaIpv4Validator,
     SchemaIpv6Validator,
@@ -43,14 +45,16 @@ export type SchemaPropertyValidator =
     | SchemaAlphaNumValidator
     | SchemaAlphaValidator
     | SchemaBetweenValidator
+    | SchemaConditionValidator
     | SchemaDatetimeValidator
     | SchemaEmailValidator
     | SchemaEmptyValidator
     | SchemaEqualValidator
-    | SchemaConditionValidator
     | SchemaExcludesValidator
+    | SchemaGuidValidator
     | SchemaIfValidator
     | SchemaIncludesValidator
+    | SchemaIntegerValidator
     | SchemaIpv4Validator
     | SchemaIpv6Validator
     | SchemaIsFalseValidator
