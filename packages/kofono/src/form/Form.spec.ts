@@ -21,6 +21,7 @@ const schema = K.schema({
         aString: K.string(),
     }),
     fBoolean: K.boolean(),
+    gBigInt: K.bigInt(),
 }) satisfies Schema;
 
 describe("Empty form default initialization tests", () => {

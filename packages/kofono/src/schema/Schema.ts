@@ -39,14 +39,16 @@ export interface SchemaComponent {
 
 export type SchemaProperty =
     | SchemaArrayProperty
+    | SchemaBigIntProperty
     | SchemaBooleanProperty
-    | SchemaObjectProperty
+    | SchemaListBigIntProperty
     | SchemaListBooleanProperty
     | SchemaListMixedProperty
     | SchemaListNumberProperty
     | SchemaListStringProperty
     | SchemaNullProperty
     | SchemaNumberProperty
+    | SchemaObjectProperty
     | SchemaStringProperty;
 
 export interface SchemaArrayProperty extends SchemaBaseProperty {
@@ -56,29 +58,32 @@ export interface SchemaArrayProperty extends SchemaBaseProperty {
     max?: number;
 }
 
-export interface SchemaListBooleanProperty extends SchemaBaseProperty {
-    type: PropertyType.ListBoolean | "list<boolean>";
-}
-
-export interface SchemaListNumberProperty extends SchemaBaseProperty {
-    type: PropertyType.ListNumber | "list<number>";
-}
-
-export interface SchemaListMixedProperty extends SchemaBaseProperty {
-    type: PropertyType.ListMixed | "list<mixed>";
-}
-
-export interface SchemaListStringProperty extends SchemaBaseProperty {
-    type: PropertyType.ListString | "list<string>";
+export interface SchemaBigIntProperty extends SchemaBaseProperty {
+    type: PropertyType.BigInt | "bigInt";
 }
 
 export interface SchemaBooleanProperty extends SchemaBaseProperty {
     type: PropertyType.Boolean | "boolean";
 }
 
-export interface SchemaObjectProperty extends SchemaBaseProperty {
-    type: PropertyType.Object | "object";
-    __: SchemaProperties;
+export interface SchemaListBigIntProperty extends SchemaBaseProperty {
+    type: PropertyType.ListBigInt | "list<bigInt>";
+}
+
+export interface SchemaListBooleanProperty extends SchemaBaseProperty {
+    type: PropertyType.ListBoolean | "list<boolean>";
+}
+
+export interface SchemaListMixedProperty extends SchemaBaseProperty {
+    type: PropertyType.ListMixed | "list<mixed>";
+}
+
+export interface SchemaListNumberProperty extends SchemaBaseProperty {
+    type: PropertyType.ListNumber | "list<number>";
+}
+
+export interface SchemaListStringProperty extends SchemaBaseProperty {
+    type: PropertyType.ListString | "list<string>";
 }
 
 export interface SchemaNullProperty extends SchemaBaseProperty {
@@ -87,6 +92,11 @@ export interface SchemaNullProperty extends SchemaBaseProperty {
 
 export interface SchemaNumberProperty extends SchemaBaseProperty {
     type: PropertyType.Number | "number";
+}
+
+export interface SchemaObjectProperty extends SchemaBaseProperty {
+    type: PropertyType.Object | "object";
+    __: SchemaProperties;
 }
 
 export interface SchemaStringProperty extends SchemaBaseProperty {

@@ -33,7 +33,7 @@ import {
     Update,
     type UpdateType,
 } from "./types";
-import { validateSelectorDataType } from "./validateSelectorDataType";
+import { validatePropertyDataType } from "./validatePropertyDataType";
 
 export class Form {
     static readonly version: string = packageVersion;
@@ -332,9 +332,8 @@ export class Form {
                 return result.fail(`Selector not qualified: ${selector}`);
             }
 
-            const isValidDataType = validateSelectorDataType(
-                this,
-                selector,
+            const isValidDataType = validatePropertyDataType(
+                this.prop(selector).type,
                 newValue,
             );
 

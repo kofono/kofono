@@ -61,6 +61,8 @@ describe("K builder", () => {
                 hello: "world",
             }),
             propK: K.string().enum(["option1", "option2"]),
+            propL: K.bigInt(),
+            propM: K.listBigInt(),
         }).$q(q => q.isValid("propI"));
 
         expect(schema.def).toEqual({
@@ -158,6 +160,12 @@ describe("K builder", () => {
                             value: "option2",
                         },
                     ],
+                },
+                propL: {
+                    type: PropertyType.BigInt,
+                },
+                propM: {
+                    type: PropertyType.ListBigInt,
                 },
             },
         });

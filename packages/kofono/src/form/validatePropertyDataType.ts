@@ -1,19 +1,17 @@
 import { isObjectLiteral } from "../common/helpers";
 import { PropertyType } from "../property/types";
-import type { Form } from "./Form";
 
-export function validateSelectorDataType(
-    form: Form,
-    selector: string,
+export function validatePropertyDataType(
+    type: PropertyType,
     data: unknown,
 ): boolean {
-    const propType = form.prop(selector).type;
-
-    switch (propType) {
+    switch (type) {
         case PropertyType.String:
             return typeof data === "string";
         case PropertyType.Number:
             return typeof data === "number";
+        case PropertyType.BigInt:
+            return typeof data === "bigint";
         case PropertyType.Boolean:
             return typeof data === "boolean";
         case PropertyType.Object:
@@ -22,6 +20,11 @@ export function validateSelectorDataType(
             return data === null;
         case PropertyType.Unknown:
             return true;
+        case PropertyType.ListBigInt:
+            return (
+                Array.isArray(data) &&
+                data.every(item => typeof item === "bigint")
+            );
         case PropertyType.ListBoolean:
             return (
                 Array.isArray(data) &&
@@ -44,12 +47,4 @@ export function validateSelectorDataType(
             // TODO: should check definition of array items
             return Array.isArray(data);
     }
-}
-
-export function validateSelectorCurrentDataType(
-    form: Form,
-    selector: string,
-): boolean {
-    const data = form.$d(selector);
-    return validateSelectorDataType(form, selector, data);
 }

@@ -57,6 +57,12 @@ function processSchemaProp(
         case PropertyType.Array:
             builder.array(selector, prop);
             return;
+        case PropertyType.BigInt:
+            builder.bigInt(selector, prop);
+            return;
+        case PropertyType.ListBigInt:
+            builder.listBigInt(selector, prop);
+            return;
         case PropertyType.ListBoolean:
             builder.listBoolean(selector, prop);
             return;

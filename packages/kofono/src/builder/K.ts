@@ -69,34 +69,18 @@ export class K {
         });
     }
 
-    public static object(
-        content: Record<string, PropertyDeclaration>,
-    ): PropertyDeclaration {
-        const schema: Record<string, SchemaProperty> = {};
-        for (const [key, prop] of Object.entries(content)) {
-            schema[key] = prop.def;
-        }
-
+    public static array(
+        items: PropertyDeclaration,
+    ): PropertyDeclaration<Array<any>> {
         return new PropertyDeclaration({
-            type: PropertyType.Object,
-            [Token.Properties]: schema,
+            type: PropertyType.Array,
+            items: items.def,
         });
     }
-
-    public static raw(def: SchemaProperty): PropertyDeclaration {
-        return new PropertyDeclaration(def);
-    }
-
-    public static string(
+    public static bigInt(
         ...validators: SchemaPropertyValidator[]
-    ): PropertyDeclaration<string> {
-        return PropertyDeclaration.create(PropertyType.String, validators);
-    }
-
-    public static number(
-        ...validators: SchemaPropertyValidator[]
-    ): PropertyDeclaration<number> {
-        return PropertyDeclaration.create(PropertyType.Number, validators);
+    ): PropertyDeclaration<bigint> {
+        return PropertyDeclaration.create(PropertyType.BigInt, validators);
     }
 
     public static boolean(
@@ -105,13 +89,10 @@ export class K {
         return PropertyDeclaration.create(PropertyType.Boolean, validators);
     }
 
-    public static array(
-        items: PropertyDeclaration,
-    ): PropertyDeclaration<Array<any>> {
-        return new PropertyDeclaration({
-            type: PropertyType.Array,
-            items: items.def,
-        });
+    public static listBigInt(
+        ...validators: SchemaPropertyValidator[]
+    ): PropertyDeclaration<bigint[]> {
+        return PropertyDeclaration.create(PropertyType.ListBigInt, validators);
     }
 
     public static listBoolean(
@@ -142,5 +123,35 @@ export class K {
         return new PropertyDeclaration({
             type: PropertyType.Null,
         });
+    }
+
+    public static number(
+        ...validators: SchemaPropertyValidator[]
+    ): PropertyDeclaration<number> {
+        return PropertyDeclaration.create(PropertyType.Number, validators);
+    }
+
+    public static object(
+        content: Record<string, PropertyDeclaration>,
+    ): PropertyDeclaration {
+        const schema: Record<string, SchemaProperty> = {};
+        for (const [key, prop] of Object.entries(content)) {
+            schema[key] = prop.def;
+        }
+
+        return new PropertyDeclaration({
+            type: PropertyType.Object,
+            [Token.Properties]: schema,
+        });
+    }
+
+    public static raw(def: SchemaProperty): PropertyDeclaration {
+        return new PropertyDeclaration(def);
+    }
+
+    public static string(
+        ...validators: SchemaPropertyValidator[]
+    ): PropertyDeclaration<string> {
+        return PropertyDeclaration.create(PropertyType.String, validators);
     }
 }
