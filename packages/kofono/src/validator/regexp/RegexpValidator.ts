@@ -35,7 +35,6 @@ export const regexpValidator = {
         opts: RegexValidatorOpts,
     ) => new RegexpValidator(selector, type, opts),
     err: {
-        InvalidType: "_REGEXP_INVALID_TYPE",
         NotMatching: "_REGEXP_NOT_MATCHING",
     },
 };
@@ -73,10 +72,6 @@ export class RegexpValidator
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
-        if (typeof ctx.value !== "string") {
-            return this.error(regexpValidator.err.InvalidType);
-        }
-
         if (this.pattern.test(ctx.value)) {
             return this.success();
         }
