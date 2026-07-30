@@ -19,12 +19,22 @@ import type { SchemaLengthValidator } from "./length/LengthValidator";
 import type { SchemaMaxValidator } from "./max/MaxValidator";
 import type { SchemaMinValidator } from "./min/MinValidator";
 import type { SchemaPasswordValidator } from "./password/PasswordValidator";
-import type { SchemaGuidValidator } from "./regexp/GuidValidator";
+import type {
+    SchemaCuid2Validator,
+    SchemaCuidValidator,
+    SchemaGuidValidator,
+    SchemaKsuidValidator,
+    SchemaNanoidValidator,
+    SchemaUlidValidator,
+    SchemaXidValidator,
+} from "./regexp/IdentifierValidators";
 import type { SchemaIntegerValidator } from "./regexp/IntegerValidator";
 import type {
+    SchemaCidrv4Validator,
+    SchemaCidrv6Validator,
     SchemaIpv4Validator,
     SchemaIpv6Validator,
-} from "./regexp/Ipv4v6Validators";
+} from "./regexp/IpValidators";
 import type { SchemaRegexpValidator } from "./regexp/RegexpValidator";
 import type {
     SchemaUuidV4Validator,
@@ -32,6 +42,7 @@ import type {
     SchemaUuidV7Validator,
     SchemaUuidValidator,
 } from "./regexp/UuidValidators";
+
 import type { SchemaRequiredValidator } from "./required/RequiredValidator";
 import type { SchemaNotSameAsValidator } from "./sameAs/NotSameAsValidator";
 import type { SchemaSameAsValidator } from "./sameAs/SameAsValidator";
@@ -46,6 +57,10 @@ export type SchemaPropertyValidator =
     | SchemaAlphaValidator
     | SchemaBetweenValidator
     | SchemaConditionValidator
+    | SchemaCidrv4Validator
+    | SchemaCidrv6Validator
+    | SchemaCuid2Validator
+    | SchemaCuidValidator
     | SchemaDatetimeValidator
     | SchemaEmailValidator
     | SchemaEmptyValidator
@@ -61,9 +76,11 @@ export type SchemaPropertyValidator =
     | SchemaIsNotValidValidator
     | SchemaIsTrueValidator
     | SchemaIsValidValidator
+    | SchemaKsuidValidator
     | SchemaLengthValidator
     | SchemaMaxValidator
     | SchemaMinValidator
+    | SchemaNanoidValidator
     | SchemaNotEmptyValidator
     | SchemaNotEqualValidator
     | SchemaNotSameAsValidator
@@ -71,8 +88,10 @@ export type SchemaPropertyValidator =
     | SchemaRegexpValidator
     | SchemaRequiredValidator
     | SchemaSameAsValidator
+    | SchemaUlidValidator
     | SchemaUrlValidator
-    | SchemaUuidValidator
     | SchemaUuidV4Validator
     | SchemaUuidV6Validator
-    | SchemaUuidV7Validator;
+    | SchemaUuidV7Validator
+    | SchemaUuidValidator
+    | SchemaXidValidator;

@@ -19,15 +19,11 @@ import * as Length from "./length/LengthValidator";
 import * as Max from "./max/MaxValidator";
 import * as Min from "./min/MinValidator";
 import * as Password from "./password/PasswordValidator";
-import * as Guid from "./regexp/GuidValidator";
+import * as Identifier from "./regexp/IdentifierValidators";
 import * as Integer from "./regexp/IntegerValidator";
-import * as Ipv4 from "./regexp/Ipv4v6Validators";
-import * as Ipv6 from "./regexp/Ipv4v6Validators";
+import * as Ip from "./regexp/IpValidators";
 import * as Regexp from "./regexp/RegexpValidator";
 import * as Uuid from "./regexp/UuidValidators";
-import * as UuidV4 from "./regexp/UuidValidators";
-import * as UuidV6 from "./regexp/UuidValidators";
-import * as UuidV7 from "./regexp/UuidValidators";
 import * as Required from "./required/RequiredValidator";
 import * as NotSameAs from "./sameAs/NotSameAsValidator";
 import * as SameAs from "./sameAs/SameAsValidator";
@@ -44,12 +40,20 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Empty.emptyValidator,
     Equal.equalValidator,
     Excludes.excludesValidator,
-    Guid.guidValidator,
+    Identifier.cuid2Validator,
+    Identifier.cuidValidator,
+    Identifier.guidValidator,
+    Identifier.ksuidValidator,
+    Identifier.nanoidValidator,
+    Identifier.ulidValidator,
+    Identifier.xidValidator,
     If.ifValidator,
     Includes.includesValidator,
     Integer.integerValidator,
-    Ipv4.ipv4Validator,
-    Ipv6.ipv6Validator,
+    Ip.ipv4Validator,
+    Ip.ipv6Validator,
+    Ip.cidrv4Validator,
+    Ip.cidrv6Validator,
     IsFalse.isFalseValidator,
     IsNotValid.isNotValidValidator,
     IsTrue.isTrueValidator,
@@ -65,10 +69,10 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Required.requiredValidator,
     SameAs.sameAsValidator,
     Url.urlValidator,
+    Uuid.uuidV4Validator,
+    Uuid.uuidV6Validator,
+    Uuid.uuidV7Validator,
     Uuid.uuidValidator,
-    UuidV4.uuidV4Validator,
-    UuidV6.uuidV6Validator,
-    UuidV7.uuidV7Validator,
 ] as const;
 
 export const builtinValidatorFactories: Record<
@@ -99,9 +103,9 @@ export * from "./length/LengthValidator";
 export * from "./max/MaxValidator";
 export * from "./min/MinValidator";
 export * from "./password/PasswordValidator";
-export * from "./regexp/GuidValidator";
+export * from "./regexp/IdentifierValidators";
 export * from "./regexp/IntegerValidator";
-export * from "./regexp/Ipv4v6Validators";
+export * from "./regexp/IpValidators";
 export * from "./regexp/RegexpValidator";
 export * from "./regexp/UuidValidators";
 export * from "./required/RequiredValidator";
