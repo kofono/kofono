@@ -7,7 +7,9 @@
 - leaf property without qualification(s) use schema default value
   or fall back on propertyTypeDefaultValues
 - remove Form.propEntries()
-- add guid, integer, ipv4, ipv6, uuid, uuidV4, uuidV6, uuidV7 regex validators
+- add integer, cidrv4, cidrv6, ipv4, ipv6, guid, uuid, uuidV4, uuidV6, uuidV7, 
+  cuid, cuid2, ulid, xid, ksuid, nanoid regex validators
+- add  regex validators
 - add common/result types
 - Form.update now fails when the data type does not equal the property data type
 - Form.update now returns a Result type
@@ -21,6 +23,7 @@
 - change the way extension data are synced to form state metadata
 - add extension ScoringExtension
 - add PropertyType bigint and list<bigint> types
+
 
 # 0.9.0 - 2026-07-19G
 
