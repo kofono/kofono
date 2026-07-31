@@ -10,6 +10,7 @@ export interface IntegerValidatorOpts extends SchemaPropertyBaseValidator {}
 export const integerValidator = validatorDeclarationBuilder(
     "integer",
     /^-?\d+$/,
+    "_INTEGER_INVALID",
 );
 
 export function integer(expect?: string): SchemaIntegerValidator {

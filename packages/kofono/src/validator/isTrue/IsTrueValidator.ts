@@ -20,7 +20,7 @@ export const isTrueValidator = {
         opts: IsTrueValidatorOpts,
     ) => new IsTrueValidator(selector, type, opts),
     err: {
-        IsNotTrue: "_IS_TRUE_IS_NOT_TRUE",
+        IsNotTrue: "_ISTRUE_IS_NOT_TRUE",
     },
 };
 

@@ -15,6 +15,7 @@ export interface LowercaseValidatorOpts extends SchemaPropertyBaseValidator {}
 export const lowercaseValidator = validatorDeclarationBuilder(
     "lowercase",
     _lowercase,
+    "_LOWERCASE_INVALID",
 );
 
 export function lowercase(expect?: string): SchemaLowercaseValidator {
@@ -31,6 +32,7 @@ export interface UppercaseValidatorOpts extends SchemaPropertyBaseValidator {}
 export const uppercaseValidator = validatorDeclarationBuilder(
     "uppercase",
     _uppercase,
+    "_UPPERCASE_INVALID",
 );
 
 export function uppercase(expect?: string): SchemaUppercaseValidator {
@@ -42,7 +44,11 @@ export type SchemaHexValidator = "hex" | { hex: HexValidatorOpts };
 
 export interface HexValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const hexValidator = validatorDeclarationBuilder("hex", _hex);
+export const hexValidator = validatorDeclarationBuilder(
+    "hex",
+    _hex,
+    "_HEX_INVALID",
+);
 
 export function hex(expect?: string): SchemaHexValidator {
     return schemaFn("hex", expect) as SchemaHexValidator;

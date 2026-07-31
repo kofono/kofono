@@ -5,12 +5,14 @@ import { RegexpValidator } from "./RegexpValidator";
 export function validatorDeclarationBuilder(
     name: string,
     pattern: RegExp,
+    expect?: string,
 ): ValidatorDeclaration {
     return {
         name,
         factory: (selector: string, type: ValidationType) =>
             new RegexpValidator(selector, type, {
                 pattern: pattern.source,
+                ...optional("error", expect),
             }),
     };
 }

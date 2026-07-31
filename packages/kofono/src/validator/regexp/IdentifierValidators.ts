@@ -15,7 +15,11 @@ export type SchemaGuidValidator = "guid" | { guid: GuidValidatorOpts };
 
 export interface GuidValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const guidValidator = validatorDeclarationBuilder("guid", _guid);
+export const guidValidator = validatorDeclarationBuilder(
+    "guid",
+    _guid,
+    "_GUID_INVALID",
+);
 
 export function guid(expect?: string): SchemaGuidValidator {
     return schemaFn("guid", expect) as SchemaGuidValidator;
@@ -26,7 +30,11 @@ export type SchemaCuidValidator = "cuid" | { cuid: CuidValidatorOpts };
 
 export interface CuidValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const cuidValidator = validatorDeclarationBuilder("cuid", _cuid);
+export const cuidValidator = validatorDeclarationBuilder(
+    "cuid",
+    _cuid,
+    "_CUID_INVALID",
+);
 
 export function cuid(expect?: string): SchemaCuidValidator {
     return schemaFn("cuid", expect) as SchemaCuidValidator;
@@ -37,7 +45,11 @@ export type SchemaCuid2Validator = "cuid2" | { cuid2: Cuid2ValidatorOpts };
 
 export interface Cuid2ValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const cuid2Validator = validatorDeclarationBuilder("cuid2", _cuid2);
+export const cuid2Validator = validatorDeclarationBuilder(
+    "cuid2",
+    _cuid2,
+    "_CUID2_INVALID",
+);
 
 export function cuid2(expect?: string): SchemaCuid2Validator {
     return schemaFn("cuid2", expect) as SchemaCuid2Validator;
@@ -48,7 +60,11 @@ export type SchemaUlidValidator = "ulid" | { ulid: UlidValidatorOpts };
 
 export interface UlidValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const ulidValidator = validatorDeclarationBuilder("ulid", _ulid);
+export const ulidValidator = validatorDeclarationBuilder(
+    "ulid",
+    _ulid,
+    "_ULID_INVALID",
+);
 
 export function ulid(expect?: string): SchemaUlidValidator {
     return schemaFn("ulid", expect) as SchemaUlidValidator;
@@ -59,7 +75,11 @@ export type SchemaXidValidator = "xid" | { xid: XidValidatorOpts };
 
 export interface XidValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const xidValidator = validatorDeclarationBuilder("xid", _xid);
+export const xidValidator = validatorDeclarationBuilder(
+    "xid",
+    _xid,
+    "_XID_INVALID",
+);
 
 export function xid(expect?: string): SchemaXidValidator {
     return schemaFn("xid", expect) as SchemaXidValidator;
@@ -70,7 +90,11 @@ export type SchemaKsuidValidator = "ksuid" | { ksuid: KsuidValidatorOpts };
 
 export interface KsuidValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const ksuidValidator = validatorDeclarationBuilder("ksuid", _ksuid);
+export const ksuidValidator = validatorDeclarationBuilder(
+    "ksuid",
+    _ksuid,
+    "_KSUID_INVALID",
+);
 
 export function ksuid(expect?: string): SchemaKsuidValidator {
     return schemaFn("ksuid", expect) as SchemaKsuidValidator;
@@ -81,7 +105,11 @@ export type SchemaNanoidValidator = "nanoid" | { nanoid: NanoidValidatorOpts };
 
 export interface NanoidValidatorOpts extends SchemaPropertyBaseValidator {}
 
-export const nanoidValidator = validatorDeclarationBuilder("nanoid", _nanoid);
+export const nanoidValidator = validatorDeclarationBuilder(
+    "nanoid",
+    _nanoid,
+    "_NANOID_INVALID",
+);
 
 export function nanoid(expect?: string): SchemaNanoidValidator {
     return schemaFn("nanoid", expect) as SchemaNanoidValidator;
