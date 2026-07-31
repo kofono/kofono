@@ -12,6 +12,7 @@ export interface SchemaRegexpValidator {
     regexp: RegexValidatorOpts;
 }
 
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags
 type Flag = "d" | "g" | "i" | "m" | "s" | "u" | "v" | "y";
 type NoRepeat<T extends string, U extends string = T> =
     | (U extends any ? `${U}${NoRepeat<Exclude<T, U>>}` : never)
@@ -23,7 +24,6 @@ export type RegexValidatorOpts =
     | string
     | (SchemaPropertyBaseValidator & {
           pattern: string;
-          //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags
           flags?: FlagCombinations;
       });
 

@@ -19,6 +19,11 @@ import type { SchemaLengthValidator } from "./length/LengthValidator";
 import type { SchemaMaxValidator } from "./max/MaxValidator";
 import type { SchemaMinValidator } from "./min/MinValidator";
 import type { SchemaPasswordValidator } from "./password/PasswordValidator";
+
+import type {
+    SchemaBase64urlValidator,
+    SchemaBase64Validator,
+} from "./regexp/Base64Validators";
 import type {
     SchemaCuid2Validator,
     SchemaCuidValidator,
@@ -36,6 +41,11 @@ import type {
     SchemaIpv6Validator,
 } from "./regexp/IpValidators";
 import type { SchemaRegexpValidator } from "./regexp/RegexpValidator";
+import type {
+    SchemaHexValidator,
+    SchemaLowercaseValidator,
+    SchemaUppercaseValidator,
+} from "./regexp/StringValidators";
 import type {
     SchemaUuidV4Validator,
     SchemaUuidV6Validator,
@@ -55,6 +65,8 @@ export type SchemaPropertyBaseValidator = {
 export type SchemaPropertyValidator =
     | SchemaAlphaNumValidator
     | SchemaAlphaValidator
+    | SchemaBase64Validator
+    | SchemaBase64urlValidator
     | SchemaBetweenValidator
     | SchemaConditionValidator
     | SchemaCidrv4Validator
@@ -78,6 +90,9 @@ export type SchemaPropertyValidator =
     | SchemaIsValidValidator
     | SchemaKsuidValidator
     | SchemaLengthValidator
+    | SchemaLowercaseValidator
+    | SchemaUppercaseValidator
+    | SchemaHexValidator
     | SchemaMaxValidator
     | SchemaMinValidator
     | SchemaNanoidValidator
