@@ -99,11 +99,11 @@ export class Builder {
         if (!this.validateUid(uid)) {
             return;
         }
-        const typedDef: SchemaListBooleanProperty = {
-            type: PropertyType.ListBoolean,
+        const typedDef: SchemaListBigIntProperty = {
+            type: PropertyType.ListBigInt,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaListBooleanProperty>(
+        this._builders[uid] = new LeafBuilder<SchemaListBigIntProperty>(
             uid,
             typedDef,
         );
