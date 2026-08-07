@@ -117,12 +117,12 @@ describe("testing var and def type", () => {
                     role: "admin",
                 },
             },
-            something: K.string().$q(q =>
-                q.condition("{var:user.role}", "==", "admin"),
-            ),
-            somethingElse: K.string().$q(q =>
-                q.condition("{var:user.role}", "==", "user"),
-            ),
+            something: K.string().qualifications({
+                condition: ["{var:user.role}", "==", "admin"],
+            }),
+            somethingElse: K.string().qualifications({
+                condition: ["{var:user.role}", "==", "user"],
+            }),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
@@ -136,7 +136,9 @@ describe("testing var and def type", () => {
                         name: "bob",
                     },
                 })
-                .$q(q => q.condition("{def:test.name}", "==", "bob")),
+                .qualifications({
+                    condition: ["{def:test.name}", "==", "bob"],
+                }),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
@@ -147,12 +149,12 @@ describe("evaluateFieldValue()", () => {
     it("should handle modifiers", async () => {
         const form = await K.form({
             name: K.string().default("BOB"),
-            something: K.string().$q(q =>
-                q.condition("{data:name|toLowerCase}", "==", "bob"),
-            ),
-            somethingElse: K.string().$q(q =>
-                q.condition("{data:name}", "==", "bob"),
-            ),
+            something: K.string().qualifications({
+                condition: ["{data:name|toLowerCase}", "==", "bob"],
+            }),
+            somethingElse: K.string().qualifications({
+                condition: ["{data:name}", "==", "bob"],
+            }),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
@@ -170,21 +172,21 @@ describe("evaluateCondition()", () => {
             age: K.number().default(25),
             country: K.string().default("QC"),
             tags: K.listString().default(["tagA", "tagB", "tagC"]),
-            acceptTerms: K.boolean()
-                .default(false)
-                .$v(v => v.required()),
+            acceptTerms: K.boolean("required").default(false),
             subscribeNewsletter: K.boolean()
                 .default(false)
-                .$q(q => q.condition("{data:acceptTerms}", "==", true)),
+                .qualifications({
+                    condition: ["{data:acceptTerms}", "==", true],
+                }),
             subscribeToMonthlyNewsletter: K.boolean()
                 .default(false)
-                .$q(q =>
-                    q.conditions([
+                .qualifications({
+                    condition: [
                         ["{data:acceptTerms}", "==", true],
                         "and",
                         ["{data:subscribeNewsletter}", "==", true],
-                    ]),
-                ),
+                    ],
+                }),
         });
     }
 

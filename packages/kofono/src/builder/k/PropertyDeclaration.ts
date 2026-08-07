@@ -6,7 +6,6 @@ import type {
     SchemaProperty,
 } from "../../schema/Schema";
 import type { SchemaPropertyValidator } from "../../validator/schema";
-import { PropertyValidations } from "./PropertyValidations";
 
 export class PropertyDeclaration<T = any> {
     constructor(public def: SchemaProperty) {}
@@ -32,18 +31,6 @@ export class PropertyDeclaration<T = any> {
         return this;
     }
 
-    // old chained way of adding validations
-    // @deprecated should be deleted in 0.9
-    public $v(
-        fn: (v: PropertyValidations) => PropertyValidations,
-    ): PropertyDeclaration {
-        if (!this.def.$v) {
-            this.def.$v = [];
-        }
-        this.def.$v = [...this.def.$v, ...fn(new PropertyValidations()).def];
-        return this;
-    }
-
     public validations(
         ...validators: SchemaPropertyValidator[]
     ): PropertyDeclaration {
@@ -55,18 +42,6 @@ export class PropertyDeclaration<T = any> {
             ? [...this.def.$v, ...validators]
             : validators;
 
-        return this;
-    }
-
-    // old chained way of adding qualifications
-    // @deprecated should be deleted in 0.9
-    public $q(
-        fn: (q: PropertyValidations) => PropertyValidations,
-    ): PropertyDeclaration {
-        if (!this.def.$q) {
-            this.def.$q = [];
-        }
-        this.def.$q = [...this.def.$q, ...fn(new PropertyValidations()).def];
         return this;
     }
 

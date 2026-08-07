@@ -7,7 +7,12 @@ describe("IfValidator test", () => {
             propA: K.string().default("a"),
             propB: K.string()
                 .default("yes")
-                .$v(x => x.if(["{data:propA}", "==", "a"], ["empty"])),
+                .validations({
+                    if: {
+                        condition: ["{data:propA}", "==", "a"],
+                        then: ["empty"],
+                    },
+                }),
         });
         expect(form.prop("propB").isValid()).toBe(false);
         await form.update("propA", "b");
@@ -19,7 +24,12 @@ describe("IfValidator test", () => {
             propA: K.string().default("a"),
             propB: K.number()
                 .default(1)
-                .$v(v => v.if(["{data:propA}", "==", "a"], [{ min: 4 }])),
+                .validations({
+                    if: {
+                        condition: ["{data:propA}", "==", "a"],
+                        then: [{ min: 4 }],
+                    },
+                }),
         });
         expect(form.prop("propB").isValid()).toBe(false);
 
@@ -38,7 +48,12 @@ describe("IfValidator test", () => {
             propA: K.string().default("a"),
             propB: K.string()
                 .default("yes")
-                .$v(v => v.if(["a", "==", "a"], ["empty"])),
+                .validations({
+                    if: {
+                        condition: ["a", "==", "a"],
+                        then: ["empty"],
+                    },
+                }),
         });
         expect(form.prop("propB").isValid()).toBe(false);
         await form.update("propB", "");

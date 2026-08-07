@@ -161,7 +161,7 @@ describe("DataSelector array index bounds", () => {
         );
     });
 
-    it("trySet returns false with error message on out-of-bounds", () => {
+    it("trySet() returns false with error message on out-of-bounds", () => {
         const selector = new DataSelector();
         const data: any[] = [];
 
@@ -169,6 +169,34 @@ describe("DataSelector array index bounds", () => {
 
         expect(success).toBe(false);
         expect(error).toContain("out of bounds");
+    });
+
+    it("should block prototype pollution via has()", () => {
+        const selector = new DataSelector();
+        const data: any[] = [];
+
+        expect(selector.has("__proto__.toString", data)).toBe(false);
+    });
+
+    it("should prevent prototype tampering via _delete()", () => {
+        const selector = new DataSelector();
+        const target: any = {};
+        const originalToString = Object.prototype.toString;
+
+        try {
+            selector.delete("__proto__.toString", target);
+
+            expect(Object.hasOwn(Object.prototype, "toString")).toBe(true);
+            expect(String({})).toBe("[object Object]");
+        } finally {
+            // restore as non-enumerable
+            Object.defineProperty(Object.prototype, "toString", {
+                value: originalToString,
+                writable: true,
+                enumerable: false,
+                configurable: true,
+            });
+        }
     });
 });
 

@@ -65,6 +65,14 @@ describe("equalValidator", () => {
                 flags: "",
             },
         },
+        {
+            expected: true,
+            data: ["T", "E", "S", "T"],
+            opts: {
+                pattern: "([A-Z])",
+                flags: "g",
+            },
+        },
     ];
 
     for (const test of tests) {

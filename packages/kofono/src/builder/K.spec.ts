@@ -37,8 +37,10 @@ describe("K builder", () => {
 
     it("should create object schema", () => {
         const schema = K.object({
-            propA: K.string().$v(v => v.notEmpty()),
-            propB: K.boolean().$v(v => v.equal(true)),
+            propA: K.string("notEmpty"),
+            propB: K.boolean({
+                equal: { value: true },
+            }),
             propC: K.number().enum([
                 {
                     value: 1,
@@ -48,8 +50,11 @@ describe("K builder", () => {
                 },
             ]),
             propD: K.array(K.string()),
-            propE: K.listBoolean().$q(q => q.isValid("propA").isValid("propB")),
-            propF: K.listNumber().$v(v => v.regexp("[0-9]{1,10}", "g")),
+            propE: K.listBoolean().qualifications(
+                { isValid: "propA" },
+                { isValid: "propB" },
+            ),
+            propF: K.listNumber({ regexp: "[0-9]{1,10}" }),
             propG: K.listString().component({
                 type: "custom",
                 component: "CustomComponent",
@@ -63,15 +68,13 @@ describe("K builder", () => {
             propK: K.string().enum(["option1", "option2"]),
             propL: K.bigInt(),
             propM: K.listBigInt(),
-        }).$q(q => q.isValid("propI"));
+        }).qualifications({ isValid: "propI" });
 
         expect(schema.def).toEqual({
             type: PropertyType.Object,
             $q: [
                 {
-                    isValid: {
-                        selectors: "propI",
-                    },
+                    isValid: "propI",
                 },
             ],
             __: {
@@ -110,24 +113,17 @@ describe("K builder", () => {
                     type: T.ListBoolean,
                     $q: [
                         {
-                            isValid: {
-                                selectors: "propA",
-                            },
+                            isValid: "propA",
                         },
                         {
-                            isValid: {
-                                selectors: "propB",
-                            },
+                            isValid: "propB",
                         },
                     ],
                 },
                 propF: {
                     $v: [
                         {
-                            regexp: {
-                                pattern: "[0-9]{1,10}",
-                                flags: "g",
-                            },
+                            regexp: "[0-9]{1,10}",
                         },
                     ],
                     type: T.ListNumber,
@@ -173,12 +169,19 @@ describe("K builder", () => {
 
     describe("when using expect", () => {
         it("should attach an error message to the latest validation", () => {
-            const schema = K.string().$v(v =>
-                v
-                    .equal("test")
-                    .expect("custom_error")
-                    .equal("333")
-                    .expect("tetet"),
+            const schema = K.string(
+                {
+                    equal: {
+                        value: "test",
+                        error: "custom_error",
+                    },
+                },
+                {
+                    equal: {
+                        value: "333",
+                        error: "tetet",
+                    },
+                },
             );
 
             expect(schema.def).toEqual({
@@ -211,8 +214,8 @@ describe("K builder", () => {
                 $extensions: [],
                 $translations: {},
                 $test: "test", // should be ignored, see SchemaPropertiesDeclarations
-                propA: K.string().$v(v => v.notEmpty()),
-                propB: K.string().$v(v => v.notEmpty()),
+                propA: K.string("notEmpty"),
+                propB: K.string("notEmpty"),
             });
 
             expect(schema).toEqual({
@@ -240,7 +243,7 @@ describe("K builder", () => {
     describe("test form() builder", () => {
         it("should get an valid instance of form", async () => {
             const form = await K.form({
-                propA: K.string().$v(v => v.notEmpty()),
+                propA: K.string("notEmpty"),
             });
             expect(form).toBeInstanceOf(Form);
             expect(form.state.data).toEqual({
@@ -251,7 +254,7 @@ describe("K builder", () => {
         it("should have the correct id", async () => {
             const form = await K.form({
                 $id: "test",
-                propA: K.string().$v(v => v.notEmpty()),
+                propA: K.string("notEmpty"),
             });
             expect(form.id).toBe("test");
         });

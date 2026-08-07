@@ -17,19 +17,22 @@ export class DataSelectorIndexOutOfBoundsError extends Error {
     }
 }
 
+const unsafeKeys = new Set(["__proto__", "constructor", "prototype"]);
+
 export class DataSelector {
     // separator and wildcard must be only one char
     public static readonly separator = ".";
 
-    private resolvedSelectors: Record<string, string[]> = {};
+    private resolvedSelectors = new Map<string, string[]>();
 
     splitSelector(selector: string): string[] {
-        if (!this.resolvedSelectors[selector]) {
-            this.resolvedSelectors[selector] = selector.split(
-                DataSelector.separator,
+        if (!this.resolvedSelectors.has(selector)) {
+            this.resolvedSelectors.set(
+                selector,
+                selector.split(DataSelector.separator),
             );
         }
-        return this.resolvedSelectors[selector];
+        return this.resolvedSelectors.get(selector) as string[];
     }
 
     get(selector: string, data: Data): any {
@@ -98,6 +101,11 @@ export class DataSelector {
         originalSelector: string,
     ): unknown {
         if (paths.length > 0) {
+            const [head] = paths;
+            if (unsafeKeys.has(head)) {
+                throw new DataSelectorNotFoundError(originalSelector);
+            }
+
             const dataKey = data[paths[0]];
             if (dataKey !== undefined) {
                 if (paths.length - 1 === 0) {
@@ -122,11 +130,7 @@ export class DataSelector {
         const [head, ...rest] = propPath.split(DataSelector.separator);
 
         // block prototype pollution
-        if (
-            head === "__proto__" ||
-            head === "constructor" ||
-            head === "prototype"
-        ) {
+        if (unsafeKeys.has(head)) {
             return;
         }
 
@@ -150,6 +154,12 @@ export class DataSelector {
 
     protected _delete(propPath: string, obj: any): void {
         const [head, ...rest] = propPath.split(DataSelector.separator);
+
+        // block prototype pollution
+        if (unsafeKeys.has(head)) {
+            return;
+        }
+
         if (!rest.length) {
             Array.isArray(obj)
                 ? obj.splice(parseInt(head, 10), 1)

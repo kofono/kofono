@@ -10,7 +10,7 @@ import {
 describe("FormState getValidSelectors() && getInvalidSelectors()", () => {
     it("should return invalid selectors", async () => {
         const form = await K.form({
-            propA: K.string().$v(v => v.notEmpty()),
+            propA: K.string("notEmpty"),
             propB: K.string(),
         });
 
@@ -26,8 +26,8 @@ describe("FormState getValidSelectors() && getInvalidSelectors()", () => {
 describe("FormState getQualifiedSelectors() && getUnqualifiedSelectors()", () => {
     it("should return unqualified selectors", async () => {
         const form = await K.form({
-            propA: K.string().$v(v => v.notEmpty()),
-            propB: K.string().$q(q => q.isValid("propA")),
+            propA: K.string("notEmpty"),
+            propB: K.string().qualifications({ isValid: "propA" }),
         });
 
         expect(getUnqualifiedSelectors(form)).toEqual(["propB"]);
