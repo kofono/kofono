@@ -26,12 +26,14 @@ export const lengthValidator = {
     ) => new LengthValidator(selector, type, opts),
     err: {
         NotMatch: "_LENGTH_NOT_MATCH",
+        InvalidType: "_LENGTH_INVALID_TYPE",
     },
     support: [
         PropertyType.String,
+        PropertyType.ListBigInt,
         PropertyType.ListBoolean,
-        PropertyType.ListNumber,
         PropertyType.ListMixed,
+        PropertyType.ListNumber,
         PropertyType.ListString,
     ],
 };
@@ -43,13 +45,6 @@ export function length(value: number, expect?: string): SchemaLengthValidator {
             ...optional("error", expect),
         },
     };
-}
-
-function safeLength(value: any, expectedLength: number): boolean {
-    if (typeof value === "string" || Array.isArray(value)) {
-        return value.length === expectedLength;
-    }
-    return false;
 }
 
 export class LengthValidator
@@ -68,8 +63,11 @@ export class LengthValidator
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
-        return safeLength(ctx.value, this.value)
-            ? this.success()
-            : this.error(lengthValidator.err.NotMatch);
+        if (typeof ctx.value === "string" || Array.isArray(ctx.value)) {
+            return ctx.value.length === this.value
+                ? this.success()
+                : this.error(lengthValidator.err.NotMatch);
+        }
+        return this.error(lengthValidator.err.InvalidType);
     }
 }
