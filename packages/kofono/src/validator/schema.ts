@@ -3,7 +3,6 @@ import type { SchemaAlphaNumValidator } from "./alphaNum/AlphaNumValidator";
 import type { SchemaBetweenValidator } from "./between/BetweenValidator";
 import type { SchemaConditionValidator } from "./condition/ConditionValidator";
 import type { SchemaDatetimeValidator } from "./datetime/DatetimeValidator";
-import type { SchemaEmailValidator } from "./email/EmailValidator";
 import type { SchemaEmptyValidator } from "./empty/EmptyValidator";
 import type { SchemaNotEmptyValidator } from "./empty/NotEmptyValidator";
 import type { SchemaEqualValidator } from "./equal/EqualValidator";
@@ -24,6 +23,11 @@ import type {
     SchemaBase64urlValidator,
     SchemaBase64Validator,
 } from "./regexp/Base64Validators";
+import type {
+    SchemaEmailValidator,
+    SchemaHtml5EmailValidator,
+    SchemaRfc5322EmailValidator,
+} from "./regexp/EmailValidators";
 import type {
     SchemaCuid2Validator,
     SchemaCuidValidator,
@@ -75,6 +79,8 @@ export type SchemaPropertyValidator =
     | SchemaCuidValidator
     | SchemaDatetimeValidator
     | SchemaEmailValidator
+    | SchemaHtml5EmailValidator
+    | SchemaRfc5322EmailValidator
     | SchemaEmptyValidator
     | SchemaEqualValidator
     | SchemaExcludesValidator

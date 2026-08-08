@@ -3,7 +3,6 @@ import * as AlphaNum from "./alphaNum/AlphaNumValidator";
 import * as Between from "./between/BetweenValidator";
 import * as Condition from "./condition/ConditionValidator";
 import * as Datetime from "./datetime/DatetimeValidator";
-import * as Email from "./email/EmailValidator";
 import * as Empty from "./empty/EmptyValidator";
 import * as NotEmpty from "./empty/NotEmptyValidator";
 import * as Equal from "./equal/EqualValidator";
@@ -20,6 +19,7 @@ import * as Max from "./max/MaxValidator";
 import * as Min from "./min/MinValidator";
 import * as Password from "./password/PasswordValidator";
 import * as Base64 from "./regexp/Base64Validators";
+import * as Email from "./regexp/EmailValidators";
 import * as Identifier from "./regexp/IdentifierValidators";
 import * as Integer from "./regexp/IntegerValidator";
 import * as Ip from "./regexp/IpValidators";
@@ -41,6 +41,8 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Condition.conditionValidator,
     Datetime.datetimeValidator,
     Email.emailValidator,
+    Email.html5EmailValidator,
+    Email.rfc5322EmailValidator,
     Empty.emptyValidator,
     Equal.equalValidator,
     Excludes.excludesValidator,
@@ -54,10 +56,10 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     If.ifValidator,
     Includes.includesValidator,
     Integer.integerValidator,
-    Ip.ipv4Validator,
-    Ip.ipv6Validator,
     Ip.cidrv4Validator,
     Ip.cidrv6Validator,
+    Ip.ipv4Validator,
+    Ip.ipv6Validator,
     IsFalse.isFalseValidator,
     IsNotValid.isNotValidValidator,
     IsTrue.isTrueValidator,
@@ -72,9 +74,9 @@ export const builtinValidators: ValidatorDeclaration<any>[] = [
     Regexp.regexpValidator,
     Required.requiredValidator,
     SameAs.sameAsValidator,
+    StringValidator.hexValidator,
     StringValidator.lowercaseValidator,
     StringValidator.uppercaseValidator,
-    StringValidator.hexValidator,
     Url.urlValidator,
     Uuid.uuidV4Validator,
     Uuid.uuidV6Validator,
@@ -94,7 +96,6 @@ export * from "./between/BetweenValidator";
 export * from "./condition/ConditionValidator";
 export * from "./condition/when";
 export * from "./datetime/DatetimeValidator";
-export * from "./email/EmailValidator";
 export * from "./empty/EmptyValidator";
 export * from "./empty/NotEmptyValidator";
 export * from "./equal/EqualValidator";
@@ -111,6 +112,7 @@ export * from "./max/MaxValidator";
 export * from "./min/MinValidator";
 export * from "./password/PasswordValidator";
 export * from "./regexp/Base64Validators";
+export * from "./regexp/EmailValidators";
 export * from "./regexp/IdentifierValidators";
 export * from "./regexp/IntegerValidator";
 export * from "./regexp/IpValidators";
