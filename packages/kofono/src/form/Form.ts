@@ -1,7 +1,6 @@
 import { version as packageVersion } from "../../package.json";
 import { type Result, result } from "../common/result";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
-import type { Property } from "../property/Property";
 import type { BaseProperty } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
 import { DataSelector } from "../selector/DataSelector";
@@ -298,13 +297,6 @@ export class Form {
             validationError: validation[1],
             qualificationError: qualification[1],
         };
-    }
-
-    // deprecated
-    public rawProp<T extends SchemaProperty = SchemaProperty>(
-        selector: string,
-    ): Property<T> {
-        return this.#props[selector].property as Property<T>;
     }
 
     /**

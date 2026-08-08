@@ -9,7 +9,7 @@ export class FormSelectors {
     public getLeaf(): string[] {
         const selectors: string[] = [];
         for (const selector of this.form.propsKeys()) {
-            if (this.form.rawProp(selector).treeType === TreeType.Leaf) {
+            if (this.form.prop(selector).treeType === TreeType.Leaf) {
                 selectors.push(selector);
             }
         }
@@ -20,9 +20,7 @@ export class FormSelectors {
         const selectors: string[] = [];
         for (const selector of this.form.propsKeys()) {
             if (
-                answerablePropertyTypes.includes(
-                    this.form.rawProp(selector).type,
-                )
+                answerablePropertyTypes.includes(this.form.prop(selector).type)
             ) {
                 selectors.push(selector);
             }
