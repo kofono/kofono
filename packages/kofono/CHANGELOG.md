@@ -7,9 +7,10 @@
 - leaf property without qualification(s) use schema default value
   or fall back on propertyTypeDefaultValues
 - remove Form.propEntries()
+- remove old EmailValidator
 - add regex validators integer, cidrv4, cidrv6, ipv4, ipv6, guid, uuid, uuidV4, 
   uuidV6, uuidV7, cuid, cuid2, ulid, xid, ksuid, nanoid, lowercase, uppercase, 
-  hex, base64, base64url
+  hex, base64, base64url, email, html5Email, rfc5322Email
 - add common/result types
 - Form.update now fails when the data type does not equal the property data type
 - Form.update now returns a Result type
@@ -23,6 +24,13 @@
 - change the way extension data are synced to form state metadata
 - add extension ScoringExtension
 - add PropertyType bigint and list<bigint> types
+- remove the deprecated K builder PropertyValidations class
+- remove deprecated Form.rawProp()
+- fix equal/notEqual validators to only lowercase a string type when caseSensitive is false
+- fix includes/excludes validators to support an array of values
+- fix typo bug in validator condition placeholdersListToSelectors() function
+- fix SelectorValidatorsEvent context value before each validator execution
+- fix length validator to return the appropriate error when the value type is invalid
 
 # 0.9.0 - 2026-07-19
 
