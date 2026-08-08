@@ -6,8 +6,9 @@ import {
     evaluateCondition,
     parseConditionPlaceholders,
     parsePlaceholders,
+    placeholdersListToSelectors,
 } from "./condition";
-import type { Condition, Placeholder } from "./types";
+import type { Condition, Placeholder, PlaceholderList } from "./types";
 
 describe("parsePlaceholders()", () => {
     const tests: {
@@ -471,6 +472,66 @@ describe("evaluateCondition()", () => {
             const placeholders = parseConditionPlaceholders(t.condition, {});
 
             expect(evaluateCondition(t.condition, context, placeholders)).toBe(
+                t.expected,
+            );
+        });
+});
+
+describe("placeholdersListToSelectors()", () => {
+    const tests: {
+        id: string;
+        placeholders: PlaceholderList;
+        expected: string[];
+    }[] = [
+        {
+            id: "should collect a data selector",
+            placeholders: {
+                "{data:my.selector}": [{ type: "data", path: "my.selector" }],
+            },
+            expected: ["my.selector"],
+        },
+        {
+            id: "should collect a qualification selector",
+            placeholders: {
+                "{qualification:my.selector}": [
+                    { type: "qualification", path: "my.selector" },
+                ],
+            },
+            expected: ["my.selector"],
+        },
+        {
+            id: "should collect a validation selector",
+            placeholders: {
+                "{validation:my.selector}": [
+                    { type: "validation", path: "my.selector" },
+                ],
+            },
+            expected: ["my.selector"],
+        },
+        {
+            id: "should ignore var, def and self placeholders",
+            placeholders: {
+                "{var:my.selector}": [{ type: "var", path: "my.selector" }],
+                "{def:my.selector}": [{ type: "def", path: "my.selector" }],
+                "{self}": [{ type: "self", path: "" }],
+            },
+            expected: [],
+        },
+        {
+            id: "should collect selectors across multiple placeholder entries",
+            placeholders: {
+                "{data:a}": [{ type: "data", path: "a" }],
+                "{qualification:b}": [{ type: "qualification", path: "b" }],
+                "{validation:c}": [{ type: "validation", path: "c" }],
+                "{var:d}": [{ type: "var", path: "d" }],
+            },
+            expected: ["a", "b", "c"],
+        },
+    ];
+
+    for (const t of tests)
+        it(t.id, () => {
+            expect(placeholdersListToSelectors(t.placeholders)).toEqual(
                 t.expected,
             );
         });

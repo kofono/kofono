@@ -91,7 +91,7 @@ export function placeholdersListToSelectors(
     const selectors: string[] = [];
     for (const phs of Object.values(placeholders)) {
         for (const ph of phs) {
-            if (["data", "qualifications", "validations"].includes(ph.type)) {
+            if (["data", "qualification", "validation"].includes(ph.type)) {
                 selectors.push(ph.path);
             }
         }
