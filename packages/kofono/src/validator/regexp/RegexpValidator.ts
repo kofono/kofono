@@ -72,9 +72,21 @@ export class RegexpValidator
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
+        if (Array.isArray(ctx.value)) {
+            for (const val of ctx.value) {
+                this.pattern.lastIndex = 0;
+                if (!this.pattern.test(val)) {
+                    return this.error(regexpValidator.err.NotMatching);
+                }
+            }
+            return this.success();
+        }
+
+        this.pattern.lastIndex = 0;
         if (this.pattern.test(ctx.value)) {
             return this.success();
         }
+
         return this.error(regexpValidator.err.NotMatching);
     }
 }

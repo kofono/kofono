@@ -73,6 +73,22 @@ describe("equalValidator", () => {
                 flags: "g",
             },
         },
+        {
+            expected: false,
+            data: ["T", "E", "s", "T"],
+            opts: {
+                pattern: "([A-Z])",
+                flags: "g",
+            },
+        },
+        {
+            expected: true,
+            data: [],
+            opts: {
+                pattern: "([A-Z])",
+                flags: "g",
+            },
+        },
     ];
 
     for (const test of tests) {
@@ -89,4 +105,14 @@ describe("equalValidator", () => {
             expect(isValid).toEqual(test.expected);
         });
     }
+
+    it("should not leak the global/sticky regex lastIndex across array items", () => {
+        ctx.value = ["T", "E", "S", "T"];
+        const validator = new RegexpValidator(ctx.selector, "validation", {
+            pattern: "([A-Z])",
+            flags: "g",
+        });
+        const [isValid] = validator.validate(ctx);
+        expect(isValid).toBe(true);
+    });
 });
