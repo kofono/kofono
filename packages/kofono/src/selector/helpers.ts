@@ -77,13 +77,6 @@ export function resolvePartialSelectors(
     baseSelector: string,
     selectors: string[],
 ): string[] {
-    // const resolvedSelector: string[] = [];
-    // const parent = getParentSelector(baseSelector);
-    // for (const sel of selectors) {
-    //     resolvedSelector.push(sel.startsWith(DataSelector.separator) ? `${parent}${sel}` : sel);
-    // }
-    // return resolvedSelector;
-
     return selectors.map(sel =>
         sel.startsWith(DataSelector.separator) ? `${baseSelector}${sel}` : sel,
     );
