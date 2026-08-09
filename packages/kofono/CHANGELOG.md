@@ -1,4 +1,4 @@
-# 0.10.0 - ?
+# 0.10.0 - 2026-08-09
 
 - add propertyTypeDefaultValues
 - add validateSelectorDataType()

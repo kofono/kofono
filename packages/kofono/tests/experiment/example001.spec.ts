@@ -12,7 +12,7 @@ import {
 } from "../../src";
 
 const declaration: SchemaDeclaration = {
-    name: K.string(notEmpty()),
+    name: K.string("notEmpty"),
     age: K.number(between(1, 120, "Age must be between 1 and 120")),
     email: K.string(email()),
     address: K.object({
