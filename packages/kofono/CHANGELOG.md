@@ -1,3 +1,8 @@
+# 0.11.0 - ?
+
+- fix DataSelector._set() out of bound array index
+- fix selector helper removeSelectorBase() to only remove the starting selector base
+
 # 0.10.0 - 2026-08-09
 
 - add propertyTypeDefaultValues
