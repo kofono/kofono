@@ -165,6 +165,46 @@ describe("evaluateFieldValue()", () => {
     });
 });
 
+describe("condition template guardrail", () => {
+    it("should reject a template mixing literal text with a placeholder", () => {
+        expect(() =>
+            parseConditionPlaceholders(["Hello {data:name}!", "==", "x"], {}),
+        ).toThrow();
+    });
+
+    it("should reject a template with multiple placeholders", () => {
+        expect(() =>
+            parseConditionPlaceholders(
+                ["{data:first} {data:last}", "==", "x"],
+                {},
+            ),
+        ).toThrow();
+    });
+
+    it("should accept a template that is exactly one placeholder", () => {
+        expect(() =>
+            parseConditionPlaceholders(["{data:name}", "==", "x"], {}),
+        ).not.toThrow();
+    });
+
+    it("should accept plain text with no placeholder", () => {
+        expect(() =>
+            parseConditionPlaceholders(["name", "==", "x"], {}),
+        ).not.toThrow();
+    });
+
+    it("should reject building a schema with a mixed condition template", async () => {
+        await expect(
+            K.form({
+                name: K.string().default("bob"),
+                something: K.string().qualifications({
+                    condition: ["Hello {data:name}!", "==", "Hello bob!"],
+                }),
+            }),
+        ).rejects.toThrow();
+    });
+});
+
 describe("evaluateCondition()", () => {
     async function newForm() {
         return await K.form({
