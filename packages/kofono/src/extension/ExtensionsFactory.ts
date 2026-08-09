@@ -1,5 +1,5 @@
+import type { Factory } from "../common/factory";
 import { objectHasKey } from "../common/helpers";
-import type { Factory } from "../common/types";
 import { builtinExtensionFactories } from "./builtinExtensions";
 import type { ExtensionBaseOptions, ExtensionFactoryHandler } from "./types";
 

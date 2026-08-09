@@ -34,22 +34,42 @@ export function parsePlaceholders(template: string): Placeholder[] {
 }
 
 // generate a placeholder string from a placeholder type and an optional path
-export function generatePlaceholder(
+function generatePlaceholder(
     type: PlaceholderType,
     path: string = "",
     modifier?: string,
 ): string {
-    if (modifier) {
-        modifier = `|${modifier}`;
+    const suffix = modifier ? `|${modifier}` : "";
+    return type === "self" ? `{self${suffix}}` : `{${type}:${path}${suffix}}`;
+}
+
+// a condition template must be a single placeholder and nothing else
+function assertSinglePlaceholderTemplate(
+    template: string,
+    matches: Placeholder[],
+): void {
+    if (matches.length === 0) {
+        return;
     }
-    return type === "self"
-        ? `{{self${modifier}}}`
-        : `{{${type}:${path}${modifier}}`;
+    const [match] = matches;
+    if (
+        matches.length > 1 ||
+        generatePlaceholder(match.type, match.path, match.modifier) !== template
+    ) {
+        throw new Error(
+            `Invalid condition template "${template}": expected a single placeholder and nothing else.`,
+        );
+    }
 }
 
 // try to extract placeholders from a template
-export function tryParsePlaceholders(template: unknown): Placeholder[] {
-    return typeof template === "string" ? parsePlaceholders(template) : [];
+function tryParsePlaceholders(template: unknown): Placeholder[] {
+    if (typeof template !== "string") {
+        return [];
+    }
+    const results = parsePlaceholders(template);
+    assertSinglePlaceholderTemplate(template, results);
+    return results;
 }
 
 // extract placeholders from a condition
@@ -91,7 +111,7 @@ export function placeholdersListToSelectors(
     const selectors: string[] = [];
     for (const phs of Object.values(placeholders)) {
         for (const ph of phs) {
-            if (["data", "qualifications", "validations"].includes(ph.type)) {
+            if (["data", "qualification", "validation"].includes(ph.type)) {
                 selectors.push(ph.path);
             }
         }
@@ -99,36 +119,16 @@ export function placeholdersListToSelectors(
     return selectors;
 }
 
-// resolves placeholders in a field value
+// resolves the placeholder in a field value, if any
 export function evaluateFieldValue(
     fieldValue: ExpressionField | ExpressionValue,
     context: ValidationContext,
     placeholders: PlaceholderList = {},
 ): any {
-    let newValue = fieldValue;
-    if (typeof fieldValue === "string" && placeholders[fieldValue]) {
-        for (const ph of placeholders[fieldValue]) {
-            const placeHolderStr = generatePlaceholder(
-                ph.type,
-                ph.path,
-                ph.modifier,
-            );
-            const contextValue = placeholderToContextValue(ph, context);
-
-            if (placeholders[fieldValue].length === 1) {
-                // reuse replacingValue as is if there is only one placeholder
-                return contextValue;
-            } else if (contextValue !== undefined) {
-                // in case of multiple placeholders, replace all occurrences of the placeholder
-                // note: newValue type will be a string
-                newValue = newValue.replaceAll(
-                    placeHolderStr,
-                    contextValue as string,
-                );
-            }
-        }
+    if (typeof fieldValue === "string" && placeholders[fieldValue]?.length) {
+        return placeholderToContextValue(placeholders[fieldValue][0], context);
     }
-    return newValue;
+    return fieldValue;
 }
 
 // resolve the value of a placeholder with the help of validation the context

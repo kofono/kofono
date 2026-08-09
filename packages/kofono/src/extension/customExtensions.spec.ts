@@ -17,7 +17,7 @@ class CustomExtension extends BaseExtension<
     CustomExtensionMeta,
     CustomExtensionOpts
 > {
-    defaultMetaData: CustomExtensionMeta = {
+    metaData: CustomExtensionMeta = {
         value: "",
     };
 

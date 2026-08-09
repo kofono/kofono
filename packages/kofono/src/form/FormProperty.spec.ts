@@ -7,15 +7,13 @@ describe("FormProperty", () => {
     let form: Form;
     beforeEach(async () => {
         const schema = K.schema({
-            propA: K.string().$v(v => v.notEmpty()),
-            propB: K.string()
-                .$v(v => v.notEmpty())
-                .default("test"),
+            propA: K.string("notEmpty"),
+            propB: K.string("notEmpty").default("test"),
             propC: K.object({
                 c1: K.string(),
                 c2: K.string(),
-                c3: K.string().$v(v => v.notEmpty()),
-            }).$q(q => q.isValid("propA")),
+                c3: K.string("notEmpty"),
+            }).qualifications({ isValid: "propA" }),
             propD: K.null(),
             propF: K.string(),
         });
@@ -26,23 +24,23 @@ describe("FormProperty", () => {
     describe("for method parentsQualified()", () => {
         it("given a root property, it should return true (no parent)", () => {
             const prop = form.prop("propA");
-            expect(prop.parentsQualified()).toBeTruthy();
+            expect(prop.isParentsQualified()).toBeTruthy();
         });
         it("given a disqualified root property, it should return true (no parent)", () => {
             const prop = form.prop("propB");
-            expect(prop.parentsQualified()).toBeTruthy();
+            expect(prop.isParentsQualified()).toBeTruthy();
         });
         it("given property with disqualified parent, it should return false", async () => {
             const prop = form.prop("propC.c1");
-            expect(prop.parentsQualified()).toBeFalsy();
+            expect(prop.isParentsQualified()).toBeFalsy();
             await form.update("propA", "foo");
-            expect(prop.parentsQualified()).toBeTruthy();
+            expect(prop.isParentsQualified()).toBeTruthy();
         });
     });
 
     describe("for method valueOrDefault()", () => {
         it("given string propA, should return null", () => {
-            expect(form.prop("propA").valueOrDefault(null)).toBeNull();
+            expect(form.prop("propA").valueOrDefault(null)).toBe("");
         });
         it("given string propB, should return default value 'test'", () => {
             expect(form.prop("propB").valueOrDefault(null)).toBe("test");

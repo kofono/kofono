@@ -12,6 +12,7 @@ export interface SchemaRegexpValidator {
     regexp: RegexValidatorOpts;
 }
 
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags
 type Flag = "d" | "g" | "i" | "m" | "s" | "u" | "v" | "y";
 type NoRepeat<T extends string, U extends string = T> =
     | (U extends any ? `${U}${NoRepeat<Exclude<T, U>>}` : never)
@@ -23,7 +24,6 @@ export type RegexValidatorOpts =
     | string
     | (SchemaPropertyBaseValidator & {
           pattern: string;
-          //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags
           flags?: FlagCombinations;
       });
 
@@ -35,7 +35,6 @@ export const regexpValidator = {
         opts: RegexValidatorOpts,
     ) => new RegexpValidator(selector, type, opts),
     err: {
-        InvalidType: "_REGEXP_INVALID_TYPE",
         NotMatching: "_REGEXP_NOT_MATCHING",
     },
 };
@@ -73,13 +72,21 @@ export class RegexpValidator
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
-        if (typeof ctx.value !== "string") {
-            return this.error(regexpValidator.err.InvalidType);
+        if (Array.isArray(ctx.value)) {
+            for (const val of ctx.value) {
+                this.pattern.lastIndex = 0;
+                if (!this.pattern.test(val)) {
+                    return this.error(regexpValidator.err.NotMatching);
+                }
+            }
+            return this.success();
         }
 
+        this.pattern.lastIndex = 0;
         if (this.pattern.test(ctx.value)) {
             return this.success();
         }
+
         return this.error(regexpValidator.err.NotMatching);
     }
 }

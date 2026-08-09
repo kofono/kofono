@@ -1,6 +1,5 @@
 import type { PropertyValidator } from "../../property/types";
 import type {
-    ValidationContext,
     ValidationType,
     Validator,
     ValidatorResponse,
@@ -29,15 +28,15 @@ export class SelectorValidatorsEvent {
      */
     generateEvent(): () => Promise<ValidatorResponse> {
         return async (): Promise<ValidatorResponse> => {
-            const ctx: ValidationContext = {
-                selector: this.selector,
-                value: this.form.$d(this.selector),
-                form: this.form,
-            } as const;
+            const value = this.form.$d(this.selector);
 
             for (const validator of this.validators) {
-                const [isValid, message, context] =
-                    await validator.validate(ctx);
+                const [isValid, message, context] = await validator.validate({
+                    selector: this.selector,
+                    value: structuredClone(value),
+                    form: this.form,
+                });
+
                 if (!isValid) {
                     return !context
                         ? [false, message]

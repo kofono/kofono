@@ -47,6 +47,13 @@ describe("Testing qualifications / disqualifications", () => {
             });
         });
 
+        it("should have correct data", () => {
+            expect(form.state.data).toEqual({
+                propA: "",
+                propB: null,
+            });
+        });
+
         it("propB should be not qualified", () => {
             expect(form.$q("propB")).toEqual([
                 false,
@@ -63,6 +70,10 @@ describe("Testing qualifications / disqualifications", () => {
 
         it("propB should be qualified", () => {
             expect(form.$q("propB")).toEqual([true, ""]);
+        });
+
+        it("propB should have correct data", () => {
+            expect(form.$d("propB")).toEqual(0);
         });
 
         it("should have correct stats", () => {
@@ -207,7 +218,7 @@ describe.skip("Testing disqualifications with nested objects", () => {
         beforeAll(async () => {
             // propB depends on propA validity
             await form.update("propA", "");
-            expect(form.isQualified("propB")).toBeFalsy();
+            expect(form.isPropQualified("propB")).toBeFalsy();
         });
 
         afterAll(async () => {

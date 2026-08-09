@@ -43,7 +43,7 @@ export function Editor(props: AceEditorProps) {
             theme: `ace/theme/${props.theme ?? "merbivore"}`,
             value: props.value ?? "",
             fontSize: props.options?.fontSize ?? 15,
-            fontFamily: "Roboto Mono, monospace",
+            fontFamily: "'Intel One Mono Variable', monospace",
             highlightActiveLine: props.options?.highlightActiveLine ?? true,
             highlightSelectedWord: props.options?.highlightSelectedWord ?? true,
             readOnly: props.options?.readOnly ?? false,
@@ -147,7 +147,7 @@ export function Editor(props: AceEditorProps) {
                 ...style("overflow", "auto"),
                 ...style("font-family", "Roboto Mono, monospace"),
                 ...style("font-size", "1rem"),
-                ...style("line-height", "1.1rem"),
+                ...style("line-height", "1.2rem"),
                 ...style("tab-size", "4"),
                 ...style("border", "transparent"),
             }}

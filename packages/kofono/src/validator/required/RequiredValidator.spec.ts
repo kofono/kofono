@@ -92,19 +92,21 @@ describe("requiredValidator", () => {
                 propB: K.listString("required").enum(["a", "b", "c"]),
             });
 
-            expect(form.isValid("propA")).toBe(false);
+            expect(form.isPropValid("propA")).toBe(false);
             await form.update("propA", "z");
-            expect(form.isValid("propA")).toBe(false);
+            expect(form.isPropValid("propA")).toBe(false);
             await form.update("propA", "a");
-            expect(form.isValid("propA")).toBe(true);
+            expect(form.isPropValid("propA")).toBe(true);
 
-            expect(form.isValid("propB")).toBe(false);
+            expect(form.isPropValid("propB")).toBe(false);
             await form.update("propB", ["c"]);
-            expect(form.isValid("propB")).toBe(true);
+            expect(form.isPropValid("propB")).toBe(true);
             await form.update("propB", ["g"]);
-            expect(form.isValid("propB")).toBe(false);
-            await form.update("propB", "a"); // here the required work, but value itself do no respect property type
-            expect(form.isValid("propB")).toBe(true);
+            expect(form.isPropValid("propB")).toBe(false);
+            // here the required work, but value itself do no respect property type
+            const outcome = await form.update("propB", "a");
+            expect(form.isPropValid("propB")).toBe(false);
+            expect(outcome.ok).toBe(false);
         });
     });
 });

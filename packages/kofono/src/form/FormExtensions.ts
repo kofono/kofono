@@ -41,6 +41,9 @@ export class FormExtensions {
         return ext as Extension<TMetaData, TOptions>;
     }
 
+    /**
+     * Builds the extensions from the provided definitions.
+     */
     public async build(extensions: ExtensionDefinition[]) {
         const extensionInstances: Extension[] = [];
 
@@ -65,6 +68,9 @@ export class FormExtensions {
         this.#extensions.push(...extensionInstances);
     }
 
+    /**
+     * Get metadata array index for extension
+     */
     private getMetaIndex(
         name: string,
         id: string | undefined = undefined,
@@ -100,13 +106,23 @@ export class FormExtensions {
         return 0;
     }
 
+    /**
+     * Create a new form state metadata or take current state
+     * data and copy it to extension metadata
+     */
     private initMetaData(ext: Extension): void {
+        // create new state meta-extension state data
         if (!this.form.state.meta.extensions[ext.metaIndex]) {
             this.form.state.meta.extensions[ext.metaIndex] = {
                 id: ext.metaId,
                 name: ext.metaName,
-                data: ext.defaultMetaData,
+                data: structuredClone(ext.metaData),
             };
+        } else {
+            // take current state data and copy it to extension metadata
+            ext.metaData = structuredClone(
+                this.form.state.meta.extensions[ext.metaIndex].data,
+            );
         }
     }
 }

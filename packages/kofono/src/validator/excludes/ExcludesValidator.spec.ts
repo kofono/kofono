@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { SchemaBuilder } from "../../builder/SchemaBuilder";
 import type { Form } from "../../form/Form";
 import type { ValidationContext } from "../types";
@@ -8,7 +8,7 @@ describe("ExcludesValidator test", () => {
     let form: Form;
     let ctx: ValidationContext;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         form = await new SchemaBuilder().buildEmpty();
         ctx = {
             selector: "test",
@@ -82,4 +82,52 @@ describe("ExcludesValidator test", () => {
             expect(isValid).toEqual(test.expected);
         });
     }
+
+    describe("with an multiples search value", () => {
+        const excludesAll = new ExcludesValidator("test", "validation", {
+            value: ["hello", "world"],
+        });
+
+        const arrayValueTests: {
+            value: any;
+            expected: boolean;
+        }[] = [
+            {
+                value: "hello there",
+                expected: false,
+            },
+            {
+                value: "wide world",
+                expected: false,
+            },
+            {
+                value: "wide hello there world",
+                expected: false,
+            },
+            {
+                value: "foo bar",
+                expected: true,
+            },
+            {
+                value: ["hello", "baz"],
+                expected: false,
+            },
+            {
+                value: ["baz", "world"],
+                expected: false,
+            },
+            {
+                value: ["baz", "qux"],
+                expected: true,
+            },
+        ];
+
+        for (const test of arrayValueTests) {
+            it(`should return ${test.expected} for '${String(test.value)}'`, () => {
+                ctx.value = test.value;
+                const [isValid] = excludesAll.validate(ctx);
+                expect(isValid).toEqual(test.expected);
+            });
+        }
+    });
 });

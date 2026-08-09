@@ -3,10 +3,14 @@ import { K } from "../../src";
 
 test("test prop var ref", async () => {
     const form = await K.form({
-        name: K.string().$v(x => x.notEmpty()),
-        qty: K.number().$v(x =>
-            x.between(1, 10).expect("number between 1 and 10 only"),
-        ),
+        name: K.string("notEmpty"),
+        qty: K.number({
+            between: {
+                min: 1,
+                max: 10,
+                error: "number between 1 and 10 only",
+            },
+        }),
     });
 
     const name = form.prop("name");

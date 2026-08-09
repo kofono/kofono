@@ -1,5 +1,5 @@
+import type { Factory } from "../common/factory";
 import { objectHasKey } from "../common/helpers";
-import type { Factory } from "../common/types";
 import { builtinValidatorFactories } from "./builtinValidators";
 import type { GenericValidatorOptions, ValidatorFactoryHandler } from "./types";
 

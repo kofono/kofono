@@ -5,8 +5,8 @@ import {
     evaluateCondition,
     parseConditionPlaceholders,
     placeholdersListToSelectors,
-} from "../expression/condition";
-import type { Condition, PlaceholderList } from "../expression/types";
+} from "../condition/condition";
+import type { Condition, PlaceholderList } from "../condition/types";
 import type { SchemaPropertyValidator } from "../schema";
 import type {
     ValidationContext,

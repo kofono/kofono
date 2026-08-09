@@ -1,3 +1,4 @@
+import type { Data } from "../common/types";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { MetaExtension } from "../extension/types";
 import type { BaseProperty } from "../property/types";
@@ -39,8 +40,6 @@ export type FormInitConfig = {
 export type BaseProperties = Record<string, BaseProperty<SchemaProperty>>;
 export type FormProperties = Record<string, FormProperty>;
 
-export type Data = Record<string, any>;
-
 export interface Meta {
     hasBeenUpdated: string[];
     extensions: MetaExtension[];
@@ -54,8 +53,6 @@ export type Stats = {
     node: number;
     leaf: number;
 };
-
-export type Env = "dev" | "prod" | "test" | "debug" | "trace" | "silent";
 
 export type State = {
     sessionId: string; // unique id of the form

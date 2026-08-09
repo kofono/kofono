@@ -59,7 +59,7 @@ export class EqualValidator
         this.expectedValue = opts.value;
         if (opts.caseSensitive !== undefined) {
             this.caseSensitive = opts.caseSensitive;
-            if (!this.caseSensitive) {
+            if (!this.caseSensitive && typeof this.expectedValue === "string") {
                 this.expectedValue = String(this.expectedValue).toLowerCase();
             }
         }

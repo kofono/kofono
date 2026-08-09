@@ -2,7 +2,11 @@ import { buildProps } from "../builder/propsBuilder";
 import type { Property } from "../property/Property";
 import { PropertyType } from "../property/types";
 import type { SchemaArrayProperty, SchemaProperty } from "../schema/Schema";
-import { getParentSelector, joinSelectors } from "../selector/helpers";
+import {
+    getChildrenSelectors,
+    getParentSelector,
+    joinSelectors,
+} from "../selector/helpers";
 import { generatePartialTree } from "./dataTree";
 import { parseSelectorsEventsValidators } from "./events/helpers";
 import { Events } from "./events/types";
@@ -88,8 +92,10 @@ export class FormArray {
                 arraySelector,
                 String(lastItemIndex),
             );
-            const childrenSelector =
-                this.form.selectors.getChildrenSelectors(lastItemSelector);
+            const childrenSelector = getChildrenSelectors(
+                lastItemSelector,
+                this.form.propsKeys(),
+            );
             for (const sel of childrenSelector) {
                 await this.form.events.emit(Events.PropertyDeleted, {
                     selector: sel,

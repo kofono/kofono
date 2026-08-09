@@ -5,7 +5,7 @@ import type {
     TreeType,
 } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
-import { parentSelectors } from "../selector/helpers";
+import { getChildrenSelectors, getParentSelectors } from "../selector/helpers";
 import type {
     ValidatorResponse,
     ValidatorResponseContext,
@@ -107,6 +107,15 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
         return this.form.state.qualifications[this.selector][0];
     }
 
+    public isParentsQualified(): boolean {
+        for (const sel of getParentSelectors(this.selector)) {
+            if (!this.form.prop(sel).isQualified()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public isValid(): boolean {
         return this.form.state.validations[this.selector][0];
     }
@@ -152,29 +161,14 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
 
     // public parentsSelectors(): string[] {
     //     const selectors: string[] = [];
-    //     for (const sel of parentSelectors(this.selector)) {
+    //     for (const sel of getParentSelectors(this.selector)) {
     //         selectors.push(sel);
     //     }
     //     return selectors;
     // }
 
-    public parentsQualified(): boolean {
-        for (const sel of parentSelectors(this.selector)) {
-            if (!this.form.prop(sel).isQualified()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public childrenSelectors(includeParent: boolean = false): string[] {
-        const selectors = this.form.selectors.getChildrenSelectors(
-            this.selector,
-        );
-        if (includeParent) {
-            selectors.push(this.selector);
-        }
-        return selectors;
+    public getChildrenSelectors(): string[] {
+        return getChildrenSelectors(this.selector, this.form.propsKeys());
     }
 
     // public childrenProps(includeParent: boolean = false): Properties {

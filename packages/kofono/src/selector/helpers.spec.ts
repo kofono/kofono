@@ -1,8 +1,9 @@
 import { expect, test } from "vitest";
 import {
+    getChildrenSelectors,
     getParentSelector,
+    getParentSelectors,
     joinSelectors,
-    parentSelectors,
     removeSelectorBase,
     resolvePartialSelectors,
 } from "./helpers";
@@ -22,12 +23,12 @@ test("getParentSelector()", () => {
 });
 
 test("parentSelectors()", () => {
-    for (const sel of parentSelectors("a.b.c.d")) {
+    for (const sel of getParentSelectors("a.b.c.d")) {
         ["a.b.c", "a.b", "a"].includes(sel);
     }
 
     let i = 0;
-    parentSelectors("").map(() => i++);
+    getParentSelectors("").map(() => i++);
     expect(i).toBe(0);
 });
 
@@ -35,4 +36,10 @@ test("resolvePartialSelectors()", () => {
     expect(
         resolvePartialSelectors("a", [".b", ".c", ".d", "foo", ".e.f"]),
     ).toEqual(["a.b", "a.c", "a.d", "foo", "a.e.f"]);
+});
+
+test("getChildrenSelectors()", () => {
+    expect(
+        getChildrenSelectors("a", ["a.b", "a.c", "a.d", "foo", "a.e.f", "z"]),
+    ).toEqual(["a.b", "a.c", "a.d", "a.e.f"]);
 });

@@ -1,3 +1,40 @@
+# 0.10.0 - 2026-08-09
+
+- add propertyTypeDefaultValues
+- add validateSelectorDataType()
+- leaf property with qualification(s) can be nullified
+- leaf property without qualification(s) cannot be nullified
+- leaf property without qualification(s) use schema default value
+  or fall back on propertyTypeDefaultValues
+- remove Form.propEntries()
+- remove old EmailValidator
+- add regex validators integer, cidrv4, cidrv6, ipv4, ipv6, guid, uuid, uuidV4, 
+  uuidV6, uuidV7, cuid, cuid2, ulid, xid, ksuid, nanoid, lowercase, uppercase, 
+  hex, base64, base64url, email, html5Email, rfc5322Email
+- add common/result types
+- Form.update now fails when the data type does not equal the property data type
+- Form.update now returns a Result type
+- Form.updates now return a Result[] type
+- rename FormProperty.parentsQualified() to FormProperty.isParentsQualified()
+- rename Form.isValid() to Form.isPropValid()
+- rename Form.isQualified() to Form.isPropQualified()
+- deprecate FormSelectors
+- add Selector helper getChildrenSelectors()
+- move generic Data type from form/types to common/types
+- change the way extension data are synced to form state metadata
+- add extension ScoringExtension
+- add PropertyType bigint and list<bigint> types
+- remove the deprecated K builder PropertyValidations class
+- remove deprecated Form.rawProp()
+- fix equal/notEqual validators to only lowercase a string type when caseSensitive is false
+- fix includes/excludes validators to support an array of values
+- fix typo bug in validator condition placeholdersListToSelectors() function
+- fix SelectorValidatorsEvent context value before each validator execution
+- fix length validator to return the appropriate error when the value type is invalid
+- regex validator supports array of values
+- fix condition expression placeholder typo bug
+- enforce condition single expression template to be one placeholder only
+
 # 0.9.0 - 2026-07-19
 
 - add cache to speed up form stats compilation

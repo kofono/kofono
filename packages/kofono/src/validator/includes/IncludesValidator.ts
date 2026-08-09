@@ -59,19 +59,22 @@ export class IncludesValidator
     extends AbstractValidator<IncludesValidatorOpts>
     implements Validator
 {
-    private readonly value: IncludesValidatorOpts["value"];
+    private readonly values: string[];
     constructor(
         attachTo: string,
         type: ValidationType,
         opts: IncludesValidatorOpts,
     ) {
         super(attachTo, type, opts);
-        this.value = opts.value;
+        this.values = !Array.isArray(opts.value) ? [opts.value] : opts.value;
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
-        return safeIncludes(ctx.value, this.value)
-            ? this.success()
-            : this.error(includesValidator.err.NotIncludes);
+        for (const expectedValue of this.values) {
+            if (!safeIncludes(ctx.value, expectedValue)) {
+                return this.error(includesValidator.err.NotIncludes);
+            }
+        }
+        return this.success();
     }
 }

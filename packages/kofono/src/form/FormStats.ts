@@ -48,7 +48,7 @@ export class FormStats {
         this.form.events.on(Events.PropertyAdded, ctx => {
             this.cachedPropsEntries.push([
                 ctx.selector,
-                this.form.rawProp(ctx.selector).treeType,
+                this.form.prop(ctx.selector).treeType,
             ]);
             this.compile();
         });
@@ -62,7 +62,7 @@ export class FormStats {
     }
 
     private cacheProps() {
-        for (const [sel, prop] of this.form.propsEntries()) {
+        for (const [sel, prop] of Object.entries(this.form.props)) {
             this.cachedPropsEntries.push([sel, prop.treeType]);
         }
     }

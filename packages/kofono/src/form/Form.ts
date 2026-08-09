@@ -1,9 +1,10 @@
 import { version as packageVersion } from "../../package.json";
+import { type Result, result } from "../common/result";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
-import type { Property } from "../property/Property";
 import type { BaseProperty } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
 import { DataSelector } from "../selector/DataSelector";
+import { getChildrenSelectors } from "../selector/helpers";
 import type { ValidatorResponse } from "../validator/types";
 import type { ValidatorsFactory } from "../validator/ValidatorsFactory";
 import { generateTree } from "./dataTree";
@@ -16,8 +17,8 @@ import { FormInitContext } from "./FormInitContext";
 import { FormProperty } from "./FormProperty";
 import { FormSelectors } from "./FormSelectors";
 import { FormSession } from "./FormSession";
-import { generateNewFormState } from "./FormState";
 import { FormStats } from "./FormStats";
+import { generateNewFormState } from "./state";
 import {
     type BaseProperties,
     type FormConfig,
@@ -31,6 +32,7 @@ import {
     Update,
     type UpdateType,
 } from "./types";
+import { validatePropertyDataType } from "./validatePropertyDataType";
 
 export class Form {
     static readonly version: string = packageVersion;
@@ -164,18 +166,17 @@ export class Form {
     public childrenProps(
         parentSelector: string,
         includeParent: boolean = false,
-    ): BaseProperties {
-        const props: BaseProperties = {};
+    ): FormProperties {
+        const props: FormProperties = {};
         if (includeParent) {
             props[parentSelector] = this.#props[parentSelector];
         }
-        for (const selector in this.#props) {
-            if (
-                selector.startsWith(parentSelector) &&
-                selector !== parentSelector
-            ) {
-                props[selector] = this.#props[selector];
-            }
+        const childrenSelectors = getChildrenSelectors(
+            parentSelector,
+            this.propsKeys(),
+        );
+        for (const selector of childrenSelectors) {
+            props[selector] = this.#props[selector];
         }
         return props;
     }
@@ -197,6 +198,9 @@ export class Form {
         return this;
     }
 
+    /**
+     * Get compiled form errors
+     */
     public errors(): Record<string, string> {
         const errors: Record<string, string> = {};
         if (!this.pass()) {
@@ -216,6 +220,9 @@ export class Form {
         return !!this.#props[selector]?.selector || false;
     }
 
+    /**
+     * Initializes the form. Can only be called once.
+     */
     public async init(config: FormInitConfig = {}): Promise<void> {
         if (this.#status === FormStatus.Ready) {
             return;
@@ -244,14 +251,17 @@ export class Form {
         this.#status = FormStatus.Ready;
     }
 
-    public isQualified(selector: string): boolean {
+    public isPropQualified(selector: string): boolean {
         return this.$q(selector)[0] ?? false;
     }
 
-    public isValid(selector: string): boolean {
+    public isPropValid(selector: string): boolean {
         return this.$v(selector)[0] ?? false;
     }
 
+    /**
+     * Load form complete/partial state
+     */
     public async loadState(state: Partial<State>): Promise<void> {
         this.#state = {
             ...this.#state,
@@ -276,10 +286,6 @@ export class Form {
         return Object.keys(this.#props);
     }
 
-    public propsEntries(): [string, FormProperty<SchemaProperty>][] {
-        return Object.entries(this.#props);
-    }
-
     // todo: still necessary?
     public propState(selector: string): PropertyState {
         const validation = this.$v(selector);
@@ -293,28 +299,43 @@ export class Form {
         };
     }
 
-    // deprecated
-    public rawProp<T extends SchemaProperty = SchemaProperty>(
-        selector: string,
-    ): Property<T> {
-        return this.#props[selector].property as Property<T>;
-    }
-
     /**
      * Update the form data with the new value.
      * This method will trigger the validation and qualification events.
-     * @param selector
-     * @param newValue
-     * @param updateType by default the updateType is "normal" which means that the form session is updated.
+     *
+     * By default, updateType is "normal" which means that the form session is
+     * updated and the property data type is validated
      */
     public async update(
         selector: string,
         newValue: unknown,
         updateType: UpdateType = Update.Normal,
-    ): Promise<void> {
+    ): Promise<Result> {
         const [exists, oldValue] = this.#formDataSelector.tryGet(selector);
         if (!exists) {
-            throw new Error(`Selector not found: ${selector}`);
+            return result.fail(`Selector not found: ${selector}`);
+        }
+
+        if (updateType === Update.Normal) {
+            if (
+                !this.prop(selector).isQualified() ||
+                !this.prop(selector).isParentsQualified()
+            ) {
+                return result.fail(`Selector not qualified: ${selector}`);
+            }
+
+            const isValidDataType = validatePropertyDataType(
+                this.prop(selector).type,
+                newValue,
+            );
+
+            if (!isValidDataType) {
+                return result.fail(
+                    `Invalid data type for selector: ${selector}`,
+                );
+            }
+
+            this.#session.update(selector);
         }
 
         const updateCtx: SelectorUpdateCtx = {
@@ -323,10 +344,6 @@ export class Form {
             oldValue,
             newValue,
         };
-
-        if (updateType === Update.Normal) {
-            this.#session.update(selector);
-        }
 
         await this.#events.emit(Events.SelectorBeforeUpdate, updateCtx);
 
@@ -354,6 +371,8 @@ export class Form {
         }
 
         await this.#events.emit(Events.SelectorAfterUpdate, updateCtx);
+
+        return result.ok();
     }
 
     /**
@@ -365,10 +384,12 @@ export class Form {
     public async updates(
         values: Record<string, unknown>,
         updateType: UpdateType = Update.Normal,
-    ): Promise<void> {
+    ): Promise<Result[]> {
+        const outcomes: Result[] = [];
         for (const [sel, val] of Object.entries(values)) {
-            await this.update(sel, val, updateType);
+            outcomes.push(await this.update(sel, val, updateType));
         }
+        return outcomes;
     }
 
     public var(keyPath: string): unknown {

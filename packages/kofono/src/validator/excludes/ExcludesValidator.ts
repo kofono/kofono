@@ -59,7 +59,7 @@ export class ExcludesValidator
     extends AbstractValidator<ExcludesValidatorOpts>
     implements Validator
 {
-    private readonly value: ExcludesValidatorOpts["value"];
+    private readonly values: string[];
 
     constructor(
         attachTo: string,
@@ -67,12 +67,15 @@ export class ExcludesValidator
         opts: ExcludesValidatorOpts,
     ) {
         super(attachTo, type, opts);
-        this.value = opts.value;
+        this.values = !Array.isArray(opts.value) ? [opts.value] : opts.value;
     }
 
     validate(ctx: ValidationContext): ValidatorResponse {
-        return safeExcludes(ctx.value, this.value)
-            ? this.success()
-            : this.error(excludesValidator.err.Includes);
+        for (const expectedValue of this.values) {
+            if (!safeExcludes(ctx.value, expectedValue)) {
+                return this.error(excludesValidator.err.Includes);
+            }
+        }
+        return this.success();
     }
 }

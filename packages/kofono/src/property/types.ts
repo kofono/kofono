@@ -2,8 +2,9 @@ import type { GenericValidatorOptions } from "../validator/types";
 
 export enum PropertyType {
     Array = "array",
+    BigInt = "bigInt",
     Boolean = "boolean",
-    Object = "object",
+    ListBigInt = "list<bigInt>",
     ListBoolean = "list<boolean>",
     ListMixed = "list<mixed>",
     ListNumber = "list<number>",
@@ -11,6 +12,7 @@ export enum PropertyType {
     Null = "null",
     Number = "number",
     String = "string",
+    Object = "object",
     Unknown = "unknown",
 }
 

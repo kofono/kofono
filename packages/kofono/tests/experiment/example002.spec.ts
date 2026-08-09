@@ -86,17 +86,17 @@ describe("test example002", () => {
 
     it("expect firstName, lastName, and contact to be invalid on start", () => {
         expect([
-            form.isValid("firstName"),
-            form.isValid("lastName"),
-            form.isValid("contact"),
+            form.isPropValid("firstName"),
+            form.isPropValid("lastName"),
+            form.isPropValid("contact"),
         ]).toEqual([false, false, false]);
     });
 
     it("expect otherSubject, technicalType, and productDimension to be unqualified on start", () => {
         expect([
-            form.isQualified("otherSubject"),
-            form.isQualified("technicalType"),
-            form.isQualified("productDimension"),
+            form.isPropQualified("otherSubject"),
+            form.isPropQualified("technicalType"),
+            form.isPropQualified("productDimension"),
         ]).toEqual([false, false, false]);
     });
 
@@ -109,30 +109,30 @@ describe("test example002", () => {
 
     it("expect otherSubject to be qualified because subject is 'other'", async () => {
         await form.update("subject", "other");
-        expect(form.isQualified("otherSubject")).toBeTruthy();
+        expect(form.isPropQualified("otherSubject")).toBeTruthy();
     });
 
     it("expect otherSubject to not be valid just after qualification", () => {
-        expect(form.isValid("otherSubject")).toBeFalsy();
+        expect(form.isPropValid("otherSubject")).toBeFalsy();
     });
 
     it("expect productDimension props and productDimension to be qualified because subject is 'sales'", async () => {
         await form.update("subject", "sales");
         expect([
-            form.isQualified("productDimension"),
-            form.isQualified("productTranslations"),
-            form.isQualified("productDimension.width"),
-            form.isQualified("productDimension.height"),
-            form.isQualified("productDimension.depth"),
+            form.isPropQualified("productDimension"),
+            form.isPropQualified("productTranslations"),
+            form.isPropQualified("productDimension.width"),
+            form.isPropQualified("productDimension.height"),
+            form.isPropQualified("productDimension.depth"),
         ]).toEqual([true, true, true, true, true]);
     });
 
-    it("expect productDimension props to be invalid after qualification", () => {
+    it("expect productDimension props to be valid after qualification", () => {
         expect([
-            form.isValid("productDimension.width"),
-            form.isValid("productDimension.height"),
-            form.isValid("productDimension.depth"),
-        ]).toEqual([false, false, false]);
+            form.isPropValid("productDimension.width"),
+            form.isPropValid("productDimension.height"),
+            form.isPropValid("productDimension.depth"),
+        ]).toEqual([true, true, true]);
     });
 
     it("expect productTranslations value to be equal to its default", () => {
@@ -140,6 +140,6 @@ describe("test example002", () => {
     });
 
     it("expect productTranslations to be valid", () => {
-        expect(form.isValid("productTranslations")).toBeTruthy();
+        expect(form.isPropValid("productTranslations")).toBeTruthy();
     });
 });

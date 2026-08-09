@@ -3,7 +3,6 @@ import type { SchemaAlphaNumValidator } from "./alphaNum/AlphaNumValidator";
 import type { SchemaBetweenValidator } from "./between/BetweenValidator";
 import type { SchemaConditionValidator } from "./condition/ConditionValidator";
 import type { SchemaDatetimeValidator } from "./datetime/DatetimeValidator";
-import type { SchemaEmailValidator } from "./email/EmailValidator";
 import type { SchemaEmptyValidator } from "./empty/EmptyValidator";
 import type { SchemaNotEmptyValidator } from "./empty/NotEmptyValidator";
 import type { SchemaEqualValidator } from "./equal/EqualValidator";
@@ -19,7 +18,45 @@ import type { SchemaLengthValidator } from "./length/LengthValidator";
 import type { SchemaMaxValidator } from "./max/MaxValidator";
 import type { SchemaMinValidator } from "./min/MinValidator";
 import type { SchemaPasswordValidator } from "./password/PasswordValidator";
+
+import type {
+    SchemaBase64urlValidator,
+    SchemaBase64Validator,
+} from "./regexp/Base64Validators";
+import type {
+    SchemaEmailValidator,
+    SchemaHtml5EmailValidator,
+    SchemaRfc5322EmailValidator,
+} from "./regexp/EmailValidators";
+import type {
+    SchemaCuid2Validator,
+    SchemaCuidValidator,
+    SchemaGuidValidator,
+    SchemaKsuidValidator,
+    SchemaNanoidValidator,
+    SchemaUlidValidator,
+    SchemaXidValidator,
+} from "./regexp/IdentifierValidators";
+import type { SchemaIntegerValidator } from "./regexp/IntegerValidator";
+import type {
+    SchemaCidrv4Validator,
+    SchemaCidrv6Validator,
+    SchemaIpv4Validator,
+    SchemaIpv6Validator,
+} from "./regexp/IpValidators";
 import type { SchemaRegexpValidator } from "./regexp/RegexpValidator";
+import type {
+    SchemaHexValidator,
+    SchemaLowercaseValidator,
+    SchemaUppercaseValidator,
+} from "./regexp/StringValidators";
+import type {
+    SchemaUuidV4Validator,
+    SchemaUuidV6Validator,
+    SchemaUuidV7Validator,
+    SchemaUuidValidator,
+} from "./regexp/UuidValidators";
+
 import type { SchemaRequiredValidator } from "./required/RequiredValidator";
 import type { SchemaNotSameAsValidator } from "./sameAs/NotSameAsValidator";
 import type { SchemaSameAsValidator } from "./sameAs/SameAsValidator";
@@ -32,22 +69,39 @@ export type SchemaPropertyBaseValidator = {
 export type SchemaPropertyValidator =
     | SchemaAlphaNumValidator
     | SchemaAlphaValidator
+    | SchemaBase64Validator
+    | SchemaBase64urlValidator
     | SchemaBetweenValidator
+    | SchemaConditionValidator
+    | SchemaCidrv4Validator
+    | SchemaCidrv6Validator
+    | SchemaCuid2Validator
+    | SchemaCuidValidator
     | SchemaDatetimeValidator
     | SchemaEmailValidator
+    | SchemaHtml5EmailValidator
+    | SchemaRfc5322EmailValidator
     | SchemaEmptyValidator
     | SchemaEqualValidator
-    | SchemaConditionValidator
     | SchemaExcludesValidator
+    | SchemaGuidValidator
     | SchemaIfValidator
     | SchemaIncludesValidator
+    | SchemaIntegerValidator
+    | SchemaIpv4Validator
+    | SchemaIpv6Validator
     | SchemaIsFalseValidator
     | SchemaIsNotValidValidator
     | SchemaIsTrueValidator
     | SchemaIsValidValidator
+    | SchemaKsuidValidator
     | SchemaLengthValidator
+    | SchemaLowercaseValidator
+    | SchemaUppercaseValidator
+    | SchemaHexValidator
     | SchemaMaxValidator
     | SchemaMinValidator
+    | SchemaNanoidValidator
     | SchemaNotEmptyValidator
     | SchemaNotEqualValidator
     | SchemaNotSameAsValidator
@@ -55,4 +109,10 @@ export type SchemaPropertyValidator =
     | SchemaRegexpValidator
     | SchemaRequiredValidator
     | SchemaSameAsValidator
-    | SchemaUrlValidator;
+    | SchemaUlidValidator
+    | SchemaUrlValidator
+    | SchemaUuidV4Validator
+    | SchemaUuidV6Validator
+    | SchemaUuidV7Validator
+    | SchemaUuidValidator
+    | SchemaXidValidator;

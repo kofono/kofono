@@ -22,7 +22,7 @@ export const isFalseValidator = {
         opts: IsFalseValidatorOpts,
     ) => new IsFalseValidator(selector, type, opts),
     err: {
-        IsNotFalse: "_IS_FALSE_IS_NOT_FALSE",
+        IsNotFalse: "_ISFALSE_IS_NOT_FALSE",
     },
 };
 

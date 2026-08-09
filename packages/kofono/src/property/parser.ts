@@ -40,11 +40,14 @@ export function parseValidators(
 
 /**
  * Determine the property type and the tree type from the given type.
+ * todo refact
  */
 export function determinePropertyTypes(type: string): [PropertyType, TreeType] {
     switch (type) {
         case PropertyType.Object:
             return [PropertyType.Object, TreeType.Node];
+        case PropertyType.BigInt:
+            return [PropertyType.BigInt, TreeType.Leaf];
         case PropertyType.String:
             return [PropertyType.String, TreeType.Leaf];
         case PropertyType.Number:
@@ -55,6 +58,8 @@ export function determinePropertyTypes(type: string): [PropertyType, TreeType] {
             return [PropertyType.Array, TreeType.Node];
         case PropertyType.Null:
             return [PropertyType.Null, TreeType.Leaf];
+        case PropertyType.ListBigInt:
+            return [PropertyType.ListBigInt, TreeType.Leaf];
         case PropertyType.ListString:
             return [PropertyType.ListString, TreeType.Leaf];
         case PropertyType.ListNumber:
@@ -66,4 +71,28 @@ export function determinePropertyTypes(type: string): [PropertyType, TreeType] {
         default:
             return [PropertyType.Unknown, TreeType.Leaf];
     }
+}
+
+/**
+ * Validate a given selector respect basic rules
+ */
+export function parseSelector(selector: string): [boolean, string] {
+    if (selector === "") {
+        return [false, "selector cannot be empty."];
+    }
+    const onlyAlphaNumeric = /^[a-zA-Z0-9._]+$/;
+    if (!onlyAlphaNumeric.test(selector)) {
+        return [
+            false,
+            `selector must contains only alphanumeric, dot or underline. Got: ${selector}`,
+        ];
+    }
+    const startsWithAlphanumeric = /^[a-zA-Z0-9]/;
+    if (!startsWithAlphanumeric.test(selector)) {
+        return [
+            false,
+            `selector must start with an alphanumeric character. Got: ${selector}`,
+        ];
+    }
+    return [true, ""];
 }

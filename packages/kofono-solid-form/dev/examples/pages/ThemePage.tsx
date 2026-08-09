@@ -84,12 +84,18 @@ export function ThemePage() {
                 <h2 class="text-xl font-semibold mb-4">Elements</h2>
                 <div class="space-y-4">
                     <div class="flex flex-wrap gap-4">
-                        <button class="btn btn-primary">primary button</button>
-                        <button class="btn btn-secondary">
+                        <button type="button" class="btn btn-primary">
+                            primary button
+                        </button>
+                        <button type="button" class="btn btn-secondary">
                             secondary button
                         </button>
-                        <button class="btn btn-accent">accent button</button>
-                        <button class="btn btn-outline">outline button</button>
+                        <button type="button" class="btn btn-accent">
+                            accent button
+                        </button>
+                        <button type="button" class="btn btn-outline">
+                            outline button
+                        </button>
                     </div>
 
                     <div class="flex flex-wrap gap-4">

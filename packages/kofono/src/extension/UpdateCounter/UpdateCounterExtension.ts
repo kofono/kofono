@@ -6,9 +6,11 @@ import type { ExtensionBaseOptions, ExtensionContext } from "../types";
 // it serves as an example of how to create a custom extension
 
 // represent the schema structure definition
-export type SchemaUpdateCounterExtension = {
-    updateCounter: UpdateCounterOpts;
-};
+export type SchemaUpdateCounterExtension =
+    | "updateCounter"
+    | {
+          updateCounter: UpdateCounterOpts;
+      };
 
 // represent the options passed to the extension at form creation.
 export type UpdateCounterOpts = ExtensionBaseOptions;
@@ -37,7 +39,7 @@ export class UpdateCounterExtension extends BaseExtension<
     UpdateCounterMeta,
     UpdateCounterOpts
 > {
-    public readonly defaultMetaData: UpdateCounterMeta = 0;
+    public metaData: UpdateCounterMeta = 0;
 
     constructor(ctx: ExtensionContext, opts: UpdateCounterOpts = {}) {
         super(ctx, opts);
@@ -45,7 +47,8 @@ export class UpdateCounterExtension extends BaseExtension<
 
     async init(): Promise<void> {
         this.form.events.on(Events.SelectorAfterUpdate, () => {
-            this.metaData = this.metaData + 1;
+            this.metaData++;
+            this.syncMetaData();
         });
     }
 }

@@ -6,18 +6,9 @@ import {
     evaluateCondition,
     parseConditionPlaceholders,
     parsePlaceholders,
+    placeholdersListToSelectors,
 } from "./condition";
-import type { Condition, Placeholder } from "./types";
-
-const t = `
-{property:my.selector:data} or
-{property:my.selector}
-{property:my.selector:validation}
-{property:my.selector:qualification}
-{property:my.selector}
-
-`;
-t;
+import type { Condition, Placeholder, PlaceholderList } from "./types";
 
 describe("parsePlaceholders()", () => {
     const tests: {
@@ -127,12 +118,12 @@ describe("testing var and def type", () => {
                     role: "admin",
                 },
             },
-            something: K.string().$q(q =>
-                q.condition("{var:user.role}", "==", "admin"),
-            ),
-            somethingElse: K.string().$q(q =>
-                q.condition("{var:user.role}", "==", "user"),
-            ),
+            something: K.string().qualifications({
+                condition: ["{var:user.role}", "==", "admin"],
+            }),
+            somethingElse: K.string().qualifications({
+                condition: ["{var:user.role}", "==", "user"],
+            }),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
@@ -146,7 +137,9 @@ describe("testing var and def type", () => {
                         name: "bob",
                     },
                 })
-                .$q(q => q.condition("{def:test.name}", "==", "bob")),
+                .qualifications({
+                    condition: ["{def:test.name}", "==", "bob"],
+                }),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
@@ -157,18 +150,58 @@ describe("evaluateFieldValue()", () => {
     it("should handle modifiers", async () => {
         const form = await K.form({
             name: K.string().default("BOB"),
-            something: K.string().$q(q =>
-                q.condition("{data:name|toLowerCase}", "==", "bob"),
-            ),
-            somethingElse: K.string().$q(q =>
-                q.condition("{data:name}", "==", "bob"),
-            ),
+            something: K.string().qualifications({
+                condition: ["{data:name|toLowerCase}", "==", "bob"],
+            }),
+            somethingElse: K.string().qualifications({
+                condition: ["{data:name}", "==", "bob"],
+            }),
         });
 
         expect(form.state.qualifications.something[0]).toBeTruthy();
         expect(form.state.qualifications.somethingElse[0]).toBeFalsy();
         await form.update("name", "foobar");
         expect(form.state.qualifications.something[0]).toBeFalsy();
+    });
+});
+
+describe("condition template guardrail", () => {
+    it("should reject a template mixing literal text with a placeholder", () => {
+        expect(() =>
+            parseConditionPlaceholders(["Hello {data:name}!", "==", "x"], {}),
+        ).toThrow();
+    });
+
+    it("should reject a template with multiple placeholders", () => {
+        expect(() =>
+            parseConditionPlaceholders(
+                ["{data:first} {data:last}", "==", "x"],
+                {},
+            ),
+        ).toThrow();
+    });
+
+    it("should accept a template that is exactly one placeholder", () => {
+        expect(() =>
+            parseConditionPlaceholders(["{data:name}", "==", "x"], {}),
+        ).not.toThrow();
+    });
+
+    it("should accept plain text with no placeholder", () => {
+        expect(() =>
+            parseConditionPlaceholders(["name", "==", "x"], {}),
+        ).not.toThrow();
+    });
+
+    it("should reject building a schema with a mixed condition template", async () => {
+        await expect(
+            K.form({
+                name: K.string().default("bob"),
+                something: K.string().qualifications({
+                    condition: ["Hello {data:name}!", "==", "Hello bob!"],
+                }),
+            }),
+        ).rejects.toThrow();
     });
 });
 
@@ -180,21 +213,21 @@ describe("evaluateCondition()", () => {
             age: K.number().default(25),
             country: K.string().default("QC"),
             tags: K.listString().default(["tagA", "tagB", "tagC"]),
-            acceptTerms: K.boolean()
-                .default(false)
-                .$v(v => v.required()),
+            acceptTerms: K.boolean("required").default(false),
             subscribeNewsletter: K.boolean()
                 .default(false)
-                .$q(q => q.condition("{data:acceptTerms}", "==", true)),
+                .qualifications({
+                    condition: ["{data:acceptTerms}", "==", true],
+                }),
             subscribeToMonthlyNewsletter: K.boolean()
                 .default(false)
-                .$q(q =>
-                    q.conditions([
+                .qualifications({
+                    condition: [
                         ["{data:acceptTerms}", "==", true],
                         "and",
                         ["{data:subscribeNewsletter}", "==", true],
-                    ]),
-                ),
+                    ],
+                }),
         });
     }
 
@@ -479,6 +512,66 @@ describe("evaluateCondition()", () => {
             const placeholders = parseConditionPlaceholders(t.condition, {});
 
             expect(evaluateCondition(t.condition, context, placeholders)).toBe(
+                t.expected,
+            );
+        });
+});
+
+describe("placeholdersListToSelectors()", () => {
+    const tests: {
+        id: string;
+        placeholders: PlaceholderList;
+        expected: string[];
+    }[] = [
+        {
+            id: "should collect a data selector",
+            placeholders: {
+                "{data:my.selector}": [{ type: "data", path: "my.selector" }],
+            },
+            expected: ["my.selector"],
+        },
+        {
+            id: "should collect a qualification selector",
+            placeholders: {
+                "{qualification:my.selector}": [
+                    { type: "qualification", path: "my.selector" },
+                ],
+            },
+            expected: ["my.selector"],
+        },
+        {
+            id: "should collect a validation selector",
+            placeholders: {
+                "{validation:my.selector}": [
+                    { type: "validation", path: "my.selector" },
+                ],
+            },
+            expected: ["my.selector"],
+        },
+        {
+            id: "should ignore var, def and self placeholders",
+            placeholders: {
+                "{var:my.selector}": [{ type: "var", path: "my.selector" }],
+                "{def:my.selector}": [{ type: "def", path: "my.selector" }],
+                "{self}": [{ type: "self", path: "" }],
+            },
+            expected: [],
+        },
+        {
+            id: "should collect selectors across multiple placeholder entries",
+            placeholders: {
+                "{data:a}": [{ type: "data", path: "a" }],
+                "{qualification:b}": [{ type: "qualification", path: "b" }],
+                "{validation:c}": [{ type: "validation", path: "c" }],
+                "{var:d}": [{ type: "var", path: "d" }],
+            },
+            expected: ["a", "b", "c"],
+        },
+    ];
+
+    for (const t of tests)
+        it(t.id, () => {
+            expect(placeholdersListToSelectors(t.placeholders)).toEqual(
                 t.expected,
             );
         });
