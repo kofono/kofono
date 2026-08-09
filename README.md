@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/kofono.svg)](https://www.npmjs.com/package/kofono)
 [![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](LICENSE)
 
-Kofofo is a headless schema-based form engine. It provides
+Kofono is a headless schema-based form engine. It provides
 a robust system for building, validating, and managing complex forms with
 conditional logic or custom logic.
 

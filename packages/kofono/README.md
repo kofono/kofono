@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/kofono.svg)](https://www.npmjs.com/package/kofono)
 [![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](LICENSE)
 
-Kofofo is a headless schema-based form engine. It provides
+Kofono is a headless schema-based form engine. It provides
 a robust system for building, validating, and managing complex forms with
 conditional logic or custom logic.
 
@@ -45,9 +45,9 @@ const form = await K.form({
     otherNotes: K.string(),
 });
 
-console.log(form.isValid("firstName")); // false
+console.log(form.isPropValid("firstName")); // false
 await form.update("firstName", "John");
-console.log(form.isValid("firstName")); // true
+console.log(form.isPropValid("firstName")); // true
 
 console.log(form.pass()); // false
 await form.updates({
@@ -63,9 +63,9 @@ await form.updates({
 });
 console.log(form.pass()); // true
 
-console.log(form.isQualified("billing")) // false
+console.log(form.isPropQualified("billing")) // false
 await form.update("sameAddressForBilling", false);
-console.log(form.isQualified("billing")) // true
+console.log(form.isPropQualified("billing")) // true
 console.log(form.pass()); // false
 
 console.log(form.errors()); // { "billingAddress.city": "Select a city", ... }
