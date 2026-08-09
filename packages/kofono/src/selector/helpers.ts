@@ -31,7 +31,14 @@ export function removeSelectorBase(
     baseSelectorToRemove: string,
     selector: string,
 ) {
-    return selector.replace(baseSelectorToRemove + DataSelector.separator, "");
+    if (
+        selector.startsWith(`${baseSelectorToRemove}${DataSelector.separator}`)
+    ) {
+        return selector.slice(
+            baseSelectorToRemove.length + DataSelector.separator.length,
+        );
+    }
+    return selector;
 }
 
 /**

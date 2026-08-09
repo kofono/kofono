@@ -14,6 +14,8 @@ test("joinSelectors()", () => {
 
 test("removeSelectorBase()", () => {
     expect(removeSelectorBase("a", "a.b.c")).toBe("b.c");
+    expect(removeSelectorBase("a.b", "a.b.a.b.c")).toBe("a.b.c");
+    expect(removeSelectorBase("foo", "a.b.c")).toBe("a.b.c");
 });
 
 test("getParentSelector()", () => {
