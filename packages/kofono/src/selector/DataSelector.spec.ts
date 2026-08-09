@@ -161,6 +161,14 @@ describe("DataSelector array index bounds", () => {
         );
     });
 
+    it("throws when skipping indices with a selector that has no nested path", () => {
+        const selector = new DataSelector();
+        const data: any[] = ["test", "foo"];
+        expect(() => selector.set("99", "Alice", data)).toThrow(
+            DataSelectorIndexOutOfBoundsError,
+        );
+    });
+
     it("trySet() returns false with error message on out-of-bounds", () => {
         const selector = new DataSelector();
         const data: any[] = [];

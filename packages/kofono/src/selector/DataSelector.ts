@@ -20,7 +20,7 @@ export class DataSelectorIndexOutOfBoundsError extends Error {
 const unsafeKeys = new Set(["__proto__", "constructor", "prototype"]);
 
 export class DataSelector {
-    // separator and wildcard must be only one char
+    // separator must be only one char
     public static readonly separator = ".";
 
     private resolvedSelectors = new Map<string, string[]>();
@@ -95,6 +95,9 @@ export class DataSelector {
         return success;
     }
 
+    /**
+     * Get a path value or throw an error if the path does not exist.
+     */
     protected _get(
         paths: string[],
         data: Data,
@@ -126,7 +129,10 @@ export class DataSelector {
         throw new DataSelectorNotFoundError(originalSelector);
     }
 
-    protected _set(propPath: string, value: unknown, obj: any): void {
+    /**
+     * Set a path value.
+     */
+    protected _set(propPath: string, value: unknown, data: any): void {
         const [head, ...rest] = propPath.split(DataSelector.separator);
 
         // block prototype pollution
@@ -134,25 +140,28 @@ export class DataSelector {
             return;
         }
 
+        if (Array.isArray(data)) {
+            const index = parseInt(head, 10);
+            if (Number.isNaN(index) || index < 0 || index > data.length) {
+                throw new DataSelectorIndexOutOfBoundsError(index, data.length);
+            }
+            if (index === data.length) {
+                data.push({});
+            }
+        }
+
         if (!rest.length) {
-            obj[head] = value;
+            data[head] = value;
             return;
         }
 
-        if (Array.isArray(obj)) {
-            const index = parseInt(head, 10);
-            if (Number.isNaN(index) || index < 0 || index > obj.length) {
-                throw new DataSelectorIndexOutOfBoundsError(index, obj.length);
-            }
-            if (index === obj.length) {
-                obj.push({});
-            }
-        }
-
-        this._set(rest.join(DataSelector.separator), value, obj[head]);
+        this._set(rest.join(DataSelector.separator), value, data[head]);
     }
 
-    protected _delete(propPath: string, obj: any): void {
+    /**
+     * Delete a path value. This assumes the path exists.
+     */
+    protected _delete(propPath: string, data: any): void {
         const [head, ...rest] = propPath.split(DataSelector.separator);
 
         // block prototype pollution
@@ -161,11 +170,11 @@ export class DataSelector {
         }
 
         if (!rest.length) {
-            Array.isArray(obj)
-                ? obj.splice(parseInt(head, 10), 1)
-                : delete obj[head];
+            Array.isArray(data)
+                ? data.splice(parseInt(head, 10), 1)
+                : delete data[head];
         } else {
-            this._delete(rest.join(DataSelector.separator), obj[head]);
+            this._delete(rest.join(DataSelector.separator), data[head]);
         }
     }
 }
