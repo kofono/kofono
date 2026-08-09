@@ -31,6 +31,9 @@
 - fix typo bug in validator condition placeholdersListToSelectors() function
 - fix SelectorValidatorsEvent context value before each validator execution
 - fix length validator to return the appropriate error when the value type is invalid
+- regex validator supports array of values
+- fix condition expression placeholder typo bug
+- enforce condition single expression template to be one placeholder only
 
 # 0.9.0 - 2026-07-19
 
