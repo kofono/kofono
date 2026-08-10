@@ -1,3 +1,4 @@
+import { failResult, okResult, type Result } from "../common/result";
 import type { SchemaPropertyValidator } from "../validator/schema";
 import { PropertyType, type PropertyValidator, TreeType } from "./types";
 
@@ -76,23 +77,26 @@ export function determinePropertyTypes(type: string): [PropertyType, TreeType] {
 /**
  * Validate a given selector respect basic rules
  */
-export function parseSelector(selector: string): [boolean, string] {
-    if (selector === "") {
-        return [false, "selector cannot be empty."];
+export function parseSelector(selector: string): Result {
+    if (selector.trim() === "") {
+        return failResult("selector cannot be empty.");
     }
     const onlyAlphaNumeric = /^[a-zA-Z0-9._]+$/;
     if (!onlyAlphaNumeric.test(selector)) {
-        return [
-            false,
-            `selector must contains only alphanumeric, dot or underline. Got: ${selector}`,
-        ];
+        return failResult(
+            `selector must contains only alphanumeric, underline and dot characters. Got: ${selector}`,
+        );
     }
     const startsWithAlphanumeric = /^[a-zA-Z0-9]/;
     if (!startsWithAlphanumeric.test(selector)) {
-        return [
-            false,
+        return failResult(
             `selector must start with an alphanumeric character. Got: ${selector}`,
-        ];
+        );
     }
-    return [true, ""];
+    if (selector.split(".").some(segment => segment === "")) {
+        return failResult(
+            `selector must not contain empty segments (consecutive or trailing dots). Got: ${selector}`,
+        );
+    }
+    return okResult();
 }

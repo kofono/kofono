@@ -48,32 +48,24 @@ describe("parseSelector()", () => {
     type Scenario = [string, [boolean, string]];
     const scenarios: Scenario[] = [
         ["", [false, "selector cannot be empty."]],
+        ["  ", [false, "selector cannot be empty."]],
         ["a", [true, ""]],
         ["1", [true, ""]],
-        [
-            "_",
-            [
-                false,
-                "selector must start with an alphanumeric character. Got: _",
-            ],
-        ],
+        ["_", [false, "must start with"]],
         ["a1", [true, ""]],
         ["a_", [true, ""]],
         ["a.b", [true, ""]],
-        [
-            "#425sdf",
-            [
-                false,
-                "selector must contains only alphanumeric, dot or underline. Got: #425sdf",
-            ],
-        ],
+        ["#425sdf", [false, "must contains only"]],
+        ["a..b", [false, "trailing dots"]],
     ];
 
     for (const [selector, expected] of scenarios) {
         it(`should return ${expected} for selector: ${selector}`, () => {
-            const [isValid, errorMessage] = parseSelector(selector);
-            expect(isValid).toEqual(expected[0]);
-            expect(errorMessage).toEqual(expected[1]);
+            const result = parseSelector(selector);
+            expect(result.ok).toEqual(expected[0]);
+            if (!result.ok) {
+                expect(result.error.includes(expected[1])).toBeTruthy();
+            }
         });
     }
 });
