@@ -28,7 +28,6 @@ export {
     DataSelectorNotFoundError,
 } from "./selector/DataSelector";
 export { GenericDataQuerier } from "./selector/GenericDataQuerier";
-export { ReadOnlyDataSelector } from "./selector/ReadOnlyDataSelector";
 export * from "./selector/types";
 // validator
 export * from "./validator/builtinValidators";
