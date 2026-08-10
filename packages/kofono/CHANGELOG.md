@@ -5,6 +5,7 @@
 - fix DataSelector._get() to only return undefined when a property is explicitly undefined
 - remove unused ReadOnlyDataSelector
 - delete common helper uuidV4()
+- fix normalizeEnumDef() to check all enum items instead of the first one
 
 # 0.10.0 - 2026-08-09
 
