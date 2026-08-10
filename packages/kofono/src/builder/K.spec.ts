@@ -220,8 +220,6 @@ describe("K builder", () => {
 
             expect(schema).toEqual({
                 $id: "test",
-                $extensions: [],
-                $translations: {},
                 $vars: {
                     name: "foo",
                 },
@@ -236,7 +234,6 @@ describe("K builder", () => {
                     },
                 },
             });
-            // console.log(schema);
         });
     });
 
