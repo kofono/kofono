@@ -10,11 +10,11 @@ import type { BaseProperties } from "./types";
 
 export function generateTree(props: BaseProperties): Data {
     const data: Data = {};
-    const selector = new DataSelector();
-    for (const [uid, prop] of Object.entries(props)) {
+    const dataSelector = new DataSelector();
+    for (const [selector, prop] of Object.entries(props)) {
         const value = getPropertyDefaultValue(prop);
         if (prop.type !== PropertyType.Null) {
-            selector.set(uid, value, data);
+            dataSelector.set(selector, value, data);
         }
     }
     return data;
@@ -25,11 +25,11 @@ export function generatePartialTree(
     baseSelector: string,
 ): Data {
     const data: Data = {};
-    const selector = new DataSelector();
-    for (const [uid, prop] of Object.entries(props)) {
+    const dataSelector = new DataSelector();
+    for (const [selector, prop] of Object.entries(props)) {
         if (prop.type !== PropertyType.Null) {
-            selector.set(
-                removeSelectorBase(baseSelector, uid),
+            dataSelector.set(
+                removeSelectorBase(baseSelector, selector),
                 getPropertyDefaultValue(prop),
                 data,
             );

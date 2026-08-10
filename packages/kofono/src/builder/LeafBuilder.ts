@@ -7,14 +7,14 @@ export class LeafBuilder<TSchemaType extends SchemaProperty>
     implements PropertyBuilder<TSchemaType>
 {
     public constructor(
-        protected readonly uid: string,
+        protected readonly selector: string,
         protected def: TSchemaType,
     ) {
         this.normalizeEnum();
     }
 
     build(): Property<TSchemaType> {
-        return new Property<TSchemaType>(this.uid, this.def);
+        return new Property<TSchemaType>(this.selector, this.def);
     }
 
     private normalizeEnum() {

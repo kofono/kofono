@@ -10,17 +10,17 @@ import { SchemaBuilderError } from "./SchemaBuilder";
 export function buildProps(
     id: string,
     prop: SchemaProperty,
-    parentUid: string,
+    parentSelector: string,
 ): BaseProperties {
     const builder = new Builder();
-    processSchemaProp(id, builder, prop, parentUid);
+    processSchemaProp(id, builder, prop, parentSelector);
     return builder.buildProps();
 }
 
 export function processSchemaProps(
     builder: Builder,
     schema: SchemaProperties,
-    parentUid: string,
+    parentSelector: string,
 ): void {
     for (const [propId, prop] of Object.entries(schema)) {
         if (typeof propId !== "string") {
@@ -35,7 +35,7 @@ export function processSchemaProps(
                 ),
             );
         } else if ("type" in prop) {
-            processSchemaProp(propId, builder, prop, parentUid);
+            processSchemaProp(propId, builder, prop, parentSelector);
         }
     }
 }
@@ -44,7 +44,7 @@ function processSchemaProp(
     key: string,
     builder: Builder,
     prop: SchemaProperty,
-    parentUid: string,
+    parentSelector: string,
 ): void {
     if (key.includes(DataSelector.separator)) {
         throw new Error(
@@ -52,7 +52,7 @@ function processSchemaProp(
         );
     }
 
-    const selector = joinParentSelector(parentUid, key);
+    const selector = joinParentSelector(parentSelector, key);
     switch (prop.type) {
         case PropertyType.Array:
             builder.array(selector, prop);

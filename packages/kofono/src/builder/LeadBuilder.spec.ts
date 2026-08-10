@@ -3,7 +3,7 @@ import { PropertyType, TreeType } from "../property/types";
 import { LeafBuilder } from "./LeafBuilder";
 
 test("LeafBuilder test", () => {
-    const leafBuilder = new LeafBuilder("uid", {
+    const leafBuilder = new LeafBuilder("selector", {
         type: PropertyType.String,
     });
     const prop = leafBuilder.build();
@@ -12,7 +12,7 @@ test("LeafBuilder test", () => {
 });
 
 describe("LeafBuilder normalizeEnum", () => {
-    const leafBuilder = new LeafBuilder("uid", {
+    const leafBuilder = new LeafBuilder("selector", {
         type: PropertyType.String,
         enum: ["foo", "bar"],
     });

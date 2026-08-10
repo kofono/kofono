@@ -6,11 +6,11 @@ export class NodeBuilder<TSchemaType extends SchemaProperty>
     implements PropertyBuilder<TSchemaType>
 {
     public constructor(
-        protected readonly uid: string,
+        protected readonly selector: string,
         protected def: TSchemaType,
     ) {}
 
     build(): Property<TSchemaType> {
-        return new Property<TSchemaType>(this.uid, this.def);
+        return new Property<TSchemaType>(this.selector, this.def);
     }
 }
