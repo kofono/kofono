@@ -18,16 +18,19 @@ import type {
     SchemaProperty,
     SchemaStringProperty,
 } from "../schema/Schema";
-import { DuplicatePropertyUidError } from "./Errors";
 import { LeafBuilder } from "./LeafBuilder";
 import { NodeBuilder } from "./NodeBuilder";
 import type { PropertyBuilder } from "./types";
 
+export class DuplicatePropertySelectorError extends Error {
+    constructor(selector: string) {
+        super(`Duplicate property selector: ${selector}`);
+    }
+}
+
 export class Builder {
     protected _builders: Record<string, PropertyBuilder<SchemaProperty>> = {};
-    protected _uids: string[] = [];
-    protected _errors: Error[] = [];
-    //protected _uid: string = "root";
+    protected _selectors: string[] = [];
 
     public async build(
         config: FormConfig = defaultConfig,
@@ -44,6 +47,10 @@ export class Builder {
         return form;
     }
 
+    public get selectors(): string[] {
+        return this._selectors;
+    }
+
     public buildProps(): BaseProperties {
         const props: BaseProperties = {};
         for (const builder of Object.values(this._builders)) {
@@ -53,191 +60,188 @@ export class Builder {
         return props;
     }
 
-    array(uid: string, def: Omit<SchemaArrayProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    array(selector: string, def: Omit<SchemaArrayProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaArrayProperty = {
             ...(def as SchemaArrayProperty),
             type: PropertyType.Array,
         };
-        this._builders[uid] = new LeafBuilder<SchemaArrayProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaArrayProperty>(
+            selector,
             typedDef,
         );
     }
 
-    bigInt(uid: string, def: Omit<SchemaBigIntProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    bigInt(selector: string, def: Omit<SchemaBigIntProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaBigIntProperty = {
             type: PropertyType.BigInt,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaBigIntProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaBigIntProperty>(
+            selector,
             typedDef,
         );
     }
 
-    boolean(uid: string, def: Omit<SchemaBooleanProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    boolean(selector: string, def: Omit<SchemaBooleanProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaBooleanProperty = {
             type: PropertyType.Boolean,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaBooleanProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaBooleanProperty>(
+            selector,
             typedDef,
         );
     }
 
-    listBigInt(uid: string, def: Omit<SchemaListBigIntProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    listBigInt(
+        selector: string,
+        def: Omit<SchemaListBigIntProperty, "type">,
+    ): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaListBigIntProperty = {
             type: PropertyType.ListBigInt,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaListBigIntProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaListBigIntProperty>(
+            selector,
             typedDef,
         );
     }
 
     listBoolean(
-        uid: string,
+        selector: string,
         def: Omit<SchemaListBooleanProperty, "type">,
     ): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaListBooleanProperty = {
             type: PropertyType.ListBoolean,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaListBooleanProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaListBooleanProperty>(
+            selector,
             typedDef,
         );
     }
 
-    listMixed(uid: string, def: Omit<SchemaListMixedProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    listMixed(
+        selector: string,
+        def: Omit<SchemaListMixedProperty, "type">,
+    ): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaListMixedProperty = {
             type: PropertyType.ListMixed,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaListMixedProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaListMixedProperty>(
+            selector,
             typedDef,
         );
     }
 
-    listNumber(uid: string, def: Omit<SchemaListNumberProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    listNumber(
+        selector: string,
+        def: Omit<SchemaListNumberProperty, "type">,
+    ): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaListNumberProperty = {
             type: PropertyType.ListNumber,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaListNumberProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaListNumberProperty>(
+            selector,
             typedDef,
         );
     }
 
-    listString(uid: string, def: Omit<SchemaListStringProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    listString(
+        selector: string,
+        def: Omit<SchemaListStringProperty, "type">,
+    ): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaListStringProperty = {
             type: PropertyType.ListString,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaListStringProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaListStringProperty>(
+            selector,
             typedDef,
         );
     }
 
-    null(uid: string, def: Omit<SchemaNullProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    null(selector: string, def: Omit<SchemaNullProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaNullProperty = {
             type: PropertyType.Null,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaNullProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaNullProperty>(
+            selector,
             typedDef,
         );
     }
 
-    number(uid: string, def: Omit<SchemaNumberProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    number(selector: string, def: Omit<SchemaNumberProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaNumberProperty = {
             type: PropertyType.Number,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaNumberProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaNumberProperty>(
+            selector,
             typedDef,
         );
     }
 
-    object(uid: string, def: Omit<SchemaObjectProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    object(selector: string, def: Omit<SchemaObjectProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaObjectProperty = {
             ...(def as SchemaObjectProperty),
             type: PropertyType.Object,
         };
-        this._builders[uid] = new NodeBuilder<SchemaObjectProperty>(
-            uid,
+        this._builders[selector] = new NodeBuilder<SchemaObjectProperty>(
+            selector,
             typedDef,
         );
     }
 
-    string(uid: string, def: Omit<SchemaStringProperty, "type">): void {
-        if (!this.validateUid(uid)) {
-            return;
-        }
+    string(selector: string, def: Omit<SchemaStringProperty, "type">): void {
+        this.validateSelectorOrThrow(selector);
+
         const typedDef: SchemaStringProperty = {
             type: PropertyType.String,
             ...def,
         };
-        this._builders[uid] = new LeafBuilder<SchemaStringProperty>(
-            uid,
+        this._builders[selector] = new LeafBuilder<SchemaStringProperty>(
+            selector,
             typedDef,
         );
     }
 
-    public validateUid(uid: string): boolean {
-        if (this._uids.includes(uid)) {
-            this._errors.push(new DuplicatePropertyUidError(uid));
+    protected trackSelector(selector: string): boolean {
+        if (this._selectors.includes(selector)) {
             return false;
         }
-        this._uids.push(uid);
+        this._selectors.push(selector);
         return true;
     }
 
-    public errors(): Error[] {
-        return this._errors;
-    }
-
-    public uids(): string[] {
-        return this._uids;
+    protected validateSelectorOrThrow(selector: string): void {
+        if (!this.trackSelector(selector)) {
+            throw new DuplicatePropertySelectorError(selector);
+        }
     }
 }
