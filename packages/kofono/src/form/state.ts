@@ -1,10 +1,9 @@
-import { uuidV4 } from "../common/helpers";
 import type { Form } from "./Form";
 import type { State } from "./types";
 
 export function generateNewFormState(): State {
     return {
-        sessionId: uuidV4(),
+        sessionId: crypto.randomUUID(),
         data: {},
         stats: {
             qualified: 0,
