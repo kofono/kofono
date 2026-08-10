@@ -22,12 +22,11 @@ export class Property<TSchemaType extends SchemaProperty>
     #validators: PropertyValidator[];
     #qualifiers: PropertyValidator[];
     #defQuerier: GenericDataQuerier;
-    #selector: string;
+    #selector: string = "";
     #def: TSchemaType;
 
     constructor(selector: string, def: TSchemaType) {
-        mustBeValidSelectorName(selector);
-        this.#selector = selector;
+        this.renameSelector(selector);
 
         const [type, treeType] = determinePropertyTypes(def.type);
         if (type === PropertyType.Unknown) {
@@ -63,18 +62,15 @@ export class Property<TSchemaType extends SchemaProperty>
     }
 
     public renameSelector(selector: string) {
-        mustBeValidSelectorName(selector);
+        const parseResult = parseSelector(selector);
+        if (!parseResult.ok) {
+            throw new Error(parseResult.error);
+        }
+
         this.#selector = selector;
     }
 
     public validators(): PropertyValidator[] {
         return this.#validators;
-    }
-}
-
-function mustBeValidSelectorName(selector: string) {
-    const [isValid, errorMessage] = parseSelector(selector);
-    if (!isValid) {
-        throw new Error(errorMessage);
     }
 }
