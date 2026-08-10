@@ -12,13 +12,16 @@ export type FailResult<TError = string> = {
     error: TError;
 };
 
-export const result = Object.freeze({
-    ok: (): OkResult => ({ ok: true }),
-    fail: <TError = string>(error: TError): FailResult<TError> => ({
+export function okResult(): OkResult {
+    return { ok: true };
+}
+
+export function failResult<TError = string>(error: TError): FailResult<TError> {
+    return {
         ok: false,
         error,
-    }),
-});
+    };
+}
 
 /**
  * Result with value or error
@@ -37,13 +40,15 @@ export type FailResultValue<TError = string> = {
     error: TError;
 };
 
-export const resultValue = Object.freeze({
-    ok: <TValue = any>(value: TValue): OkResultValue<TValue> => ({
-        ok: true,
-        value,
-    }),
-    fail: <TError = string>(error: TError): FailResultValue<TError> => ({
+export function okResultValue<TValue>(value: TValue): OkResultValue<TValue> {
+    return { ok: true, value };
+}
+
+export function failResultValue<TError = string>(
+    error: TError,
+): FailResultValue<TError> {
+    return {
         ok: false,
         error,
-    }),
-});
+    };
+}

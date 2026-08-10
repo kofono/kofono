@@ -1,5 +1,5 @@
 import { version as packageVersion } from "../../package.json";
-import { type Result, result } from "../common/result";
+import { failResult, okResult, type Result } from "../common/result";
 import type { ExtensionsFactory } from "../extension/ExtensionsFactory";
 import type { BaseProperty } from "../property/types";
 import type { SchemaProperty } from "../schema/Schema";
@@ -313,7 +313,7 @@ export class Form {
     ): Promise<Result> {
         const [exists, oldValue] = this.#formDataSelector.tryGet(selector);
         if (!exists) {
-            return result.fail(`Selector not found: ${selector}`);
+            return failResult(`Selector not found: ${selector}`);
         }
 
         if (updateType === Update.Normal) {
@@ -321,7 +321,7 @@ export class Form {
                 !this.prop(selector).isQualified() ||
                 !this.prop(selector).isParentsQualified()
             ) {
-                return result.fail(`Selector not qualified: ${selector}`);
+                return failResult(`Selector not qualified: ${selector}`);
             }
 
             const isValidDataType = validatePropertyDataType(
@@ -330,7 +330,7 @@ export class Form {
             );
 
             if (!isValidDataType) {
-                return result.fail(
+                return failResult(
                     `Invalid data type for selector: ${selector}`,
                 );
             }
@@ -372,7 +372,7 @@ export class Form {
 
         await this.#events.emit(Events.SelectorAfterUpdate, updateCtx);
 
-        return result.ok();
+        return okResult();
     }
 
     /**
