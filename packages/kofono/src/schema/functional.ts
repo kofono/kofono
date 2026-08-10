@@ -1,4 +1,4 @@
-import { isObjectLiteral, objectHasKey } from "../common/helpers";
+import { isObjectLiteral, objectHasKey, optional } from "../common/helpers";
 import type { PropertyType } from "../property/types";
 import { joinParentSelector } from "../selector/helpers";
 import type { SchemaPropertyValidator } from "../validator/schema";
@@ -19,18 +19,6 @@ export function property(
             ...optional(Token.Validations, validations),
             ...optional(Token.Qualifications, qualifications),
         } as SchemaProperty,
-    };
-}
-
-function optional(key: string, item: any): { [key: string]: any } | undefined {
-    if (item === null || item === undefined) {
-        return;
-    }
-    if (Array.isArray(item) && item.length === 0) {
-        return;
-    }
-    return {
-        [key]: item,
     };
 }
 
