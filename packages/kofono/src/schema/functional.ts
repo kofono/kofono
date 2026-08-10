@@ -3,14 +3,7 @@ import type { PropertyType } from "../property/types";
 import { joinParentSelector } from "../selector/helpers";
 import type { SchemaPropertyValidator } from "../validator/schema";
 import type { Schema, SchemaProperties, SchemaProperty } from "./Schema";
-
-// export function o(...args: Record<string, any>[]) {
-//     let result = {};
-//     for (const arg of args) {
-//         result = Object.assign(result, arg);
-//     }
-//     return result;
-// }
+import { Token } from "./Tokens";
 
 export function property(
     id: string,
@@ -23,8 +16,8 @@ export function property(
     return {
         [id]: {
             type,
-            ...optional("$v", validations),
-            ...optional("$q", qualifications),
+            ...optional(Token.Validations, validations),
+            ...optional(Token.Qualifications, qualifications),
         } as SchemaProperty,
     };
 }
@@ -42,7 +35,7 @@ function optional(key: string, item: any): { [key: string]: any } | undefined {
 }
 
 export function schemaSelectors(schema: Schema): string[] {
-    return _schemaSelectors([], schema.__);
+    return _schemaSelectors([], schema[Token.Properties]);
 }
 
 function _schemaSelectors(
@@ -55,10 +48,14 @@ function _schemaSelectors(
         selectors.push(selector);
         if (
             isObjectLiteral(value) &&
-            objectHasKey(value, "__") &&
-            isObjectLiteral(value.__)
+            objectHasKey(value, Token.Properties) &&
+            isObjectLiteral(value[Token.Properties])
         ) {
-            selectors = _schemaSelectors(selectors, value.__, selector);
+            selectors = _schemaSelectors(
+                selectors,
+                value[Token.Properties],
+                selector,
+            );
         }
     }
     return selectors;

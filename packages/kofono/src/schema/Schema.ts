@@ -11,7 +11,7 @@ export interface Schema {
     $translations?: SchemaTranslations;
 }
 
-export type InlineSchema = Schema & any;
+export type InlineSchema = Schema & Record<string, unknown>;
 
 export type SchemaTranslations = { [k: string]: string | SchemaTranslations };
 

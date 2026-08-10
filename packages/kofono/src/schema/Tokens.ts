@@ -1,7 +1,3 @@
-export type PropertiesKeyToken = "__";
-export type QualificationsKeyToken = "$q";
-export type ValidationsKeyToken = "$v";
-
 export enum Token {
     SchemaId = "$id",
     SchemaExtensions = "$extensions",
