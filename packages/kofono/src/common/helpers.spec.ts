@@ -81,84 +81,89 @@ test("isEmpty() should return true for empty string", () => {
     }
 });
 
-test("optional()", () => {
+describe("optional()", () => {
+    const closure = () => {};
     const tests: {
         key: string;
-        value: any;
-        expected: Record<string, any>;
+        data: any;
+        expected: any;
     }[] = [
         {
-            key: "test",
-            value: undefined,
-            expected: {},
+            key: "undefined",
+            data: undefined,
+            expected: undefined,
         },
         {
-            key: "test",
-            value: null,
+            key: "null",
+            data: null,
+            expected: undefined,
+        },
+        {
+            key: "emptyArray",
+            data: [],
+            expected: undefined,
+        },
+        {
+            key: "emptyObject",
+            data: {},
+            expected: undefined,
+        },
+        {
+            key: "number",
+            data: 123,
             expected: {
-                test: null,
+                number: 123,
             },
         },
         {
-            key: "test",
-            value: 123,
+            key: "string",
+            data: "abc",
             expected: {
-                test: 123,
+                string: "abc",
+            },
+        },
+
+        {
+            key: "boolean",
+            data: true,
+            expected: {
+                boolean: true,
             },
         },
         {
-            key: "test",
-            value: "abc",
+            key: "boolean",
+            data: false,
             expected: {
-                test: "abc",
+                boolean: false,
             },
         },
         {
-            key: "test",
-            value: [],
+            key: "zero",
+            data: 0,
             expected: {
-                test: [],
+                zero: 0,
             },
         },
         {
-            key: "test",
-            value: {},
+            key: "NotANumber",
+            data: NaN,
             expected: {
-                test: {},
+                NotANumber: NaN,
             },
         },
         {
-            key: "test",
-            value: true,
+            key: "closure",
+            data: closure,
             expected: {
-                test: true,
-            },
-        },
-        {
-            key: "test",
-            value: false,
-            expected: {
-                test: false,
-            },
-        },
-        {
-            key: "test",
-            value: 0,
-            expected: {
-                test: 0,
-            },
-        },
-        {
-            key: "test",
-            value: NaN,
-            expected: {
-                test: NaN,
+                closure: closure,
             },
         },
     ];
 
-    for (const { key, value, expected } of tests) {
-        const result = optional(key, value);
-        expect(result).toEqual(expected);
+    for (const { key, data, expected } of tests) {
+        it(`should return ${JSON.stringify(expected)} when data is ${JSON.stringify(data)}`, () => {
+            const result = optional(key, data);
+            expect(result).toEqual(expected);
+        });
     }
 });
