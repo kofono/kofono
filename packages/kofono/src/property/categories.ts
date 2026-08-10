@@ -18,6 +18,7 @@ export const allPropertyTypes: PropertyType[] = [
 export const answerablePropertyTypes: PropertyType[] = [
     PropertyType.BigInt,
     PropertyType.Boolean,
+    PropertyType.ListBigInt,
     PropertyType.ListBoolean,
     PropertyType.ListMixed,
     PropertyType.ListNumber,
