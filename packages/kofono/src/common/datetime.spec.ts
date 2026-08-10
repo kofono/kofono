@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { isAfter, isEqual, isValidDate, parse } from "./datetime";
+import {
+    isAfterDate,
+    isEqualDate,
+    isValidDate,
+    parseDateString,
+} from "./datetime";
 
-describe("datetime isValid()", () => {
+describe("datetime isValidDate()", () => {
     const tests: [title: string, value: any, expected: boolean][] = [
         ["valid Date object", new Date("2024-01-15"), true],
         ["invalid Date object", new Date("not-a-date"), false],
@@ -24,7 +29,7 @@ describe("datetime isValid()", () => {
     }
 });
 
-describe("datetime parse()", () => {
+describe("datetime parseDateString()", () => {
     const ref = new Date();
 
     const tests: [format: string, value: string, expected: any][] = [
@@ -61,70 +66,74 @@ describe("datetime parse()", () => {
                 : `should parse format ${format} when value is ${value}`;
 
         it(title, () => {
-            const result = parse(value, format, ref);
+            const result = parseDateString(value, format, ref);
             expect(result).toEqual(expected);
         });
     }
 });
 
-describe("datetime isAfter()", () => {
+describe("datetime isAfterDate()", () => {
     const earlier = new Date(2024, 0, 1);
     const later = new Date(2024, 5, 15);
 
     it("returns true when left is after right", () => {
-        expect(isAfter(later, earlier)).toBe(true);
+        expect(isAfterDate(later, earlier)).toBe(true);
     });
 
     it("returns false when left is before right", () => {
-        expect(isAfter(earlier, later)).toBe(false);
+        expect(isAfterDate(earlier, later)).toBe(false);
     });
 
     it("returns false when both dates are equal", () => {
-        expect(isAfter(earlier, new Date(2024, 0, 1))).toBe(false);
+        expect(isAfterDate(earlier, new Date(2024, 0, 1))).toBe(false);
     });
 
     it("handles millisecond-level precision", () => {
         const a = new Date(2024, 0, 1, 0, 0, 0, 0);
         const b = new Date(2024, 0, 1, 0, 0, 0, 1);
-        expect(isAfter(b, a)).toBe(true);
-        expect(isAfter(a, b)).toBe(false);
+        expect(isAfterDate(b, a)).toBe(true);
+        expect(isAfterDate(a, b)).toBe(false);
     });
 
     it("works across year boundaries", () => {
-        expect(isAfter(new Date(2025, 0, 1), new Date(2024, 11, 31))).toBe(
+        expect(isAfterDate(new Date(2025, 0, 1), new Date(2024, 11, 31))).toBe(
             true,
         );
     });
 });
 
-describe("datetime isEqual()", () => {
+describe("datetime isEqualDate()", () => {
     it("returns true for two identical dates", () => {
-        expect(isEqual(new Date(2024, 0, 1), new Date(2024, 0, 1))).toBe(true);
+        expect(isEqualDate(new Date(2024, 0, 1), new Date(2024, 0, 1))).toBe(
+            true,
+        );
     });
 
     it("returns false for two different dates", () => {
-        expect(isEqual(new Date(2024, 0, 1), new Date(2024, 0, 2))).toBe(false);
+        expect(isEqualDate(new Date(2024, 0, 1), new Date(2024, 0, 2))).toBe(
+            false,
+        );
     });
 
     it("returns true for the same timestamp constructed differently", () => {
         const a = new Date(2024, 5, 15, 12, 0, 0);
         const b = new Date(a.getTime());
-        expect(isEqual(a, b)).toBe(true);
+        expect(isEqualDate(a, b)).toBe(true);
     });
 
     it("returns false when dates differ by 1ms", () => {
         const a = new Date(2024, 0, 1, 0, 0, 0, 0);
         const b = new Date(2024, 0, 1, 0, 0, 0, 1);
-        expect(isEqual(a, b)).toBe(false);
+        expect(isEqualDate(a, b)).toBe(false);
     });
 
     it("is symmetric", () => {
         const a = new Date(2024, 3, 10);
         const b = new Date(2024, 3, 10);
-        expect(isEqual(a, b)).toBe(isEqual(b, a));
+        expect(isEqualDate(a, b)).toBe(isEqualDate(b, a));
     });
 
     it("returns true for epoch vs epoch", () => {
-        expect(isEqual(new Date(0), new Date(0))).toBe(true);
+        expect(isEqualDate(new Date(0), new Date(0))).toBe(true);
     });
 });

@@ -18,7 +18,7 @@ export function isValidDate(date: unknown): boolean {
  *
  * Returns an Invalid Date if parsing fails.
  */
-export function parse(
+export function parseDateString(
     dateStr: string,
     formatStr: string,
     _referenceDate: Date,
@@ -81,13 +81,13 @@ export function parse(
 /**
  * Returns true if dateLeft is after dateRight.
  */
-export function isAfter(dateLeft: Date, dateRight: Date): boolean {
+export function isAfterDate(dateLeft: Date, dateRight: Date): boolean {
     return dateLeft.getTime() > dateRight.getTime();
 }
 
 /**
  * Returns true if dateLeft and dateRight represent the same point in time.
  */
-export function isEqual(dateLeft: Date, dateRight: Date): boolean {
+export function isEqualDate(dateLeft: Date, dateRight: Date): boolean {
     return dateLeft.getTime() === dateRight.getTime();
 }
