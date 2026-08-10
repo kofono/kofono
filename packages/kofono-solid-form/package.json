@@ -27,11 +27,11 @@
         "class-variance-authority": "0.7.1",
         "clsx": "2.1.1",
         "kofono": "workspace:*",
-        "solid-js": "^1.9.12"
+        "solid-js": "^1.9.14"
     },
     "peerDependencies": {
-        "solid-js": "^1.9.12",
-        "tailwindcss": "^4.2.4"
+        "solid-js": "^1.9.14",
+        "tailwindcss": "4.3.3"
     },
     "devDependencies": {
         "@solidjs/testing-library": "^0.8.10",
@@ -44,7 +44,7 @@
         "jsdom": "^29.1.1",
         "solid-icons": "^1.2.0",
         "tailwind-merge": "^3.5.0",
-        "tailwindcss": "^4.2.4",
+        "tailwindcss": "4.3.3",
         "tailwindcss-animate": "^1.0.7",
         "tsdown": "0.22.3",
         "unplugin-solid": "^1.0.0",

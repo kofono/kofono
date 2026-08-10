@@ -18,13 +18,13 @@
         "@tailwindcss/postcss": "4.3.3",
         "@tailwindcss/vite": "4.3.3",
         "@tanstack/solid-query": "^5.100.10",
-        "@solidjs/router": "^0.16.1",
+        "@solidjs/router": "^1.0.0",
         "@solidjs/meta": "^0.29.4",
         "clsx": "2.1.1",
         "kofono": "workspace:*",
         "solid-icons": "^1.2.0",
-        "solid-js": "^1.9.12",
-        "tailwindcss": "^4.3.0"
+        "solid-js": "^1.9.14",
+        "tailwindcss": "4.3.3"
     },
     "devDependencies": {
         "daisyui": "5.5.19",
