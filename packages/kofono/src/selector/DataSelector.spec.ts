@@ -208,15 +208,20 @@ describe("DataSelector array index bounds", () => {
     });
 });
 
-test("has() returns false when intermediate key is missing but last segment exists at that level", () => {
+test("get() should throw when intermediate key value is an explicit undefined", () => {
     const selector = new DataSelector();
     const data = {
         a: { x: undefined }, // "x" exists under "a"
+        b: {
+            y: undefined,
+        },
     };
 
-    // "a.b.x" — "b" is missing from "a", but "x" exists on "a"
-    // _get(["b","x"], { x: undefined }, "a.b.x"):
-    //   data["b"] = undefined → else if: Object.hasOwn({ x: undefined }, "x") = true
-    //   incorrectly returns undefined instead of throwing
-    expect(selector.has("a.b.x", data)).toBe(false); // FAILS: returns true
+    // .y.z cannot exist because a.x is undefined
+    expect(() => selector.get("a.x.y.z", data)).toThrow(
+        DataSelectorNotFoundError,
+    );
+
+    // b.y exists and is explicitly undefined
+    expect(selector.get("b.y", data)).toBe(undefined);
 });

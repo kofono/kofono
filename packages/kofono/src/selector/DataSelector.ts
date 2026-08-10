@@ -44,14 +44,14 @@ export class DataSelector {
         return hasSelector ? (value as T) : defaultValue;
     }
 
-    tryGet(selector: string, data: Data): [boolean, unknown] {
+    tryGet(selector: string, data: Data): [result: boolean, value: unknown] {
         try {
             return [
                 true,
                 this._get(this.splitSelector(selector), data, selector),
             ];
         } catch (e) {
-            return [false, e];
+            return [false, (e as Error).message];
         }
     }
 
@@ -63,7 +63,7 @@ export class DataSelector {
         selector: string,
         value: unknown,
         data: Data,
-    ): [boolean, string | null] {
+    ): [result: boolean, error: string | null] {
         try {
             this._set(selector, value, data);
             return [true, null];
@@ -78,7 +78,10 @@ export class DataSelector {
         }
     }
 
-    tryDelete(selector: string, data: Data): [boolean, string | null] {
+    tryDelete(
+        selector: string,
+        data: Data,
+    ): [result: boolean, error: string | null] {
         if (!this.has(selector, data)) {
             return [false, "selector not found"];
         }
@@ -91,8 +94,8 @@ export class DataSelector {
     }
 
     has(selector: string, data: Data): boolean {
-        const [success] = this.tryGet(selector, data);
-        return success;
+        const [result] = this.tryGet(selector, data);
+        return result;
     }
 
     /**
@@ -122,6 +125,10 @@ export class DataSelector {
                 }
                 throw new DataSelectorNotFoundError(originalSelector);
             } else if (Object.hasOwn(data, paths[0])) {
+                // if some paths remaining, throw error
+                if (paths.length > 1) {
+                    throw new DataSelectorNotFoundError(originalSelector);
+                }
                 // value is undefined but the key path exists, so it's an explicit value
                 return undefined;
             }
@@ -133,7 +140,7 @@ export class DataSelector {
      * Set a path value.
      */
     protected _set(propPath: string, value: unknown, data: any): void {
-        const [head, ...rest] = propPath.split(DataSelector.separator);
+        const [head, ...rest] = this.splitSelector(propPath);
 
         // block prototype pollution
         if (unsafeKeys.has(head)) {
@@ -162,7 +169,7 @@ export class DataSelector {
      * Delete a path value. This assumes the path exists.
      */
     protected _delete(propPath: string, data: any): void {
-        const [head, ...rest] = propPath.split(DataSelector.separator);
+        const [head, ...rest] = this.splitSelector(propPath);
 
         // block prototype pollution
         if (unsafeKeys.has(head)) {
