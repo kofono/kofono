@@ -1,4 +1,8 @@
-import { isAfter, isEqual, parse } from "../../common/datetime";
+import {
+    isAfterDate,
+    isEqualDate,
+    parseDateString,
+} from "../../common/datetime";
 import { optional } from "../../common/helpers";
 import { AbstractValidator } from "../AbstractValidator";
 import type { SchemaPropertyBaseValidator } from "../schema";
@@ -94,7 +98,7 @@ export class DatetimeValidator
             // Handle min if provided
             if (opts.min) {
                 // Parse the min string using the same format
-                this.min = parse(opts.min, this.format, new Date());
+                this.min = parseDateString(opts.min, this.format, new Date());
                 if (this.min === undefined) {
                     throw new Error(
                         `Invalid min date: ${opts.min} for ${attachTo}`,
@@ -105,7 +109,7 @@ export class DatetimeValidator
             // Handle max if provided
             if (opts.max) {
                 // Parse the max string using the same format
-                this.max = parse(opts.max, this.format, new Date());
+                this.max = parseDateString(opts.max, this.format, new Date());
                 if (this.max === undefined) {
                     throw new Error(
                         `Invalid max date: ${opts.max} for ${attachTo}`,
@@ -128,7 +132,11 @@ export class DatetimeValidator
 
         try {
             // Parse the date using date-fns
-            const parsedDate = parse(ctx.value, this.format, new Date());
+            const parsedDate = parseDateString(
+                ctx.value,
+                this.format,
+                new Date(),
+            );
 
             // Check if the date is valid
             if (parsedDate !== undefined) {
@@ -136,8 +144,8 @@ export class DatetimeValidator
                 if (
                     this.min &&
                     !(
-                        isAfter(parsedDate, this.min) ||
-                        isEqual(parsedDate, this.min)
+                        isAfterDate(parsedDate, this.min) ||
+                        isEqualDate(parsedDate, this.min)
                     )
                 ) {
                     return this.error(datetimeValidator.err.BeforeMin, {
@@ -149,8 +157,8 @@ export class DatetimeValidator
                 if (
                     this.max &&
                     !(
-                        isAfter(this.max, parsedDate) ||
-                        isEqual(parsedDate, this.max)
+                        isAfterDate(this.max, parsedDate) ||
+                        isEqualDate(parsedDate, this.max)
                     )
                 ) {
                     return this.error(datetimeValidator.err.AfterMax, {
