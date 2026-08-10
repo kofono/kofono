@@ -2,6 +2,7 @@
 
 - fix DataSelector._set() out of bound array index
 - fix selector helper removeSelectorBase() to only remove the starting selector base
+- fix DataSelector._get() to only return undefined when a property is explicitly undefined
 
 # 0.10.0 - 2026-08-09
 
