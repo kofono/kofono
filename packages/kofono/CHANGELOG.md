@@ -4,6 +4,7 @@
 - fix selector helper removeSelectorBase() to only remove the starting selector base
 - fix DataSelector._get() to only return undefined when a property is explicitly undefined
 - remove unused ReadOnlyDataSelector
+- delete common helper uuidV4()
 
 # 0.10.0 - 2026-08-09
 
