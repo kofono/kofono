@@ -22,6 +22,8 @@ import {
 import type { Form } from "./Form";
 
 export class FormEvents {
+    public static readonly MAX_TREE_VISITS = 200;
+
     public selectorsEvents: SelectorsEvents = {};
     public globalEvents: Partial<GlobalEvents> = {};
     public selectorsDependencies: Record<string, string[]> = {};
@@ -175,15 +177,27 @@ export class FormEvents {
     public async emitSelectorTree(
         selector: string,
         event: keyof SelectorEvents,
+        visits: Map<string, number> = new Map(),
     ): Promise<void> {
         for (const sel of this.getSelectorsDependencies(selector)) {
+            const count = (visits.get(sel) ?? 0) + 1;
+            if (count > FormEvents.MAX_TREE_VISITS) {
+                // likely circular dependency; stop recursing into this selector
+                // biome-ignore lint/suspicious/noConsole: warn about circular dependency
+                console.warn(
+                    `possible circular dependency: "${sel}" exceeded ${FormEvents.MAX_TREE_VISITS} re-evaluations, stopping`,
+                );
+                continue;
+            }
+            visits.set(sel, count);
+
             const depResponse = await this.emitSelector(sel, event, {
                 selector: sel,
                 value: this.form.$d(sel),
                 form: this.form,
             });
             if (depResponse?.hasChanged()) {
-                await this.emitSelectorTree(sel, event);
+                await this.emitSelectorTree(sel, event, visits);
             }
         }
     }
