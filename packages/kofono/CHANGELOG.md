@@ -9,6 +9,8 @@
 - fix property parseSelector() to handle empty selector and consecutive dots
 - fix Builder to throw on duplicate selector
 - fix SchemaBuilder extension processing to handle zero-config extension
+- fix SchemaBuilder extension processing to handle empty or invalid config
+- fix FormArray slice keyname bug with children selectors
 
 # 0.10.0 - 2026-08-09
 
