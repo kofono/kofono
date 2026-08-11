@@ -53,7 +53,7 @@ export class FormExtensions {
                 const extContext: ExtensionContext = {
                     form: this.form,
                     metaName: name,
-                    metaIndex: this.getMetaIndex(name, opts.id),
+                    metaIndex: this.getMetaIndex(name, opts?.id),
                 };
 
                 const ext = await extFactory(extContext, opts);
