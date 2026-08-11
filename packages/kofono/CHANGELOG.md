@@ -8,6 +8,7 @@
 - fix normalizeEnumDef() to check all enum items instead of the first one
 - fix property parseSelector() to handle empty selector and consecutive dots
 - fix Builder to throw on duplicate selector
+- fix SchemaBuilder extension processing to handle zero-config extension
 
 # 0.10.0 - 2026-08-09
 
