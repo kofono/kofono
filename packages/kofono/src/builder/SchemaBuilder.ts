@@ -1,4 +1,4 @@
-import { isEmptyString } from "../common/helpers";
+import { isEmptyString, isObjectLiteral } from "../common/helpers";
 import { defaultConfig } from "../form/defaults";
 import type { Form } from "../form/Form";
 import type { ExtensionDefinition } from "../form/FormExtensions";
@@ -70,40 +70,54 @@ export class SchemaBuilder {
         const ids: string[] = [];
         const extensions: ExtensionDefinition[] = [];
 
-        for (const extension of schemaExtensions) {
-            const keys = Object.keys(extension);
+        for (let extension of schemaExtensions) {
             let name: string = "";
-            if (keys.length === 1) {
-                name = keys[0];
+            // if extension is a zero-config extension, we create it from the name
+            if (typeof extension === "string") {
+                name = extension;
+                extension = {
+                    [name]: {},
+                };
+            } else if (isObjectLiteral(extension)) {
+                // extension is an object { [extensionName]: config }, extract the name
+                const keys = Object.keys(extension);
+                if (keys.length === 1) {
+                    name = keys[0];
+                }
             }
 
-            if (isEmptyString(extension[name].id)) {
-                throw new Error(
-                    SchemaBuilderError.ExtensionEmptyId.replace("{name}", name),
-                );
-            }
+            // get the extension unique id
+            const id = extension[name].id;
 
-            if (extension[name].id) {
-                if (ids.includes(extension[name].id)) {
+            // id needs to be a string, not empty and unique
+            if (typeof id === "string") {
+                if (isEmptyString(id)) {
+                    throw new Error(
+                        SchemaBuilderError.ExtensionEmptyId.replace(
+                            "{name}",
+                            name,
+                        ),
+                    );
+                } else if (ids.includes(id)) {
                     throw new Error(
                         SchemaBuilderError.ExtensionDuplicateId.replace(
                             "{id}",
-                            extension[name].id,
+                            id,
                         ),
                     );
                 }
-                ids.push(extension[name].id);
-            } else if (extNames.includes(name)) {
+                ids.push(id);
+            }
+            // otherwise we use the extension name once as unique id.
+            else if (extNames.includes(name)) {
                 throw new Error(
                     SchemaBuilderError.ExtensionDuplicateName.replace(
                         "{name}",
                         name,
                     ),
                 );
-            } else {
-                extNames.push(name);
             }
-
+            extNames.push(name);
             extensions.push([name, extension[name]]);
         }
 

@@ -4,6 +4,7 @@ import { defaultConfig, type Form } from "../";
 import { updateCounter } from "../extension/UpdateCounter/UpdateCounterExtension";
 import { PropertyType } from "../property/types";
 import type { Schema } from "../schema/Schema";
+import { K } from "./K";
 import { SchemaBuilder, SchemaBuilderError } from "./SchemaBuilder";
 
 describe("SchemaBuilder", () => {
@@ -91,26 +92,6 @@ describe("SchemaBuilder testing configs", () => {
     });
 });
 
-describe("SchemaBuilder testing extension", () => {
-    const schemaBuilder = new SchemaBuilder();
-    const schema: Schema = {
-        $extensions: [
-            {
-                updateCounter: {},
-            },
-        ],
-        __: {
-            propA: {
-                type: "string",
-            },
-        },
-    };
-    it("should have working default test extension", async () => {
-        const form = await schemaBuilder.build(schema);
-        expect(form.extensions).toHaveLength(1);
-    });
-});
-
 // schema prop ids should not contain dots (because of the dot notation)
 describe("SchemaBuilder testing with prop id containing dot", () => {
     const schemaBuilder = new SchemaBuilder();
@@ -183,16 +164,36 @@ describe("SchemaBuilder testing with wrong schemas", () => {
     });
 });
 
-describe("SchemaBuilder testing duplicate extensions id and name", () => {
+describe("SchemaBuilder testing extension", () => {
+    it("should with default test extension syntax one", async () => {
+        const form = await K.form({
+            $extensions: ["updateCounter"],
+            propA: K.string(),
+        });
+        expect(form.extensions).toHaveLength(1);
+    });
+
+    it("should with default test extension syntax two", async () => {
+        const form = await K.form({
+            $extensions: [{ updateCounter: {} }],
+            propA: K.string(),
+        });
+        expect(form.extensions).toHaveLength(1);
+    });
+    it("should with default test extension mixed syntax", async () => {
+        const form = await K.form({
+            $extensions: ["updateCounter", { updateCounter: { id: "uc2" } }],
+            propA: K.string(),
+        });
+        expect(form.extensions).toHaveLength(2);
+    });
+});
+
+describe("SchemaBuilder testing extensions id and name", () => {
     it("should throw when one of extension id not unique", async () => {
         await expect(
-            new SchemaBuilder().build({
+            K.form({
                 $extensions: [updateCounter("id1"), updateCounter("id1")],
-                __: {
-                    propA: {
-                        type: "string",
-                    },
-                },
             }),
         ).rejects.toThrow(
             SchemaBuilderError.ExtensionDuplicateId.replace("{id}", "id1"),
@@ -201,13 +202,8 @@ describe("SchemaBuilder testing duplicate extensions id and name", () => {
 
     it("should throw when one of extension name without id is not unique", async () => {
         await expect(
-            new SchemaBuilder().build({
+            K.form({
                 $extensions: [updateCounter(), updateCounter()],
-                __: {
-                    propA: {
-                        type: "string",
-                    },
-                },
             }),
         ).rejects.toThrow(
             SchemaBuilderError.ExtensionDuplicateName.replace(
@@ -218,13 +214,8 @@ describe("SchemaBuilder testing duplicate extensions id and name", () => {
     });
     it("should throw when one of extension id is empty string", async () => {
         await expect(
-            new SchemaBuilder().build({
+            K.form({
                 $extensions: [updateCounter("")],
-                __: {
-                    propA: {
-                        type: "string",
-                    },
-                },
             }),
         ).rejects.toThrow(
             SchemaBuilderError.ExtensionEmptyId.replace(
@@ -237,13 +228,8 @@ describe("SchemaBuilder testing duplicate extensions id and name", () => {
 
 describe("SchemaBuilder testing normalization at build", () => {
     it("should normalize enum", async () => {
-        const form = await new SchemaBuilder().build({
-            __: {
-                propA: {
-                    type: "string",
-                    enum: ["option1", "option2"],
-                },
-            },
+        const form = await K.form({
+            propA: K.string().enum(["option1", "option2"]),
         });
         expect(form.prop("propA").get("enum", [])).toEqual([
             { value: "option1" },
