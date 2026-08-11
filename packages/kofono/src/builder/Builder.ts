@@ -77,8 +77,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaBigIntProperty = {
-            type: PropertyType.BigInt,
             ...def,
+            type: PropertyType.BigInt,
         };
         this._builders[selector] = new LeafBuilder<SchemaBigIntProperty>(
             selector,
@@ -90,8 +90,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaBooleanProperty = {
-            type: PropertyType.Boolean,
             ...def,
+            type: PropertyType.Boolean,
         };
         this._builders[selector] = new LeafBuilder<SchemaBooleanProperty>(
             selector,
@@ -106,8 +106,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaListBigIntProperty = {
-            type: PropertyType.ListBigInt,
             ...def,
+            type: PropertyType.ListBigInt,
         };
         this._builders[selector] = new LeafBuilder<SchemaListBigIntProperty>(
             selector,
@@ -122,8 +122,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaListBooleanProperty = {
-            type: PropertyType.ListBoolean,
             ...def,
+            type: PropertyType.ListBoolean,
         };
         this._builders[selector] = new LeafBuilder<SchemaListBooleanProperty>(
             selector,
@@ -138,8 +138,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaListMixedProperty = {
-            type: PropertyType.ListMixed,
             ...def,
+            type: PropertyType.ListMixed,
         };
         this._builders[selector] = new LeafBuilder<SchemaListMixedProperty>(
             selector,
@@ -154,8 +154,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaListNumberProperty = {
-            type: PropertyType.ListNumber,
             ...def,
+            type: PropertyType.ListNumber,
         };
         this._builders[selector] = new LeafBuilder<SchemaListNumberProperty>(
             selector,
@@ -170,8 +170,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaListStringProperty = {
-            type: PropertyType.ListString,
             ...def,
+            type: PropertyType.ListString,
         };
         this._builders[selector] = new LeafBuilder<SchemaListStringProperty>(
             selector,
@@ -183,8 +183,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaNullProperty = {
-            type: PropertyType.Null,
             ...def,
+            type: PropertyType.Null,
         };
         this._builders[selector] = new LeafBuilder<SchemaNullProperty>(
             selector,
@@ -196,8 +196,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaNumberProperty = {
-            type: PropertyType.Number,
             ...def,
+            type: PropertyType.Number,
         };
         this._builders[selector] = new LeafBuilder<SchemaNumberProperty>(
             selector,
@@ -222,8 +222,8 @@ export class Builder {
         this.validateSelectorOrThrow(selector);
 
         const typedDef: SchemaStringProperty = {
-            type: PropertyType.String,
             ...def,
+            type: PropertyType.String,
         };
         this._builders[selector] = new LeafBuilder<SchemaStringProperty>(
             selector,
