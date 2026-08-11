@@ -11,6 +11,7 @@
 - fix SchemaBuilder extension processing to handle zero-config extension
 - fix SchemaBuilder extension processing to handle empty or invalid config
 - fix FormArray slice keyname bug with children selectors
+- add circular reference detection in FormEvents.emitSelectorTree() to prevent infinite recursion
 
 # 0.10.0 - 2026-08-09
 
