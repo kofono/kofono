@@ -187,6 +187,24 @@ describe("SchemaBuilder testing extension", () => {
         });
         expect(form.extensions).toHaveLength(2);
     });
+    it("should throw when extension empty object or more than one keys", async () => {
+        await expect(
+            K.form({
+                $extensions: [{}],
+            }),
+        ).rejects.toThrow(SchemaBuilderError.ExtensionInvalidConfig);
+
+        await expect(
+            K.form({
+                $extensions: [
+                    {
+                        updateCounter: {},
+                        test: "",
+                    },
+                ],
+            }),
+        ).rejects.toThrow(SchemaBuilderError.ExtensionInvalidConfig);
+    });
 });
 
 describe("SchemaBuilder testing extensions id and name", () => {

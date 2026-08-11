@@ -18,6 +18,7 @@ export const SchemaBuilderError = {
     ExtensionDuplicateId: `Extension with id "{id}" already exists`,
     ExtensionDuplicateName: `Extension with name "{name}" already exists, add a unique id to the extension definition`,
     ExtensionEmptyId: `Extension with name "{name}" has an empty id`,
+    ExtensionInvalidConfig: `A extension has empty config or more than one key`,
 } as const;
 
 /**
@@ -83,6 +84,8 @@ export class SchemaBuilder {
                 const keys = Object.keys(extension);
                 if (keys.length === 1) {
                     name = keys[0];
+                } else {
+                    throw new Error(SchemaBuilderError.ExtensionInvalidConfig);
                 }
             }
 
