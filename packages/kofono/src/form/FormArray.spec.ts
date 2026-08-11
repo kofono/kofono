@@ -291,6 +291,38 @@ describe("FormArray slice at the end", () => {
     });
 });
 
+describe("FormArray slice selector collision", () => {
+    it("should not delete an unrelated property that shares the array's first letter", async () => {
+        const schema = K.schema({
+            z: K.string(), // selector "z"
+            zebra: K.array(K.object({ x: K.string() })),
+        });
+
+        const form = await buildSchema(schema);
+        await form.array.expand("zebra", 1);
+
+        expect(form.hasProp("z")).toBe(true);
+
+        await form.array.slice("zebra", 0);
+        expect(form.hasProp("z")).toBe(true);
+    });
+    it("should not delete unrelated property with the same last selector part", async () => {
+        const form = await K.form({
+            z: K.string(),
+            zebra: K.object({
+                z: K.array(K.object({ z: K.string() })),
+            }),
+        });
+        await form.array.expand("zebra.z", 1);
+        expect(form.hasProp("zebra.z.0.z")).toBe(true);
+
+        await form.array.slice("zebra.z", 0);
+        expect(form.hasProp("z")).toBe(true);
+        expect(form.hasProp("zebra.z")).toBe(true);
+        expect(form.hasProp("zebra.z.0.z")).toBe(false);
+    });
+});
+
 describe("FormArray propertyAdded/PropertyRemoved  event", () => {
     it("should be called when expanding an array", async () => {
         const form = await K.form({
@@ -326,5 +358,25 @@ describe("FormArray propertyAdded/PropertyRemoved  event", () => {
 
         expect(arraySelector).toEqual(arraySelector);
         expect(index).toEqual(1);
+    });
+});
+
+describe("FormArray slice selector collision bug", () => {
+    it("must not delete an unrelated property that shares the array's first letter", async () => {
+        const schema = K.schema({
+            z: K.string(), // selector "z"
+            zebra: K.array(K.object({ x: K.string() })),
+        });
+
+        const form = await buildSchema(schema);
+        await form.array.expand("zebra", 1);
+
+        expect(form.hasProp("z")).toBe(true);
+
+        await form.array.slice("zebra", 0);
+
+        // FAILS on current code: "z" gets deleted as a side effect of
+        // `for (const [sel] of childrenSelector)` destructuring "zebra.0.x" into "z".
+        expect(form.hasProp("z")).toBe(true);
     });
 });

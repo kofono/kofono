@@ -108,7 +108,7 @@ export class FormArray {
             });
         };
 
-        for (const [sel] of childrenSelector) {
+        for (const sel of childrenSelector) {
             // delete property children
             await this.form.deleteProp(sel);
             // unregister validator events and remove selector from events dependencies
