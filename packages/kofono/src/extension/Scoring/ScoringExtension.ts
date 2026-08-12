@@ -105,7 +105,7 @@ export class ScoringExtension extends BaseExtension<ScoringMeta, ScoringOpts> {
         let max = 0;
         for (const [selector, val] of Object.entries(this.metaData.selectors)) {
             total += val;
-            max += this.getPropertyDefaultScore(selector);
+            max += this.metaData.selectors[selector];
         }
         this.metaData.total = total;
         this.metaData.max = max;

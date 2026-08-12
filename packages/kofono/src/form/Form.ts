@@ -249,6 +249,7 @@ export class Form {
         }
 
         this.#status = FormStatus.Ready;
+        await this.#events.emit(Events.FormReady, undefined);
     }
 
     public isPropQualified(selector: string): boolean {

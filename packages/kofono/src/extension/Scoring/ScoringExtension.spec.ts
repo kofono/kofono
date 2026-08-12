@@ -66,6 +66,9 @@ describe("ScoringExtension instance", () => {
             max: 3,
             selectors: {
                 a: 3,
+                b: 0,
+                c: 0,
+                d: 0,
             },
             total: 3,
         });
@@ -83,6 +86,8 @@ describe("ScoringExtension instance", () => {
             selectors: {
                 a: 3,
                 b: 2,
+                c: 0,
+                d: 0,
             },
             total: 5,
         });
@@ -94,19 +99,21 @@ describe("ScoringExtension instance", () => {
                 a: 3,
                 b: 2,
                 c: -2,
+                d: 0,
             },
             total: 3,
         });
 
-        await form.update("c", "");
+        await form.update("d", "");
         expect(form.state.meta.extensions[0].data).toEqual({
             max: 3,
             selectors: {
                 a: 3,
                 b: 2,
-                c: 0,
+                c: -2,
+                d: 0,
             },
-            total: 5,
+            total: 3,
         });
     });
 });
