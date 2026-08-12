@@ -2,11 +2,7 @@ import { buildProps } from "../builder/propsBuilder";
 import type { Property } from "../property/Property";
 import { PropertyType } from "../property/types";
 import type { SchemaArrayProperty, SchemaProperty } from "../schema/Schema";
-import {
-    getChildrenSelectors,
-    getParentSelector,
-    joinSelectors,
-} from "../selector/helpers";
+import { getChildrenSelectors, joinSelectors } from "../selector/helpers";
 import { generatePartialTree } from "./dataTree";
 import { parseSelectorsEventsValidators } from "./events/helpers";
 import { Events } from "./events/types";
@@ -56,10 +52,7 @@ export class FormArray {
             arrayData[arrayIndex],
         );
 
-        const selectorsValidators = parseSelectorsEventsValidators(
-            newProps,
-            `${arraySelector}.${arrayIndex}`,
-        );
+        const selectorsValidators = parseSelectorsEventsValidators(newProps);
         await this.form.events.registerSelectorsValidators(selectorsValidators);
     }
 
@@ -153,12 +146,9 @@ export class FormArray {
 
                 await this.form.addProp(prop);
 
-                const selectorsValidators = parseSelectorsEventsValidators(
-                    {
-                        [prop.selector]: prop,
-                    },
-                    getParentSelector(prop.selector),
-                );
+                const selectorsValidators = parseSelectorsEventsValidators({
+                    [prop.selector]: prop,
+                });
                 await this.form.events.registerSelectorsValidators(
                     selectorsValidators,
                 );

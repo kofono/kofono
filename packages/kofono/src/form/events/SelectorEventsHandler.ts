@@ -23,14 +23,6 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
     ) {}
 
     public async emit(): Promise<SelectorEventResponse | null> {
-        // skip selectors without events and disqualified selectors
-        // console.log({
-        //     events: this.form.events.selectorsEvents,
-        //     selector: this.selector,
-        //     exists: this.form.events.selectorsEvents[this.selector],
-        //     qualify: this.form.prop(this.selector)!.isQualify(),
-        // });
-
         const isValidation = this.event === Events.SelectorValidation;
 
         if (

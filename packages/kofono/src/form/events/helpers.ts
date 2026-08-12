@@ -6,7 +6,6 @@ import { Events, type SelectorsEventsValidators } from "./types";
  */
 export function parseSelectorsEventsValidators(
     props: BaseProperties,
-    _parent: string = "", // todo remove it eventually
 ): SelectorsEventsValidators {
     const propertiesEvents: SelectorsEventsValidators = {};
     for (const prop of Object.values(props)) {
