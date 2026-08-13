@@ -10,15 +10,14 @@ export type SchemaScoringExtension =
       };
 
 // represent the options passed to the extension at form creation.
-export type ScoringOpts = ExtensionBaseOptions & {
+export interface ScoringOpts extends ExtensionBaseOptions {
     keyName?: string; // property score key name (default: "score"
     defaultScoreValue?: number; // default score value, (default: 0)
-};
+}
 
 // represent the extension meta-state shape/type
 export type ScoringMeta = {
     total: number;
-    max: number;
     selectors: Record<string, number>;
 };
 
@@ -53,7 +52,6 @@ export function scoring(opts: ScoringOpts = {}): SchemaScoringExtension {
 export class ScoringExtension extends BaseExtension<ScoringMeta, ScoringOpts> {
     public readonly metaData: ScoringMeta = {
         total: 0,
-        max: 0,
         selectors: {},
     };
 
@@ -102,13 +100,10 @@ export class ScoringExtension extends BaseExtension<ScoringMeta, ScoringOpts> {
      */
     private compileMetaData() {
         let total = 0;
-        let max = 0;
-        for (const [selector, val] of Object.entries(this.metaData.selectors)) {
+        for (const val of Object.values(this.metaData.selectors)) {
             total += val;
-            max += this.metaData.selectors[selector];
         }
         this.metaData.total = total;
-        this.metaData.max = max;
         this.syncMetaData();
     }
 
@@ -128,9 +123,25 @@ export class ScoringExtension extends BaseExtension<ScoringMeta, ScoringOpts> {
         return this.getPropertyDefaultScore(selector);
     }
 
-    private getPropertyDefaultScore(selector: string): number {
+    private getPropertyRootDefaultScore(selector: string): number {
         return this.ctx.form
             .prop(selector)
             .get<number>(this.keyName, this.defaultScoreValue);
+    }
+
+    private getPropertyDefaultScore(selector: string): number {
+        const prop = this.ctx.form.prop(selector);
+        if (prop.has("enum")) {
+            const enumDef = prop.getEnum<unknown>();
+            const el = enumDef.filter(e => e.value === prop.value);
+            if (el.length > 0) {
+                return (
+                    (el[0][this.keyName] as number) ??
+                    this.getPropertyRootDefaultScore(selector) ??
+                    this.defaultScoreValue
+                );
+            }
+        }
+        return this.getPropertyRootDefaultScore(selector);
     }
 }
