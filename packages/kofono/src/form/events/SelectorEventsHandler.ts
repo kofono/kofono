@@ -152,7 +152,9 @@ export class SelectorEventsHandler<K extends keyof SelectorEvents> {
                     this.form.isPropQualified(childSelector) &&
                     prop.isParentsQualified()
                 ) {
-                    await this.resetPropertyValue(prop);
+                    await this.resetPropertyValue(
+                        this.form.prop(childSelector),
+                    );
                     await this.form.events.emitSelector(
                         childSelector,
                         Events.SelectorValidation,
