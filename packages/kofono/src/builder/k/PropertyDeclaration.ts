@@ -63,6 +63,13 @@ export class PropertyDeclaration<T = any> {
         return this;
     }
 
+    public setMany(keysVals: Record<string, any>): PropertyDeclaration {
+        for (const [k, v] of Object.entries(keysVals)) {
+            this.def[k] = v;
+        }
+        return this;
+    }
+
     public props(props: Record<string, any>): PropertyDeclaration {
         this.def = Object.assign({}, this.def, props);
         return this;
