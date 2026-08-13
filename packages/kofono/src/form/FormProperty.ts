@@ -4,7 +4,7 @@ import type {
     PropertyValidator,
     TreeType,
 } from "../property/types";
-import type { SchemaProperty } from "../schema/Schema";
+import type { SchemaProperty, SchemaPropertyEnum } from "../schema/Schema";
 import { getChildrenSelectors, getParentSelectors } from "../selector/helpers";
 import type {
     ValidatorResponse,
@@ -91,6 +91,10 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
         return this.property.has(defKeyPath);
     }
 
+    public getEnum<T>(): SchemaPropertyEnum<T>[] {
+        return this.property.get<SchemaPropertyEnum<T>[]>("enum", []);
+    }
+
     public qualifiers(): PropertyValidator[] {
         return this.property.qualifiers();
     }
@@ -151,27 +155,7 @@ export class FormProperty<TSchemaType extends SchemaProperty = SchemaProperty>
         return data as T;
     }
 
-    // public async update(data: unknown): Promise<void> {
-    //     await this.form.update(this.selector, data);
-    // }
-
-    // public parentLevel(): number {
-    //     return this.selector.split(DataSelector.separator).length - 1;
-    // }
-
-    // public parentsSelectors(): string[] {
-    //     const selectors: string[] = [];
-    //     for (const sel of getParentSelectors(this.selector)) {
-    //         selectors.push(sel);
-    //     }
-    //     return selectors;
-    // }
-
     public getChildrenSelectors(): string[] {
         return getChildrenSelectors(this.selector, this.form.propsKeys());
     }
-
-    // public childrenProps(includeParent: boolean = false): Properties {
-    //     return this.form.childrenProps(this.property.selector, includeParent);
-    // }
 }
