@@ -25,9 +25,9 @@ export type ExtensionFactoryHandler<
     opts: TOptions,
 ) => Promise<Extension<unknown, TOptions>> | Extension<unknown, TOptions>;
 
-export type ExtensionBaseOptions = {
+export interface ExtensionBaseOptions {
     id?: string;
-};
+}
 
 export type MetaExtension = {
     id?: string;
