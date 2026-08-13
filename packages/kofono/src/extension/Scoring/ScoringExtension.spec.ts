@@ -196,28 +196,74 @@ describe("ScoringExtension and enum property", () => {
 });
 
 describe("ScoringExtension multiple instance", () => {
-    it("should 3 instance  of ScoringExtension work independently", async () => {
+    it("should 3 instance of ScoringExtension work independently", async () => {
         const form = await K.form({
             $extensions: [
                 {
-                    scoring: {},
+                    scoring: { id: "scoringA", keyName: "scoreA" },
+                },
+                {
+                    scoring: { id: "scoringB", keyName: "scoreB" },
+                },
+                {
+                    scoring: { id: "scoringC", keyName: "scoreC" },
                 },
             ],
-            a: K.string().enum([
-                { value: "foo", score: 1 },
-                { value: "bar", score: 2 },
+            a: K.string("required").enum([
+                { value: "foo", scoreA: 1, scoreB: 3, scoreC: 5 },
+                { value: "bar", scoreA: 1 },
             ]),
+            b: K.string("required").setMany({
+                scoreA: 4,
+                scoreB: 8,
+                scoreC: 16,
+            }),
         });
 
+        expect(form.state.meta.extensions).toEqual([
+            {
+                id: "scoringA",
+                name: "scoring",
+                data: {
+                    selectors: { a: 0, b: 0 },
+                    total: 0,
+                },
+            },
+            {
+                id: "scoringB",
+                name: "scoring",
+                data: {
+                    selectors: { a: 0, b: 0 },
+                    total: 0,
+                },
+            },
+            {
+                id: "scoringC",
+                name: "scoring",
+                data: {
+                    selectors: { a: 0, b: 0 },
+                    total: 0,
+                },
+            },
+        ]);
+
         await form.update("a", "foo");
-        expect(form.state.meta.extensions[0].data).toEqual({
-            selectors: { a: 1 },
-            total: 1,
-        });
+        expect(form.state.meta.extensions[0].data.selectors.a).toEqual(1);
+        expect(form.state.meta.extensions[1].data.selectors.a).toEqual(3);
+        expect(form.state.meta.extensions[2].data.selectors.a).toEqual(5);
+
         await form.update("a", "bar");
-        expect(form.state.meta.extensions[0].data).toEqual({
-            selectors: { a: 2 },
-            total: 2,
-        });
+        expect(form.state.meta.extensions[0].data.selectors.a).toEqual(1);
+        expect(form.state.meta.extensions[1].data.selectors.a).toEqual(0);
+        expect(form.state.meta.extensions[2].data.selectors.a).toEqual(0);
+
+        await form.update("b", "foo");
+        expect(form.state.meta.extensions[0].data.selectors.b).toEqual(4);
+        expect(form.state.meta.extensions[1].data.selectors.b).toEqual(8);
+        expect(form.state.meta.extensions[2].data.selectors.b).toEqual(16);
+
+        expect(form.state.meta.extensions[0].data.total).toEqual(5);
+        expect(form.state.meta.extensions[1].data.total).toEqual(8);
+        expect(form.state.meta.extensions[2].data.total).toEqual(16);
     });
 });
