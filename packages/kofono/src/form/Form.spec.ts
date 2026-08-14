@@ -94,13 +94,13 @@ describe("Form childrenProps()", () => {
     });
 
     it("calling childrenProps() without parent", () => {
-        expect(Object.keys(form.childrenProps("eObject"))).toEqual([
+        expect(Object.keys(form.getChildrenProps("eObject"))).toEqual([
             "eObject.aString",
         ]);
     });
 
     it("calling childrenProps() with parent", () => {
-        expect(Object.keys(form.childrenProps("eObject", true))).toEqual([
+        expect(Object.keys(form.getChildrenProps("eObject", true))).toEqual([
             "eObject",
             "eObject.aString",
         ]);

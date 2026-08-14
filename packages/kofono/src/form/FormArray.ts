@@ -77,7 +77,7 @@ export class FormArray {
 
         const arraySelectorIndex = joinSelectors(arraySelector, String(index));
         const childrenSelector = Object.keys(
-            this.form.childrenProps(arraySelectorIndex),
+            this.form.getChildrenProps(arraySelectorIndex),
         );
         const emitEvents = async () => {
             const lastItemIndex = nbItems > 0 ? nbItems - 1 : 0;
@@ -127,7 +127,7 @@ export class FormArray {
                 arraySelector,
                 String(i + 1),
             );
-            const oldSelectorChildren = this.form.childrenProps(
+            const oldSelectorChildren = this.form.getChildrenProps(
                 oldSelectorIndex,
                 true,
             );
@@ -187,7 +187,7 @@ export class FormArray {
         lastItemSelector: string,
     ): Promise<void> {
         const lastPropChildren = Object.keys(
-            this.form.childrenProps(lastItemSelector, true),
+            this.form.getChildrenProps(lastItemSelector, true),
         );
         for (const sel of lastPropChildren) {
             await this.form.deleteProp(sel);
