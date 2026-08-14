@@ -8,6 +8,7 @@ import { useFormContext } from "@/context";
 import { useTranslator } from "@/i18n";
 import { GridPropsLayout } from "@/layouts/grid/GridPropsLayout";
 import "../index.css";
+import { getRootSelectors } from "@/libs";
 
 export interface GridFormProps {
     submit?: (form: Form) => Promise<void> | void;
@@ -60,7 +61,7 @@ export function GridForm(props: GridFormProps) {
                         class={`isolate grid grid-cols-12 gap-[var(--grid-gap)]`}>
                         <GridPropsLayout
                             updateHandler={updateHandler}
-                            selectors={store.form!.selectors.getRootSelectors()}
+                            selectors={getRootSelectors(store.form!)}
                         />
                         <Show when={props.submit}>
                             <div class="col-start-12 content-end p-2">

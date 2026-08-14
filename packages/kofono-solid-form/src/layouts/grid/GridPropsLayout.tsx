@@ -22,7 +22,7 @@ export function GridPropsLayout(props: GridPropertiesLayoutProps) {
                                 updateHandler={props.updateHandler}
                                 selectors={store
                                     .form!.prop(selector)
-                                    .childrenSelectors()}
+                                    .getChildrenSelectors()}
                             />
                         </GridPropObjectWrapper>
                     );

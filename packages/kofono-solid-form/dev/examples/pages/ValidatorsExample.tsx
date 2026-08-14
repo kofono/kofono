@@ -1,4 +1,12 @@
-import { K, type Schema } from "kofono";
+import {
+    alpha,
+    alphaNum,
+    between,
+    datetime,
+    equal,
+    K,
+    type Schema,
+} from "kofono";
 import { For } from "solid-js";
 import type { InputComponent } from "@/components/input";
 import { C } from "@/components/PropElement";
@@ -20,22 +28,18 @@ const schema: Schema = K.schema({
             content: <Option opts={{ "spaces?": "boolean" }} />,
             grid: 12,
         }),
-        a: K.string()
-            .$v(v => v.alpha({ spaces: false }))
-            .component<InputComponent>({
-                type: C.Input,
-                title: "Letters only",
-                subTitle: "A-Za-z, no spaces allowed - default behaviour",
-                grid: 6,
-            }),
-        b: K.string()
-            .$v(v => v.alpha({ spaces: true }))
-            .component<InputComponent>({
-                type: C.Input,
-                title: "Letters only w/o spaces",
-                subTitle: "A-Za-z, with spaces allowed",
-                grid: 6,
-            }),
+        a: K.string(alpha({ spaces: false })).component<InputComponent>({
+            type: C.Input,
+            title: "Letters only",
+            subTitle: "A-Za-z, no spaces allowed - default behaviour",
+            grid: 6,
+        }),
+        b: K.string(alpha({ spaces: true })).component<InputComponent>({
+            type: C.Input,
+            title: "Letters only w/o spaces",
+            subTitle: "A-Za-z, with spaces allowed",
+            grid: 6,
+        }),
     }),
 
     alphaNum: K.object({
@@ -45,22 +49,18 @@ const schema: Schema = K.schema({
             content: <Option opts={{ "spaces?": "boolean" }} />,
             grid: 12,
         }),
-        a: K.string()
-            .$v(v => v.alphaNum({ spaces: false }))
-            .component<InputComponent>({
-                type: C.Input,
-                title: "Letters and numbers only",
-                subTitle: "A-Za-z0-9, no spaces allowed - default behaviour",
-                grid: 6,
-            }),
-        b: K.string()
-            .$v(v => v.alphaNum({ spaces: true }))
-            .component<InputComponent>({
-                type: C.Input,
-                title: "Letters and numbers only w/o spaces",
-                subTitle: "A-Za-z0-9, with spaces allowed",
-                grid: 6,
-            }),
+        a: K.string(alphaNum({ spaces: false })).component<InputComponent>({
+            type: C.Input,
+            title: "Letters and numbers only",
+            subTitle: "A-Za-z0-9, no spaces allowed - default behaviour",
+            grid: 6,
+        }),
+        b: K.string(alphaNum({ spaces: true })).component<InputComponent>({
+            type: C.Input,
+            title: "Letters and numbers only w/o spaces",
+            subTitle: "A-Za-z0-9, with spaces allowed",
+            grid: 6,
+        }),
     }),
 
     between: K.object({
@@ -70,26 +70,22 @@ const schema: Schema = K.schema({
             content: <Option opts={{ "min?": "number", "max?": "number" }} />,
             grid: 12,
         }),
-        a: K.number()
-            .$v(v => v.between(10, 90))
-            .component<InputComponent>({
-                type: C.Input,
-                inputType: "number",
-                title: "With number",
-                subTitle: "Enter a number between 10 and 20",
-                placeholder: "Enter a number between 10 and 20",
-                grid: 6,
-            }),
-        b: K.string()
-            .$v(v => v.between(10, 20))
-            .component<InputComponent>({
-                type: C.Input,
-                inputType: "text",
-                title: "With string",
-                subTitle: "Text length must be between 10 and 20",
-                placeholder: "10 and 20 characters max",
-                grid: 6,
-            }),
+        a: K.number().validations(between(10, 90)).component<InputComponent>({
+            type: C.Input,
+            inputType: "number",
+            title: "With number",
+            subTitle: "Enter a number between 10 and 20",
+            placeholder: "Enter a number between 10 and 20",
+            grid: 6,
+        }),
+        b: K.string().validations(between(10, 20)).component<InputComponent>({
+            type: C.Input,
+            inputType: "text",
+            title: "With string",
+            subTitle: "Text length must be between 10 and 20",
+            placeholder: "10 and 20 characters max",
+            grid: 6,
+        }),
     }),
 
     datetime: K.object({
@@ -107,26 +103,31 @@ const schema: Schema = K.schema({
             ),
             grid: 12,
         }),
-        a: K.string()
-            .$v(v => v.datetime("yyyy-MM-dd"))
-            .component<InputComponent>({
-                type: C.Input,
-                inputType: "date",
-                title: "With format",
-                subTitle: "format: yyyy-MM-dd",
-                placeholder: "yyyy-mm-dd",
-                grid: 6,
+        a: K.string(
+            datetime({
+                format: "yyyy-MM-dd",
             }),
-        b: K.string()
-            .$v(v => v.datetime("yyyy-MM-dd", "2026-01-01", "2026-12-31"))
-            .component<InputComponent>({
-                type: C.Input,
-                inputType: "date",
-                title: "With format, min and max",
-                subTitle:
-                    "format: yyyy-MM-dd, min: 2026-01-01, max: 2026-12-31",
-                grid: 6,
+        ).component<InputComponent>({
+            type: C.Input,
+            inputType: "date",
+            title: "With format",
+            subTitle: "format: yyyy-MM-dd",
+            placeholder: "yyyy-mm-dd",
+            grid: 6,
+        }),
+        b: K.string(
+            datetime({
+                format: "yyyy-MM-dd",
+                max: "2026-12-31",
+                min: "2026-01-01",
             }),
+        ).component<InputComponent>({
+            type: C.Input,
+            inputType: "date",
+            title: "With format, min and max",
+            subTitle: "format: yyyy-MM-dd, min: 2026-01-01, max: 2026-12-31",
+            grid: 6,
+        }),
     }),
 
     email: K.object({
@@ -136,16 +137,14 @@ const schema: Schema = K.schema({
             content: "No options",
             grid: 12,
         }),
-        a: K.string()
-            .$v(v => v.email())
-            .component<InputComponent>({
-                type: C.Input,
-                subType: "email",
-                title: "",
-                subTitle: "Enter a valid email address",
-                placeholder: "your@email.com",
-                grid: 12,
-            }),
+        a: K.string("email").component<InputComponent>({
+            type: C.Input,
+            subType: "email",
+            title: "",
+            subTitle: "Enter a valid email address",
+            placeholder: "your@email.com",
+            grid: 12,
+        }),
     }),
 
     equal: K.object({
@@ -157,26 +156,26 @@ const schema: Schema = K.schema({
             ),
             grid: 12,
         }),
-        a: K.string()
-            .$v(v => v.equal("hello", false))
-            .component<InputComponent>({
-                type: C.Input,
-                subType: "text",
-                title: "With case insensitive",
-                subTitle: "Should be equal to 'hello'",
-                placeholder: "hello",
-                grid: 6,
-            }),
-        b: K.string()
-            .$v(v => v.equal("HELLO", true))
-            .component<InputComponent>({
-                type: C.Input,
-                subType: "text",
-                title: "With case sensitive",
-                subTitle: "Should be equal to 'HELLO'",
-                placeholder: "HELLO",
-                grid: 6,
-            }),
+        a: K.string(
+            equal("hello", { caseSensitive: false }),
+        ).component<InputComponent>({
+            type: C.Input,
+            subType: "text",
+            title: "With case insensitive",
+            subTitle: "Should be equal to 'hello'",
+            placeholder: "hello",
+            grid: 6,
+        }),
+        b: K.string(
+            equal("HELLO", { caseSensitive: true }),
+        ).component<InputComponent>({
+            type: C.Input,
+            subType: "text",
+            title: "With case sensitive",
+            subTitle: "Should be equal to 'HELLO'",
+            placeholder: "HELLO",
+            grid: 6,
+        }),
     }),
 });
 

@@ -8,6 +8,7 @@ import type { UpdateHandler } from "@/components/types";
 import { useFormContext } from "@/context/helpers";
 import { useTranslator } from "@/i18n";
 import { gridOption2Classes } from "@/layouts/helpers";
+import { getParentLevel } from "@/libs";
 import { cn } from "@/libs/cn";
 import type { GridSchemaOption } from "../types";
 
@@ -53,7 +54,7 @@ export function GridPropLayout(props: GridPropertyLayoutProps) {
                     // "fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4",
                     gridOption2Classes(grid()),
                     "p-4 mr-2 mb-2",
-                    property().parentLevel() === 0 &&
+                    getParentLevel(property().selector) === 0 &&
                         "rounded-md border border-(--grid-prop-border) bg-(--grid-prop-bg)",
                     // store.focusedSelector === property().selector &&
                     //     "bg-secondary/10",

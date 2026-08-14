@@ -1,4 +1,4 @@
-import { K, min, notEmpty } from "kofono";
+import { K, max, min, notEmpty } from "kofono";
 import type { CheckboxComponent } from "@/components/checkbox";
 import type { CheckboxGroupComponent } from "@/components/checkboxGroup";
 import { textInput } from "@/components/input";
@@ -156,16 +156,13 @@ export const schema = K.schema({
         grid: 12,
     }),
 
-    range: K.number()
-        .$v(v => v.min(10).max(125))
-        .default(0)
-        .component({
-            type: C.RangeInput,
-            title: "RangeInput",
-            label: "RangeInput label",
-            description: description,
-            grid: 6,
-        }),
+    range: K.number(min(10), max(125)).default(0).component({
+        type: C.RangeInput,
+        title: "RangeInput",
+        label: "RangeInput label",
+        description: description,
+        grid: 6,
+    }),
 
     files: K.listMixed().component({
         type: C.FileInput,

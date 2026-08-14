@@ -5,6 +5,7 @@ import { updateHandler } from "@/components/reactivity";
 import { useFormContext } from "@/context/helpers";
 import { GridPropsLayout } from "@/layouts/grid/GridPropsLayout";
 import "../index.css";
+import { getRootSelectors } from "@/libs";
 
 export type TestFormProps = {};
 
@@ -61,12 +62,12 @@ export function TestForm(_: TestFormProps) {
                             when={
                                 store.schema &&
                                 store.form &&
-                                store.form!.selectors.getRootSelectors()
+                                getRootSelectors(store.form!)
                             }>
                             TESTFORM2
                             <div class={`grid grid-cols-12 gap-2 mt-4`}>
                                 <GridPropsLayout
-                                    selectors={store.form!.selectors.getRootSelectors()}
+                                    selectors={getRootSelectors(store.form!)}
                                     updateHandler={updateHandlerWrapper}
                                 />
                             </div>

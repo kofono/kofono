@@ -1,4 +1,4 @@
-import { K, type Schema } from "kofono";
+import { alpha, equal, K, min, type Schema } from "kofono";
 import { C } from "@/components/PropElement";
 import { ExamplePage } from "../ExamplePage";
 
@@ -48,35 +48,26 @@ const translations = {
 
 const schema: Schema = K.schema({
     $id: "translations-example",
-    firstname: K.string()
-        .$v(v => v.min(1).expect("firstname.error"))
-        .component({
-            type: C.Input,
-            title: "firstname.title",
-            placeholder: "firstname.placeholder",
-        }),
-    lastname: K.string()
-        .$v(v =>
-            v
-                .alpha({ spaces: false })
-                .expect("lastname.alphaError")
-                .min(1)
-                .expect("lastname.emptyError"),
-        )
-        .component({
-            type: C.Input,
-            title: "lastname.title",
-            placeholder: "lastname.placeholder",
-        }),
-    consent: K.boolean()
-        .$v(v => v.equal(true))
-        .component({
-            type: C.Checkbox,
-            title: "consent.title",
-            label: "consent.label",
-            description: "consent.description",
-            grid: 12,
-        }),
+    firstname: K.string(min(1, "firstname.error")).component({
+        type: C.Input,
+        title: "firstname.title",
+        placeholder: "firstname.placeholder",
+    }),
+    lastname: K.string(
+        alpha({ spaces: false }, "lastname.alphaError"),
+        min(1, "lastname.emptyError"),
+    ).component({
+        type: C.Input,
+        title: "lastname.title",
+        placeholder: "lastname.placeholder",
+    }),
+    consent: K.boolean(equal(true)).component({
+        type: C.Checkbox,
+        title: "consent.title",
+        label: "consent.label",
+        description: "consent.description",
+        grid: 12,
+    }),
     $translations: translations,
 });
 
