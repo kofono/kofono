@@ -27,7 +27,6 @@ import {
     type FormProperties,
     FormStatus,
     type PassHandler,
-    type PropertyState,
     type State,
     Update,
     type UpdateType,
@@ -163,24 +162,6 @@ export class Form {
         });
     }
 
-    public childrenProps(
-        parentSelector: string,
-        includeParent: boolean = false,
-    ): FormProperties {
-        const props: FormProperties = {};
-        if (includeParent) {
-            props[parentSelector] = this.#props[parentSelector];
-        }
-        const childrenSelectors = getChildrenSelectors(
-            parentSelector,
-            this.propsKeys(),
-        );
-        for (const selector of childrenSelectors) {
-            props[selector] = this.#props[selector];
-        }
-        return props;
-    }
-
     public compileStats(): Form {
         this.#stats.compile();
         this.state.pass = this.#passHandler(this);
@@ -214,6 +195,24 @@ export class Form {
         }
 
         return errors;
+    }
+
+    public getChildrenProps(
+        parentSelector: string,
+        includeParent: boolean = false,
+    ): FormProperties {
+        const props: FormProperties = {};
+        if (includeParent) {
+            props[parentSelector] = this.#props[parentSelector];
+        }
+        const childrenSelectors = getChildrenSelectors(
+            parentSelector,
+            this.propsKeys(),
+        );
+        for (const selector of childrenSelectors) {
+            props[selector] = this.#props[selector];
+        }
+        return props;
     }
 
     public hasProp(selector: string): boolean {
@@ -285,19 +284,6 @@ export class Form {
 
     public propsKeys(): string[] {
         return Object.keys(this.#props);
-    }
-
-    // todo: still necessary?
-    public propState(selector: string): PropertyState {
-        const validation = this.$v(selector);
-        const qualification = this.$q(selector);
-        return {
-            data: this.$d(selector),
-            isValid: validation[0],
-            isQualified: qualification[0],
-            validationError: validation[1],
-            qualificationError: qualification[1],
-        };
     }
 
     /**
