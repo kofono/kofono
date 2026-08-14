@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import { render } from "solid-js/web";
-import "../../packages/kofono-solid-form/dist/style.css";
+import "../../../packages/kofono-solid-form/dist/style.css";
 import "./styles.css";
 
 import { MetaProvider } from "@solidjs/meta";
@@ -26,7 +26,14 @@ if (rootElement) {
     render(
         () => (
             <Router root={App} base={import.meta.env.BASE_URL}>
-                <For each={docPages}>{d => <Route path={d.path} component={lazy(d.loader as any)} />}</For>
+                <For each={docPages}>
+                    {d => (
+                        <Route
+                            path={d.path}
+                            component={lazy(d.loader as any)}
+                        />
+                    )}
+                </For>
             </Router>
         ),
         rootElement,

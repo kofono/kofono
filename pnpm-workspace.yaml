@@ -1,6 +1,6 @@
 packages:
+    - apps/*
     - packages/*
-    - doc
 
 allowBuilds:
     esbuild: false
