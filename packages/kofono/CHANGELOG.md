@@ -12,6 +12,13 @@
 - fix SchemaBuilder extension processing to handle empty or invalid config
 - fix FormArray slice keyname bug with children selectors
 - add circular reference detection in FormEvents.emitSelectorTree() to prevent infinite recursion
+- trigger FormReady event(s) at the end of Form.init()
+- remove ScoringExtension max score calculation
+- add FormProperty getEnum()
+- remove FormProperty childrenProps(), update(), parentLevel(), parentsSelectors()
+- add K PropertyDeclaration setMany()
+- remove Form propsState()
+- rename Form childrenProps() to getChildrenProps()
 
 # 0.10.0 - 2026-08-09
 

@@ -9,9 +9,9 @@ import type {
     SchemaPropertyValidator,
 } from "./schema";
 
-type CustomValidatorOpts = SchemaPropertyBaseValidator & {
+interface CustomValidatorOpts extends SchemaPropertyBaseValidator {
     value: string;
-};
+}
 
 // this is a test custom schema function
 function custom(value: string, expect?: string): SchemaPropertyValidator {
