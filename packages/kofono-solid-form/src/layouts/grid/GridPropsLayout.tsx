@@ -15,13 +15,13 @@ export function GridPropsLayout(props: GridPropertiesLayoutProps) {
     return (
         <For each={props.selectors}>
             {selector => {
-                if (store.form!.props[selector].type === PropertyType.Object) {
+                if (store.form?.props[selector].type === PropertyType.Object) {
                     return (
                         <GridPropObjectWrapper selector={selector}>
                             <GridPropsLayout
                                 updateHandler={props.updateHandler}
-                                selectors={store
-                                    .form!.prop(selector)
+                                selectors={store.form
+                                    ?.prop(selector)
                                     .getChildrenSelectors()}
                             />
                         </GridPropObjectWrapper>

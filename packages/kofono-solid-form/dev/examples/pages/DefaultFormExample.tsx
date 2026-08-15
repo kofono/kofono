@@ -56,7 +56,7 @@ export const schema = K.schema({
             }),
         ),
 
-    textarea: K.number(notEmpty()).component({
+    textarea: K.string(notEmpty()).component({
         type: C.Textarea,
         title: "Textarea",
         subTitle: "This is a subtitle",
