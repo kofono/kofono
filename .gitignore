@@ -12,3 +12,5 @@ packages/*/tmp
 packages/*/node_modules
 .npmrc
 .pnpm-store
+report.md
+vetreport.md
